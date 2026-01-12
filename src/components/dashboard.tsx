@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Plus, FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProjectCard } from "@/components/project-card";
-import { NewProjectModal } from "@/components/new-project-modal";
+import { CreateNewProjectModal } from "@/app/CreateNewProjectModal";
 import { OpenProjectModal } from "@/components/open-project-modal";
 
 const recentProjects = [
@@ -59,7 +59,7 @@ export function Dashboard() {
             </div>
 
             {/* Modals */}
-            <NewProjectModal open={newProjectOpen} onOpenChange={setNewProjectOpen} />
+            <CreateNewProjectModal open={newProjectOpen} onOpenChange={setNewProjectOpen} />
             <OpenProjectModal open={openProjectOpen} onOpenChange={setOpenProjectOpen} />
         </main>
     );
