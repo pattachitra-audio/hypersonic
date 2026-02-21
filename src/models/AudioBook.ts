@@ -1,7 +1,7 @@
 import { dbClientPromise } from "@/lib/db";
 import { AudioBook } from "@/schemas/AudioBook";
+import NoThrow from "@/utils/NoThrow";
 import { MongoError, ObjectId } from "mongodb";
-import NoThrow from "neverthrow";
 
 export const AudioBookModelPromise = (async function () {
     const dbClientResult = await dbClientPromise;
@@ -15,16 +15,16 @@ export const AudioBookModelPromise = (async function () {
     const db = dbClient.db("core");
     const collection = db.collection("AudioBook");
 
-    return new NoThrow.Ok({
+    return NoThrow.ok({
         async findOneByID(id: ObjectId) {
             try {
-                return new NoThrow.Ok(await collection.findOne({ _id: id }));
+                return NoThrow.ok(await collection.findOne<AudioBook>({ _id: id }));
             } catch (err) {
                 if (err instanceof MongoError) {
-                    return new NoThrow.Err(err);
+                    return NoThrow.err(err);
                 }
 
-                return new NoThrow.Err(err as Error);
+                return NoThrow.err(err as Error);
             }
         },
 
@@ -33,16 +33,16 @@ export const AudioBookModelPromise = (async function () {
                 const result = await collection.insertOne(audioBook);
 
                 if (result.acknowledged) {
-                    return new NoThrow.Ok(result.insertedId);
+                    return NoThrow.ok(result.insertedId);
                 }
 
-                return new NoThrow.Err(new Error("MongoDB 'insertOne' err"));
+                return NoThrow.err(new Error("MongoDB 'insertOne' err"));
             } catch (err) {
                 if (err instanceof MongoError) {
-                    return new NoThrow.Err(err);
+                    return NoThrow.err(err);
                 }
 
-                return new NoThrow.Err(err as Error);
+                return NoThrow.err(err as Error);
             }
         },
 

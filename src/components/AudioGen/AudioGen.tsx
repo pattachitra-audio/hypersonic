@@ -1,0 +1,144 @@
+import { useRef } from "react";
+
+export type AudioGenState =
+    | {
+          status: "none";
+      }
+    | {
+          status: "generating";
+      }
+    | {
+          status: "error";
+      }
+    | {
+          status: "generated";
+          audio: Blob;
+      };
+
+// export default function AudioGen() {}
+export default function AudioGen({
+    generation,
+    isPlaying,
+    onTogglePlay,
+}: {
+    generation: AudioGenState;
+    isPlaying: boolean;
+    onTogglePlay: () => void;
+}) {
+    /*
+    const [waveformBars, setWaveformBars] = useState<number[]>(() =>
+        Array.from({ length: 40 }, (_, i) => Math.sin(i * 0.3) * 0.5 + 0.5),
+    );
+    */
+
+    const waveSurferContainerRef = useRef(null);
+
+    useEffect(() => {
+        if (!isPlaying) return;
+
+        const interval = setInterval(() => {
+            setWaveformBars(Array.from({ length: 40 }, () => Math.random() * 0.8 + 0.2));
+        }, 100);
+
+        return () => clearInterval(interval);
+    }, [isPlaying]);
+
+    return (
+        <div className="p-3 rounded-xl border bg-card hover:shadow-sm transition-shadow duration-200">
+            <p className="text-xs text-muted-foreground mb-2">Generation {generation.generationNumber}</p>
+            <div className="flex items-center gap-3">
+                <button
+                    onClick={onTogglePlay}
+                    className={cn(
+                        "w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-200",
+                        isPlaying
+                            ? "bg-primary text-primary-foreground scale-105"
+                            : "bg-foreground text-background hover:scale-105",
+                    )}
+                >
+                    {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 ml-0.5" />}
+                </button>
+
+                <div className="flex-1 flex items-center gap-0.5 h-8">
+                    {waveformBars.map((height, i) => (
+                        <div
+                            key={i}
+                            className={cn(
+                                "w-0.75 rounded-full transition-all",
+                                isPlaying ? "bg-primary duration-100" : "bg-muted-foreground/30 duration-300",
+                            )}
+                            style={{
+                                height: `${(isPlaying ? height : Math.sin(i * 0.3) * 0.5 + 0.5) * 100}%`,
+                            }}
+                        />
+                    ))}
+                </div>
+
+                <div className="flex items-center gap-1">
+                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-muted">
+                        <RefreshCw className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-muted">
+                        <Download className="h-4 w-4" />
+                    </Button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function GenerationLoadingSkeleton({ generationNumber }: { generationNumber: number }) {
+    return (
+        <div className="p-3 rounded-xl border bg-muted/30">
+            <p className="text-xs text-muted-foreground mb-2">Generation {generationNumber}</p>
+            <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center shrink-0 animate-pulse">
+                    <div className="w-4 h-4 rounded bg-muted-foreground/20" />
+                </div>
+
+                <div className="flex-1 flex items-center gap-0.5 h-8">
+                    {Array.from({ length: 40 }, (_, i) => (
+                        <div
+                            key={i}
+                            className="w-0.75 rounded-full bg-muted-foreground/20"
+                            style={{
+                                height: `${(Math.sin(i * 0.3) * 0.3 + 0.5) * 100}%`,
+                                animation: `pulse 1s ease-in-out infinite`,
+                                animationDelay: `${i * 30}ms`,
+                            }}
+                        />
+                    ))}
+                </div>
+
+                <div className="flex items-center gap-1">
+                    <div className="h-8 w-8 rounded-lg bg-muted animate-pulse" />
+                    <div className="h-8 w-8 rounded-lg bg-muted animate-pulse" />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+/*
+            {isGenerating && (
+                <div className="space-y-2 animate-in fade-in-50 duration-300">
+                    {Array.from({ length: Number.parseInt(generationCount) }, (_, i) => (
+                        <GenerationLoadingSkeleton key={i} generationNumber={i + 1} />
+                    ))}
+                </div>
+            )}
+
+            {!isGenerating && generations.length > 0 && (
+                <div className="space-y-2 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
+                    {generations.map((gen) => (
+                        <AudioGenerationCard
+                            key={gen.id}
+                            generation={gen}
+                            isPlaying={playingId === gen.id}
+                            onTogglePlay={() => togglePlay(gen.id)}
+                        />
+                    ))}
+                </div>
+            )}
+
+            */

@@ -6,6 +6,9 @@ import { EpisodeSchema } from "./Episode";
 
 export const AudioBookSchema = z
     .object({
+        name: z.string(),
+        plot: z.string(),
+        genre: z.array(z.string()),
         characters: z.array(CharacterSchema).describe("List of all characters appearing in the audiobook"),
         episodes: z.array(EpisodeSchema).describe("List of episodes that structure the audiobook content"),
         scenes: z.array(SceneSchema).describe("List of scenes that make up the audiobook narrative"),

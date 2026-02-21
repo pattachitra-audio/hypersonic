@@ -1,8 +1,4 @@
-"use client";
-
-import { CharacterStudio } from "./CharacterStudio";
-import { AudioBook } from "@/schemas/AudioBook";
-import { tRPC } from "@/utils/tRPC";
+import CharacterStudio from "./TextToSpeech/CharacterStudio";
 
 export default function Project() {
     return <CharacterStudio />;

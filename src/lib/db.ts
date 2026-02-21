@@ -1,7 +1,7 @@
-import { envPromise } from "./env";
-import NoThrow from "neverthrow";
 import { MongoClient, MongoError } from "mongodb";
 import { packageJSON } from "./packageJSON";
+import { envPromise } from "./env";
+import NoThrow from "@/utils/NoThrow";
 
 export const dbClientPromise = (async function () {
     const envResult = await envPromise;
@@ -16,8 +16,8 @@ export const dbClientPromise = (async function () {
 
     try {
         const mongoClientConnected = await mongoClient.connect();
-        return new NoThrow.Ok(mongoClientConnected);
+        return NoThrow.ok(mongoClientConnected);
     } catch (err) {
-        return new NoThrow.Err(err as MongoError);
+        return NoThrow.err(err as MongoError);
     }
 })();

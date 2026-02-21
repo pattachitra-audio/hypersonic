@@ -3,35 +3,42 @@
 import { useState } from "react";
 import { X, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CharacterDetails } from "./CharacterDetails";
-import { VoiceSelector } from "./VoiceSelector";
-import type { Character, VoiceSettings } from "@/lib/types";
+// import { CharacterDetails } from "./CharacterDetails";
+import CharacterDetails from "../CharacterDetails";
 import { cn } from "@/lib/utils";
+import { CharacterVoice } from "@/schemas/Character";
+import { SelectedCharacter } from "@/app/types/SelectedCharacter";
 
-interface CharacterSidebarProps {
-    character: Character | null;
-    voiceSettings: VoiceSettings;
-    onVoiceChange: (characterId: number, voiceId: string) => void;
-    onSettingsChange: (characterId: number, settings: VoiceSettings) => void;
-    onClose: () => void;
-    dialogues: { characterId: number; text: string }[];
-}
-
-export function CharacterSidebar({
-    character,
-    voiceSettings,
+export default function CharacterSidebar({
+    selectedCharacter,
+    // voiceSettings,
     onVoiceChange,
-    onSettingsChange,
+    // onSettingsChange,
     onClose,
-    dialogues,
-}: CharacterSidebarProps) {
+}: {
+    selectedCharacter: SelectedCharacter;
+    // voiceSettings: VoiceSettings;
+    onVoiceChange: (voice: CharacterVoice | null) => void;
+    // onSettingsChange: (characterId: number, settings: VoiceSettings) => void;
+    onClose: () => void;
+    // dialogues: { characterId: number; text: string }[];
+}) {
     const [showVoiceSelector, setShowVoiceSelector] = useState(false);
+    const { character, dialogues } = selectedCharacter;
 
-    const handleVoiceSelect = (voiceId: string) => {
+    const handleVoiceSelect = (voice: CharacterVoice | null) => {
+        if (voice === null) {
+            return onVoiceChange(null);
+        }
+
+        onVoiceChange(voice);
+
+        /*
         if (character) {
             onVoiceChange(character.id, voiceId);
             setShowVoiceSelector(false);
         }
+        */
     };
 
     const handleClose = () => {
@@ -43,13 +50,13 @@ export function CharacterSidebar({
         <div
             className={cn(
                 "border-l bg-card transition-all duration-300 ease-in-out overflow-hidden",
-                character ? "w-[380px]" : "w-0",
+                character ? "w-95" : "w-0",
             )}
         >
             {character && (
                 <div className="h-full flex flex-col animate-in slide-in-from-right-4 duration-300">
                     {/* Header */}
-                    <div className="flex items-center justify-between p-4 border-b flex-shrink-0">
+                    <div className="flex items-center justify-between p-4 border-b shrink-0">
                         {showVoiceSelector ? (
                             <button
                                 onClick={() => setShowVoiceSelector(false)}
@@ -80,17 +87,18 @@ export function CharacterSidebar({
                                     : "opacity-100 translate-x-0",
                             )}
                         >
-                            <CharacterDetails
-                                character={character}
-                                voiceSettings={voiceSettings}
-                                onSettingsChange={(settings) => onSettingsChange(character.id, settings)}
-                                onVoiceButtonClick={() => setShowVoiceSelector(true)}
-                                dialogues={dialogues}
-                            />
+                            {
+                                <CharacterDetails
+                                    character={character}
+                                    onSettingsChange={(settings) => onSettingsChange(settings)}
+                                    onSelectVoiceButtonClick={() => setShowVoiceSelector(true)}
+                                    dialogues={dialogues}
+                                />
+                            }
                         </div>
 
                         {/* Voice Selector View */}
-                        <div
+                        {/*<div
                             className={cn(
                                 "absolute inset-0 transition-all duration-300 ease-out",
                                 showVoiceSelector
@@ -98,8 +106,8 @@ export function CharacterSidebar({
                                     : "opacity-0 translate-x-4 pointer-events-none",
                             )}
                         >
-                            <VoiceSelector selectedVoiceId={character.voiceId} onSelectVoice={handleVoiceSelect} />
-                        </div>
+                            <VoiceSelector onSelectVoice={handleVoiceSelect} />
+                        </div> */}
                     </div>
                 </div>
             )}

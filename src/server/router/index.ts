@@ -1,5 +1,4 @@
-import { tRPCRouter, tRPCProcedure } from "@/server/tRPC";
-import z from "zod";
+import { tRPCRouter } from "@/server/tRPC";
 import { projectRouter } from "./project";
 
 export const router = tRPCRouter({

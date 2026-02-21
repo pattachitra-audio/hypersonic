@@ -17,7 +17,7 @@ const recentProjects = [
 ];
 
 export function Dashboard() {
-    const [newProjectOpen, setNewProjectOpen] = useState(false);
+    const [createNewProjectModalWindowIsOpen, setCreateNewProjetModalWindowIsOpen] = useState(false);
     const [openProjectOpen, setOpenProjectOpen] = useState(false);
 
     return (
@@ -26,7 +26,7 @@ export function Dashboard() {
                 {/* Action Buttons */}
                 <div className="mb-8 flex flex-wrap gap-3">
                     <Button
-                        onClick={() => setNewProjectOpen(true)}
+                        onClick={() => setCreateNewProjetModalWindowIsOpen(true)}
                         className="gap-2 transition-all hover:scale-105 active:scale-95"
                     >
                         <Plus className="h-4 w-4" />
@@ -59,7 +59,10 @@ export function Dashboard() {
             </div>
 
             {/* Modals */}
-            <CreateNewProjectModal open={newProjectOpen} onOpenChange={setNewProjectOpen} />
+            <CreateNewProjectModal
+                isOpen={createNewProjectModalWindowIsOpen}
+                onOpenChange={setCreateNewProjetModalWindowIsOpen}
+            />
             <OpenProjectModal open={openProjectOpen} onOpenChange={setOpenProjectOpen} />
         </main>
     );

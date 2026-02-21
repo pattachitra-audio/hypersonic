@@ -2,39 +2,42 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { AlertCircle, User, MessageSquare } from "lucide-react";
-import type { Character } from "@/lib/types";
+import { AlertCircle, User, MessageSquare, Mic2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { voices } from "@/lib/voices";
+import { SelectedCharacter } from "@/app/types/SelectedCharacter";
+import { AudioBook } from "@/schemas/AudioBook";
 
-interface CharacterTableProps {
-    characters: Character[];
-    selectedCharacterId: number | null;
-    onSelectCharacter: (character: Character) => void;
-}
-
-export function CharacterTable({ characters, selectedCharacterId, onSelectCharacter }: CharacterTableProps) {
+export default function CharacterTable({
+    audioBook,
+    selectedCharacter,
+    onSelectCharacter,
+}: {
+    audioBook: AudioBook;
+    selectedCharacter: SelectedCharacter | null;
+    onSelectCharacter(index: number): void;
+}) {
     return (
         <div className="rounded-xl border bg-card overflow-hidden shadow-sm">
             <Table>
                 <TableHeader>
                     <TableRow className="bg-muted/30 hover:bg-muted/30">
-                        <TableHead className="w-[200px] font-semibold">Character</TableHead>
-                        <TableHead className="w-[100px] font-semibold">Gender</TableHead>
-                        <TableHead className="w-[80px] font-semibold">Age</TableHead>
+                        <TableHead className="w-50 ml-3 align-center font-semibold">Character</TableHead>
+                        <TableHead className="w-25 text-center font-semibold">Gender</TableHead>
+                        <TableHead className="w-20 text-center font-semibold">Age</TableHead>
                         <TableHead className="font-semibold">Voice Description</TableHead>
-                        <TableHead className="w-[150px] font-semibold">Voice</TableHead>
-                        <TableHead className="w-[100px] text-center font-semibold">Dialogues</TableHead>
+                        <TableHead className="w-37.5 font-semibold">
+                            <Mic2 className="h-5 w-5 text-primary inline" /> Voice
+                        </TableHead>
+                        <TableHead className="w-25 text-center font-semibold">Dialogues</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {characters.map((character, index) => {
-                        const selectedVoice = voices.find((v) => v.id === character.voiceId);
-                        const isSelected = selectedCharacterId === character.id;
-
+                    {audioBook.characters.map((character, index) => {
+                        const isSelected = selectedCharacter !== null && selectedCharacter.index === index;
+                        const numberDialogues = audioBook.dialogues.filter(({ character: c }) => c === index).length;
                         return (
                             <TableRow
-                                key={character.id}
+                                key={index}
                                 className={cn(
                                     "cursor-pointer transition-all duration-200 group",
                                     isSelected ? "bg-primary/5 hover:bg-primary/10" : "hover:bg-muted/50",
@@ -42,7 +45,7 @@ export function CharacterTable({ characters, selectedCharacterId, onSelectCharac
                                 style={{
                                     animationDelay: `${index * 50}ms`,
                                 }}
-                                onClick={() => onSelectCharacter(character)}
+                                onClick={() => onSelectCharacter(index)}
                             >
                                 <TableCell>
                                     <div className="flex items-center gap-3">
@@ -59,28 +62,28 @@ export function CharacterTable({ characters, selectedCharacterId, onSelectCharac
                                         <span className="font-medium">{character.name}</span>
                                     </div>
                                 </TableCell>
-                                <TableCell>
+                                <TableCell className="text-center">
                                     <span className="text-muted-foreground">{character.gender}</span>
                                 </TableCell>
-                                <TableCell>
+                                <TableCell className="text-center">
                                     <span className="text-muted-foreground">
-                                        {character.ageRange[0]}-{character.ageRange[1]}
+                                        {character.ageGroup[0]} - {character.ageGroup[1]}
                                     </span>
                                 </TableCell>
-                                <TableCell className="text-muted-foreground max-w-[300px]">
-                                    <span className="line-clamp-1">{character.voiceDescription}</span>
+                                <TableCell className="text-muted-foreground max-w-75">
+                                    <span className="truncate block">{character.voiceDescription}</span>
                                 </TableCell>
                                 <TableCell>
-                                    {selectedVoice ? (
+                                    {character.voice != null ? (
                                         <div className="flex items-center gap-2">
                                             <div
-                                                className="w-5 h-5 rounded-full flex-shrink-0 ring-2 ring-background shadow-sm"
+                                                className="w-5 h-5 rounded-full shrink-0 ring-2 ring-background shadow-sm"
                                                 style={{
-                                                    background: `linear-gradient(135deg, ${selectedVoice.color} 0%, ${selectedVoice.colorEnd} 100%)`,
+                                                    background: `linear-gradient(135deg, red 0%, blue 100%)`,
                                                 }}
                                             />
                                             <Badge variant="secondary" className="font-medium">
-                                                {selectedVoice.name}
+                                                {character.voice.name ?? "null"}
                                             </Badge>
                                         </div>
                                     ) : (
@@ -96,7 +99,7 @@ export function CharacterTable({ characters, selectedCharacterId, onSelectCharac
                                 <TableCell className="text-center">
                                     <div className="flex items-center justify-center gap-1.5">
                                         <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
-                                        <span className="font-medium">{character.dialogueCount}</span>
+                                        <span className="font-medium">{numberDialogues}</span>
                                     </div>
                                 </TableCell>
                             </TableRow>

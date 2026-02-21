@@ -45,6 +45,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { AppSidebar } from "@/components/app-sidebar";
+import { TypeScriptRPCProvider } from "./tRPCProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
@@ -72,7 +74,10 @@ export default function RootLayout({
                     <SidebarProvider>
                         <Header />
                         <AppSidebar />
-                        <main className="w-full mt-14 bg-background">{children}</main>
+                        <TypeScriptRPCProvider>
+                            <main className="w-full mt-14 bg-background">{children}</main>
+                            <Toaster />
+                        </TypeScriptRPCProvider>
                     </SidebarProvider>
                 </ThemeProvider>
             </body>
