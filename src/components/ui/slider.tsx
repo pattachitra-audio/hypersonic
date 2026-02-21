@@ -18,11 +18,22 @@ function Slider({
         [value, defaultValue, min, max],
     );
 
+    const otherProps: { value?: NonNullable<typeof value>; defaultValue?: NonNullable<typeof defaultValue> } = {};
+
+    if (value) {
+        otherProps.value = value;
+    }
+
+    if (defaultValue) {
+        otherProps.defaultValue = defaultValue;
+    }
+
     return (
         <SliderPrimitive.Root
             data-slot="slider"
-            defaultValue={defaultValue}
-            value={value}
+            // defaultValue={defaultValue}
+            // value={value}
+            {...otherProps}
             min={min}
             max={max}
             className={cn(
