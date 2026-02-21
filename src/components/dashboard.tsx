@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Plus, FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProjectCard } from "@/components/project-card";
-import { CreateNewProjectModal } from "@/app/CreateNewProjectModal";
+import CreateNewProjectModal from "@/app/CreateNewProjectModal";
 import { OpenProjectModal } from "@/components/open-project-modal";
 
 const recentProjects = [

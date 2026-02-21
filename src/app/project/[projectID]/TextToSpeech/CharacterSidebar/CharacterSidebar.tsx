@@ -6,40 +6,32 @@ import { Button } from "@/components/ui/button";
 // import { CharacterDetails } from "./CharacterDetails";
 import CharacterDetails from "../CharacterDetails";
 import { cn } from "@/lib/utils";
-import { CharacterVoice } from "@/schemas/Character";
-import { SelectedCharacter } from "@/app/types/SelectedCharacter";
+import { CharacterVoice, ElevenLabsTextToSpeechVoiceSettings } from "@/schemas/Character";
+import { SelectedCharacterType } from "@/app/types/SelectedCharacter";
+// import { VoiceSettings } from "@/ext/elevenLabsAPI/textToSpeech";
 
 export default function CharacterSidebar({
     selectedCharacter,
     // voiceSettings,
     onVoiceChange,
-    // onSettingsChange,
+    onVoiceSettingsChange,
     onClose,
 }: {
-    selectedCharacter: SelectedCharacter;
+    selectedCharacter: SelectedCharacterType;
     // voiceSettings: VoiceSettings;
     onVoiceChange: (voice: CharacterVoice | null) => void;
-    // onSettingsChange: (characterId: number, settings: VoiceSettings) => void;
+    onVoiceSettingsChange: <
+        T extends keyof ElevenLabsTextToSpeechVoiceSettings,
+        V extends ElevenLabsTextToSpeechVoiceSettings[T],
+    >(
+        key: T,
+        value: V,
+    ) => void;
     onClose: () => void;
     // dialogues: { characterId: number; text: string }[];
 }) {
     const [showVoiceSelector, setShowVoiceSelector] = useState(false);
     const { character, dialogues } = selectedCharacter;
-
-    const handleVoiceSelect = (voice: CharacterVoice | null) => {
-        if (voice === null) {
-            return onVoiceChange(null);
-        }
-
-        onVoiceChange(voice);
-
-        /*
-        if (character) {
-            onVoiceChange(character.id, voiceId);
-            setShowVoiceSelector(false);
-        }
-        */
-    };
 
     const handleClose = () => {
         setShowVoiceSelector(false);
@@ -90,8 +82,11 @@ export default function CharacterSidebar({
                             {
                                 <CharacterDetails
                                     character={character}
-                                    onSettingsChange={(settings) => onSettingsChange(settings)}
                                     onSelectVoiceButtonClick={() => setShowVoiceSelector(true)}
+                                    onVoiceSettingsChange={onVoiceSettingsChange}
+                                    // onSelectVoiceButtonClick={() => setShowVoiceSelector(true)}
+                                    // onSelectVoiceButtonClick={()}
+
                                     dialogues={dialogues}
                                 />
                             }

@@ -7,26 +7,26 @@ import { Progress } from "@/components/ui/progress";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useParams } from "next/navigation";
-import { SelectedCharacter } from "@/app/types/SelectedCharacter";
 import CharacterSidebar from "../CharacterSidebar/CharacterSidebar";
 import { Character } from "@/schemas/Character";
 import { useAudioBookForTextToSpeech } from "@/hooks/useAudioBookForTextToSpeech";
+import { INVALID_INDEX } from "@/constants";
 
 export default function CharacterStudio() {
     const { projectID }: { projectID: string } = useParams<{ projectID: string }>();
-    const response = useAudioBookForTextToSpeech(projectID);
+    const audioBookState = useAudioBookForTextToSpeech(projectID);
 
     const [selectedCharacterIndex, setSelectedCharacterIndex] = useState<number>(-1);
 
-    if (response.audioBook.state === "loading") {
-        return <>Loading...</>;
+    if (audioBookState.state === "pending") {
+        return "Loading...";
     }
 
-    if (response.audioBook.state === "error") {
-        return <>Audiobook not found!</>;
+    if (audioBookState.state === "error") {
+        return "ERROR: AudioBook not found!";
     }
 
-    const audioBook = response.audioBook.data;
+    const audioBook = audioBookState.audioBook;
     const { name, characters, dialogues } = audioBook;
 
     /*
@@ -46,15 +46,15 @@ export default function CharacterStudio() {
     const handleSelectCharacter = (index: number) => {
         if (index < 0 || index > characters.length) {
             // return setSelectedCharacter({ index: null, dialogues: null, character: null });
-            setSelectedCharacterIndex(-1);
+            setSelectedCharacterIndex(INVALID_INDEX);
         }
 
-        setSelectedCharacterIndex(selectedCharacterIndex === index ? -1 : index);
+        setSelectedCharacterIndex(selectedCharacterIndex === index ? INVALID_INDEX : index);
     };
 
     function handleCloseCharacterSidebar() {
         // setSelectedCharacter({ index: null, dialogues: null });
-        setSelectedCharacterIndex(-1);
+        setSelectedCharacterIndex(INVALID_INDEX);
     }
 
     const allCharactersHaveVoices = characters.reduce((prev, { voice }) => prev && voice != null, true);
@@ -65,22 +65,16 @@ export default function CharacterStudio() {
     };
 
     const getSelectedCharacter = () => {
-        if (selectedCharacterIndex === -1) {
+        const selectedCharacterTmp: Character | undefined = characters.at(selectedCharacterIndex);
+
+        if (selectedCharacterTmp === undefined) {
             return null;
         }
-
-        {
-            const selectedCharacterTmp: Character | undefined = characters.at(selectedCharacterIndex);
-
-            if (selectedCharacterTmp === undefined) {
-                return null;
-            }
-            return {
-                index: selectedCharacterIndex,
-                character: selectedCharacterTmp,
-                dialogues: getDialoguesForCharacter(selectedCharacterIndex),
-            };
-        }
+        return {
+            index: selectedCharacterIndex,
+            character: selectedCharacterTmp,
+            dialogues: getDialoguesForCharacter(selectedCharacterIndex),
+        };
     };
 
     const selectedCharacter = getSelectedCharacter();
@@ -148,7 +142,12 @@ export default function CharacterStudio() {
             {selectedCharacter !== null && (
                 <CharacterSidebar
                     {...{ selectedCharacter }}
-                    onVoiceChange={response.handleSelectVoice.bind(null, selectedCharacterIndex)}
+                    onVoiceSettingsChange={(key, value) => {
+                        audioBookState.handleVoiceSettingsChange(selectedCharacterIndex, key, value);
+                    }}
+                    onVoiceChange={(voice) => {
+                        audioBookState.handleSelectVoice(selectedCharacterIndex, voice);
+                    }}
                     onClose={handleCloseCharacterSidebar}
                 />
             )}

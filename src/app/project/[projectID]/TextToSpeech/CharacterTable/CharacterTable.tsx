@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { AlertCircle, User, MessageSquare, Mic2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SelectedCharacter } from "@/app/types/SelectedCharacter";
+import { SelectedCharacterType } from "@/app/types/SelectedCharacter";
 import { AudioBook } from "@/schemas/AudioBook";
 
 export default function CharacterTable({
@@ -13,7 +13,7 @@ export default function CharacterTable({
     onSelectCharacter,
 }: {
     audioBook: AudioBook;
-    selectedCharacter: SelectedCharacter | null;
+    selectedCharacter: SelectedCharacterType | null;
     onSelectCharacter(index: number): void;
 }) {
     return (

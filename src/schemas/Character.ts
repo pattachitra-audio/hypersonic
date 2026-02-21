@@ -13,6 +13,8 @@ export const ElevenLabsTextToSpeechVoiceSettingsSchema = z.object({
     applyLanguageTextNormalization: z.boolean().default(false),
 });
 
+export const ElevenLabsTextToSpeechVoiceSettingsDefaultValue = ElevenLabsTextToSpeechVoiceSettingsSchema.parse({});
+
 export type ElevenLabsTextToSpeechVoiceSettings = z.infer<typeof ElevenLabsTextToSpeechVoiceSettingsSchema>;
 
 const ElevenLabsVoiceProviderSchema = z.object({
@@ -71,4 +73,7 @@ export const CharacterSchema = z.object({
 });
 
 export type Character = z.infer<typeof CharacterSchema>;
-export type CharacterVoice = Character["voice"];
+export type CharacterVoice = NonNullable<Character["voice"]>;
+export type CharacterVoiceSettings = NonNullable<CharacterVoice["voiceSettings"]>;
+
+export type TextToSpeechCharacterVoiceSettings = NonNullable<CharacterVoiceSettings["textToSpeech"]>;

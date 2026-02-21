@@ -310,7 +310,13 @@ type SetFileValidationStatusFnType = Dispatch<SetStateAction<FileValidationStatu
 
 type OnOpenChangeFnType = (isOpen: boolean) => void;
 
-export function CreateNewProjectModal({ isOpen, onOpenChange }: { isOpen: boolean; onOpenChange: OnOpenChangeFnType }) {
+export default function CreateNewProjectModal({
+    isOpen,
+    onOpenChange,
+}: {
+    isOpen: boolean;
+    onOpenChange: OnOpenChangeFnType;
+}) {
     const [projectName, setProjectName] = useState("");
     const [isCreating, setIsCreating] = useState(false);
     const [file, setFile] = useState<File | null>(null);
