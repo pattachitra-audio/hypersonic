@@ -1,0 +1,232 @@
+{
+    "name": "Ticking Shadows",
+    "plot": "In the fog-drenched city of New Babbage, cynical detective Arthur Pendelton is called to investigate the murder of the city's greatest clockmaker. Teaming up with his ghostly informant, Wraith, Arthur discovers that the clockmaker's mechanical heart is actually a timer for a temporal bomb. They must race against the clock to prevent a temporal rift from freezing the city in an endless, repeating loop.",
+    "genre": ["mystery", "supernatural", "noir"],
+    "characters": [
+        {
+            "name": "Narrator",
+            "gender": "male",
+            "ageGroup": [40, 50],
+            "description": "Sets the scene with a gritty, atmospheric tone, guiding the listener through the dark and damp alleyways of the city.",
+            "voiceDescription": "Deep, weary voice with a classic noir cadence. Slow and methodical, building tension as the clock ticks down."
+        },
+        {
+            "name": "Arthur Pendelton",
+            "gender": "male",
+            "ageGroup": [35, 45],
+            "description": "A hardboiled private detective who deals with the city's supernatural underbelly. Rarely seen without his rumpled trench coat and a lit cigarette.",
+            "voiceDescription": "Gravelly, cynical male voice. Speaks in clipped, direct sentences but occasionally betrays a softer, more exhausted undertone."
+        },
+        {
+            "name": "Wraith",
+            "gender": "female",
+            "ageGroup": [20, 30],
+            "description": "The ghost of a former thief who acts as Arthur's eyes and ears in the spirit world. Shimmering, translucent, and surprisingly sarcastic for someone who is dead.",
+            "voiceDescription": "Ethereal female voice with a slight echoing effect. Witty, quick-paced, and slightly melodic."
+        },
+        {
+            "name": "Inspector Sterling",
+            "gender": "male",
+            "ageGroup": [50, 60],
+            "description": "A pompous, impatient police inspector who relies on Arthur for the 'weird' cases but resents him for it.",
+            "voiceDescription": "Gruff, authoritative, and slightly nasal. Sounds perpetually annoyed and overworked."
+        },
+        {
+            "name": "Elias Thorne",
+            "gender": "male",
+            "ageGroup": [60, 70],
+            "description": "The murdered clockmaker. A brilliant but paranoid inventor who pushed the boundaries of mechanical and temporal engineering.",
+            "voiceDescription": "Frail, trembling older male voice, heard only through a scratchy, static-filled audio recording."
+        }
+    ],
+    "episodes": [
+        {
+            "name": "The Clockmaker's Secret",
+            "description": "Arthur investigates the gruesome murder of Elias Thorne and learns of a dangerous temporal anomaly from his ghostly informant.",
+            "sceneBegin": 0,
+            "sceneEnd": 2
+        },
+        {
+            "name": "Midnight Strikes",
+            "description": "A race against time to locate the source of the temporal rift in an abandoned clock tower before the city is locked in a loop.",
+            "sceneBegin": 2,
+            "sceneEnd": 3
+        }
+    ],
+    "scenes": [
+        {
+            "name": "The Crime Scene",
+            "description": "Arthur arrives at Elias Thorne's ruined workshop, where Inspector Sterling reveals the bizarre nature of the murder.",
+            "time": "10:00 PM",
+            "location": "Thorne's Clockworks, Main Street",
+            "dialogueBegin": 0,
+            "dialogueEnd": 11
+        },
+        {
+            "name": "The Ghost's Whisper",
+            "description": "Arthur steps out into an alley to consult Wraith, who provides a supernatural lead on the killer's motive.",
+            "time": "10:30 PM",
+            "location": "Alleyway behind the Clockworks",
+            "dialogueBegin": 11,
+            "dialogueEnd": 23
+        },
+        {
+            "name": "The Temporal Rift",
+            "description": "Arthur confronts the stolen machine at the top of an abandoned clock tower, guided by a recording from Thorne himself.",
+            "time": "11:55 PM",
+            "location": "The Old District Belfry",
+            "dialogueBegin": 23,
+            "dialogueEnd": 37
+        }
+    ],
+    "dialogues": [
+        {
+            "character": 0,
+            "text": "The rain in New Babbage never really washed away the grime, it just moved it around."
+        },
+        {
+            "character": 1,
+            "text": "Nasty business, this. The great Elias Thorne, reduced to a heap of gears and blood."
+        },
+        {
+            "character": 3,
+            "text": "I didn't call you here for your poetry, Pendelton. Look at his chest."
+        },
+        {
+            "character": 0,
+            "text": "Arthur leaned over the body. Where the clockmaker's heart should have been, a complex brass mechanism ticked erratically."
+        },
+        {
+            "character": 1,
+            "text": "A mechanical heart. I didn't think Thorne's augmentations went this deep."
+        },
+        {
+            "character": 3,
+            "text": "Neither did the coroner. But that's not the worst part. The heart is counting backwards."
+        },
+        {
+            "character": 1,
+            "text": "Counting down to what?"
+        },
+        {
+            "character": 3,
+            "text": "That's what I'm paying you to find out. You have until midnight."
+        },
+        {
+            "character": 0,
+            "text": "Sterling turned on his heel and left the shop, the door's bell chiming mockingly in his wake."
+        },
+        {
+            "character": 1,
+            "text": "Midnight. Always with the dramatic deadlines."
+        },
+        {
+            "character": 0,
+            "text": "Arthur slipped out the back door, stepping into a fog-choked alley where the streetlights barely penetrated."
+        },
+        {
+            "character": 1,
+            "text": "You can come out now. The uniforms are gone."
+        },
+        {
+            "character": 0,
+            "text": "The fog coalesced into the shimmering, translucent form of a young woman."
+        },
+        {
+            "character": 2,
+            "text": "Took you long enough, Arthur. I've been freezing my non-existent toes off out here."
+        },
+        {
+            "character": 1,
+            "text": "What do the whispers say about Thorne, Wraith? Who wanted the old man dead?"
+        },
+        {
+            "character": 2,
+            "text": "Everyone wanted his creations, but nobody wanted him dead. He was building something special, Arthur. Something that messes with the flow itself."
+        },
+        {
+            "character": 1,
+            "text": "Time manipulation? That's illegal. And impossible."
+        },
+        {
+            "character": 2,
+            "text": "Not for him. The shadows are frantic tonight. They say whoever took the master blueprint is going to unravel the city."
+        },
+        {
+            "character": 1,
+            "text": "The mechanical heart... it's a timer. A detonator for a temporal rift."
+        },
+        {
+            "character": 2,
+            "text": "If it hits zero, we might all repeat yesterday forever. Or cease to exist entirely."
+        },
+        {
+            "character": 1,
+            "text": "Where did the device go?"
+        },
+        {
+            "character": 2,
+            "text": "Follow the ticking. It's coming from the abandoned clock tower in the old district."
+        },
+        {
+            "character": 0,
+            "text": "Arthur pulled his trench coat tighter against the supernatural chill and headed for the narrows."
+        },
+        {
+            "character": 0,
+            "text": "The old clock tower loomed like a rotting tooth against the night sky. Inside, giant rusted gears groaned."
+        },
+        {
+            "character": 1,
+            "text": "It's a trap, Wraith. I can feel it."
+        },
+        {
+            "character": 2,
+            "text": "I can't go any further, Arthur. The chronal energy here... it's tearing at my spirit form."
+        },
+        {
+            "character": 1,
+            "text": "Stay back. I'll finish this."
+        },
+        {
+            "character": 0,
+            "text": "Arthur climbed the spiraling stairs to the belfry, finding a glowing phonograph attached to a massive brass bomb."
+        },
+        {
+            "character": 4,
+            "text": "*static* If you are hearing this recording, I am already dead. *static*"
+        },
+        {
+            "character": 1,
+            "text": "Thorne. Even from the grave, you talk too much."
+        },
+        {
+            "character": 4,
+            "text": "The temporal disruptor was stolen by the Guild, but I linked its ignition to my own mechanical heart."
+        },
+        {
+            "character": 1,
+            "text": "So you're the one who started the countdown, to destroy their prize..."
+        },
+        {
+            "character": 4,
+            "text": "To stop the blast, you must shatter the phonograph cylinder. It is the conduit!"
+        },
+        {
+            "character": 0,
+            "text": "Just as the countdown ticked to ten seconds, Arthur drew his revolver."
+        },
+        {
+            "character": 1,
+            "text": "Let's hope your ghosts are right, Thorne."
+        },
+        {
+            "character": 0,
+            "text": "The gunshot echoed through the tower, shattering the cylinder. The glowing machinery sputtered and died."
+        },
+        {
+            "character": 1,
+            "text": "Midnight. And the clock strikes nothing. Just the way I like it."
+        }
+    ]
+}

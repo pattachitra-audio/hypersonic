@@ -1,0 +1,236 @@
+{
+    "name": "Neon Shadows: The Override",
+    "plot": "In a dystopian megacity, a brilliant hacker named Jax and her street-smart crew must infiltrate the central mainframe of the corrupt Apex Corporation. Their goal is to upload a powerful custom payload to free the city's power grid from corporate control. But when the CEO personally intervenes, the crew has to fight their way out before their neural pathways are fried.",
+    "genre": ["sci-fi", "cyberpunk", "thriller"],
+    "characters": [
+        {
+            "name": "Narrator",
+            "gender": "male",
+            "ageGroup": [40, 50],
+            "description": "An observant, gritty narrator who sets the tone of the dark, rain-slicked cyberpunk world.",
+            "voiceDescription": "Deep, raspy voice with a noir-detective cadence. Steady pacing that heightens the tension during action sequences."
+        },
+        {
+            "name": "Jax",
+            "gender": "female",
+            "ageGroup": [24, 28],
+            "description": "The lead hacker of the crew. Brilliant, focused, and slightly cynical. She interfaces directly with machines via a neural link.",
+            "voiceDescription": "Mid-range female voice, sharp and analytical. Speaks with quick, clipped sentences when under pressure."
+        },
+        {
+            "name": "Silas",
+            "gender": "male",
+            "ageGroup": [32, 38],
+            "description": "The muscle of the group. Heavily augmented with cybernetic limbs, he is fiercely loyal to Jax but prefers physical combat over stealth.",
+            "voiceDescription": "Heavy, resonant voice with a slight metallic echo. Gruff and impatient, but highly protective."
+        },
+        {
+            "name": "Proxy",
+            "gender": "female",
+            "ageGroup": [20, 24],
+            "description": "The crew's remote tech support and drone operator. Fast-talking, highly caffeinated, and always monitoring the data streams from a safe distance.",
+            "voiceDescription": "Youthful, energetic voice. Speaks very rapidly, often sounding distracted as she multi-tasks across a dozen screens."
+        },
+        {
+            "name": "CEO Vance",
+            "gender": "male",
+            "ageGroup": [55, 60],
+            "description": "The ruthless head of Apex Corp. Wealthy, cold, and views people in the lower city as mere data points.",
+            "voiceDescription": "Smooth, aristocratic, and chillingly calm. Never raises his voice, projecting absolute authority and disdain."
+        }
+    ],
+    "episodes": [
+        {
+            "name": "The Infiltration",
+            "description": "Jax and her crew bypass Apex Corp's outer security perimeter using a clever cover identity and slip into the facility.",
+            "sceneBegin": 0,
+            "sceneEnd": 1
+        },
+        {
+            "name": "System Crash",
+            "description": "The hack goes wrong when CEO Vance detects their presence, leading to a desperate digital and physical battle.",
+            "sceneBegin": 1,
+            "sceneEnd": 3
+        }
+    ],
+    "scenes": [
+        {
+            "name": "The Drop",
+            "description": "The crew approaches the heavily guarded backdoor of Apex Corp, relying on Proxy's digital camouflage.",
+            "time": "midnight",
+            "location": "Alleyway behind Apex Corp Headquarters",
+            "dialogueBegin": 0,
+            "dialogueEnd": 10
+        },
+        {
+            "name": "The Server Room",
+            "description": "Jax jacks into the mainframe to deploy her payload, but the system's defenses adapt faster than expected.",
+            "time": "1:00 AM",
+            "location": "Sub-level 4 Server Core",
+            "dialogueBegin": 10,
+            "dialogueEnd": 22
+        },
+        {
+            "name": "The Override",
+            "description": "CEO Vance confronts the team digitally. Silas fights off defense drones while Jax pushes her neural link to the absolute limit.",
+            "time": "1:15 AM",
+            "location": "Sub-level 4 Server Core",
+            "dialogueBegin": 22,
+            "dialogueEnd": 36
+        }
+    ],
+    "dialogues": [
+        {
+            "character": 0,
+            "text": "The neon glare of the megacity reflected off the wet pavement as Jax adjusted the neural link at the base of her neck."
+        },
+        {
+            "character": 1,
+            "text": "Proxy, are we masking our approach? The perimeter drones are getting uncomfortably close."
+        },
+        {
+            "character": 3,
+            "text": "Affirmative. We're currently broadcasting our IDs as maintenance technicians for Singha Roy Enterprise. They won't suspect a thing."
+        },
+        {
+            "character": 2,
+            "text": "I hate sneaking around. My cyber-arms are itching for a real fight."
+        },
+        {
+            "character": 1,
+            "text": "Keep it quiet, Silas. We aren't here to shoot; we're here to run the Antigravity protocol on their mainframe and get out clean."
+        },
+        {
+            "character": 3,
+            "text": "Gate is open. You have a ninety-second window before the security sweep loops back to your sector."
+        },
+        {
+            "character": 0,
+            "text": "Silas pried the heavy service door open, his hydraulic muscles whining softly in the damp air."
+        },
+        {
+            "character": 2,
+            "text": "After you, boss."
+        },
+        {
+            "character": 1,
+            "text": "Stick to the shadows. From here on out, we are ghosts."
+        },
+        {
+            "character": 0,
+            "text": "The trio slipped into the gleaming, sterile corridors of Apex Corp, leaving the chaotic noise of the city behind."
+        },
+        {
+            "character": 0,
+            "text": "The server room was a cavern of blinking lights and humming cooling units, completely devoid of human presence."
+        },
+        {
+            "character": 1,
+            "text": "I'm jacking into the terminal. Proxy, watch our backs on the cameras."
+        },
+        {
+            "character": 3,
+            "text": "I see you. Initiating the decryption sequence now. Keep your heart rate steady, Jax."
+        },
+        {
+            "character": 2,
+            "text": "I don't like this. It's too quiet. Even for a graveyard shift."
+        },
+        {
+            "character": 1,
+            "text": "Focus on the door, Silas. The encryption is heavy, but the compiler is chewing right through the outer firewalls."
+        },
+        {
+            "character": 3,
+            "text": "Wait, Jax, I'm detecting a localized network spike. Someone is manually overriding my camera loop!"
+        },
+        {
+            "character": 1,
+            "text": "How? We used a zero-day exploit! Nobody should be awake to catch this."
+        },
+        {
+            "character": 0,
+            "text": "Suddenly, the server room was bathed in blinding red security lights, accompanied by a blaring alarm."
+        },
+        {
+            "character": 2,
+            "text": "So much for sneaking. I'm drawing my plasma blades."
+        },
+        {
+            "character": 1,
+            "text": "Hold them off! I just need thirty more seconds to inject the payload!"
+        },
+        {
+            "character": 3,
+            "text": "Jax, you have hostile drones dropping from the ventilation shafts above you!"
+        },
+        {
+            "character": 0,
+            "text": "The high-pitched whine of energy weapons powering up filled the enclosed space."
+        },
+        {
+            "character": 0,
+            "text": "The main monitor flared to life, displaying the cold, augmented face of CEO Vance."
+        },
+        {
+            "character": 4,
+            "text": "Singha Roy Enterprise? A clever cover identity, but you greatly underestimated our internal countermeasures, hackers."
+        },
+        {
+            "character": 1,
+            "text": "Vance. I should have known you'd be paranoid enough to monitor the core personally."
+        },
+        {
+            "character": 4,
+            "text": "You are attempting to steal the city's power allocation data. I cannot let street rats disrupt my profit margins."
+        },
+        {
+            "character": 2,
+            "text": "Less talking, more hacking, Jax! These drones keep coming!"
+        },
+        {
+            "character": 0,
+            "text": "Silas sliced through the nearest security drone, showering the server racks in sparks and molten metal."
+        },
+        {
+            "character": 1,
+            "text": "I'm bypassing his manual lock! Proxy, I need a computational boost, now!"
+        },
+        {
+            "character": 3,
+            "text": "Rerouting all drone processing power to your terminal! Just don't fry your cortex!"
+        },
+        {
+            "character": 4,
+            "text": "You are burning out your own neural pathways for a city that doesn't care whether you live or die."
+        },
+        {
+            "character": 1,
+            "text": "I'm not doing it for them. I'm doing it to watch your empire crash. Payload injected!"
+        },
+        {
+            "character": 0,
+            "text": "A cascade of blue light swept through the servers, overriding the red alert klaxons."
+        },
+        {
+            "character": 4,
+            "text": "No! The system is locking me out! This is impossible!"
+        },
+        {
+            "character": 1,
+            "text": "That's the Antigravity protocol for you. All your data belongs to the streets now."
+        },
+        {
+            "character": 3,
+            "text": "Data extraction complete! The transport is waiting at the extraction point. Run!"
+        },
+        {
+            "character": 2,
+            "text": "Finally! Let's get out of here before his corporate goons show up."
+        },
+        {
+            "character": 0,
+            "text": "As the corporate systems crashed around them, the trio vanished back into the neon-lit night, victorious."
+        }
+    ]
+}
