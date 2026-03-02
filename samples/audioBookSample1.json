@@ -5,35 +5,35 @@
     "characters": [
         {
             "name": "Narrator",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [40, 50],
             "description": "An observant, gritty narrator who sets the tone of the dark, rain-slicked cyberpunk world.",
             "voiceDescription": "Deep, raspy voice with a noir-detective cadence. Steady pacing that heightens the tension during action sequences."
         },
         {
             "name": "Jax",
-            "gender": "female",
+            "gender": "FEMALE",
             "ageGroup": [24, 28],
             "description": "The lead hacker of the crew. Brilliant, focused, and slightly cynical. She interfaces directly with machines via a neural link.",
-            "voiceDescription": "Mid-range female voice, sharp and analytical. Speaks with quick, clipped sentences when under pressure."
+            "voiceDescription": "Mid-range FEMALE voice, sharp and analytical. Speaks with quick, clipped sentences when under pressure."
         },
         {
             "name": "Silas",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [32, 38],
             "description": "The muscle of the group. Heavily augmented with cybernetic limbs, he is fiercely loyal to Jax but prefers physical combat over stealth.",
             "voiceDescription": "Heavy, resonant voice with a slight metallic echo. Gruff and impatient, but highly protective."
         },
         {
             "name": "Proxy",
-            "gender": "female",
+            "gender": "FEMALE",
             "ageGroup": [20, 24],
             "description": "The crew's remote tech support and drone operator. Fast-talking, highly caffeinated, and always monitoring the data streams from a safe distance.",
             "voiceDescription": "Youthful, energetic voice. Speaks very rapidly, often sounding distracted as she multi-tasks across a dozen screens."
         },
         {
             "name": "CEO Vance",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [55, 60],
             "description": "The ruthless head of Apex Corp. Wealthy, cold, and views people in the lower city as mere data points.",
             "voiceDescription": "Smooth, aristocratic, and chillingly calm. Never raises his voice, projecting absolute authority and disdain."

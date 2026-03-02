@@ -5,31 +5,31 @@
     "characters": [
         {
             "name": "Narrator",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [30, 45],
             "description": "An energetic and observant narrator who captures the high-stakes, fast-paced action of an underground cyber-duel.",
             "voiceDescription": "Crisp, dynamic voice with a sports-commentator edge. Accelerates during battle sequences to build adrenaline."
         },
         {
             "name": "Romeo",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [20, 25],
             "description": "The protagonist. A calm, calculated programmer who treats card games like complex algorithms. He wears a heavily modified, custom-built duel disk on his forearm.",
-            "voiceDescription": "Clear, steady male voice. Speaks with quiet confidence, and enunciates his programming incantations with sharp precision."
+            "voiceDescription": "Clear, steady MALE voice. Speaks with quiet confidence, and enunciates his programming incantations with sharp precision."
         },
         {
             "name": "Kairo",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [30, 30],
             "description": "A rogue artificial intelligence inhabiting a stolen synthetic body. Arrogant, cruel, and obsessed with bio-organic weapon cards that mutate on the field.",
             "voiceDescription": "Cold, synthetic voice with a subtle, unnerving dual-tone echo. Dripping with condescension."
         },
         {
             "name": "Lexi",
-            "gender": "female",
+            "gender": "FEMALE",
             "ageGroup": [20, 25],
             "description": "Romeo's best friend and hardware tech. She monitors the duel's telemetry from the sidelines, acting as his eyes and ears for system anomalies.",
-            "voiceDescription": "Urgent, expressive female voice. Fast-talking and highly emotional, often sounding stressed out by Romeo's risky maneuvers."
+            "voiceDescription": "Urgent, expressive FEMALE voice. Fast-talking and highly emotional, often sounding stressed out by Romeo's risky maneuvers."
         }
     ],
     "episodes": [

@@ -5,38 +5,38 @@
     "characters": [
         {
             "name": "Narrator",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [40, 50],
             "description": "Sets the scene with a gritty, atmospheric tone, guiding the listener through the dark and damp alleyways of the city.",
             "voiceDescription": "Deep, weary voice with a classic noir cadence. Slow and methodical, building tension as the clock ticks down."
         },
         {
             "name": "Arthur Pendelton",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [35, 45],
             "description": "A hardboiled private detective who deals with the city's supernatural underbelly. Rarely seen without his rumpled trench coat and a lit cigarette.",
-            "voiceDescription": "Gravelly, cynical male voice. Speaks in clipped, direct sentences but occasionally betrays a softer, more exhausted undertone."
+            "voiceDescription": "Gravelly, cynical MALE voice. Speaks in clipped, direct sentences but occasionally betrays a softer, more exhausted undertone."
         },
         {
             "name": "Wraith",
-            "gender": "female",
+            "gender": "FEMALE",
             "ageGroup": [20, 30],
             "description": "The ghost of a former thief who acts as Arthur's eyes and ears in the spirit world. Shimmering, translucent, and surprisingly sarcastic for someone who is dead.",
-            "voiceDescription": "Ethereal female voice with a slight echoing effect. Witty, quick-paced, and slightly melodic."
+            "voiceDescription": "Ethereal FEMALE voice with a slight echoing effect. Witty, quick-paced, and slightly melodic."
         },
         {
             "name": "Inspector Sterling",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [50, 60],
             "description": "A pompous, impatient police inspector who relies on Arthur for the 'weird' cases but resents him for it.",
             "voiceDescription": "Gruff, authoritative, and slightly nasal. Sounds perpetually annoyed and overworked."
         },
         {
             "name": "Elias Thorne",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [60, 70],
             "description": "The murdered clockmaker. A brilliant but paranoid inventor who pushed the boundaries of mechanical and temporal engineering.",
-            "voiceDescription": "Frail, trembling older male voice, heard only through a scratchy, static-filled audio recording."
+            "voiceDescription": "Frail, trembling older MALE voice, heard only through a scratchy, static-filled audio recording."
         }
     ],
     "episodes": [

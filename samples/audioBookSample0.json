@@ -5,73 +5,73 @@
     "characters": [
         {
             "name": "Narrator",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [30, 45],
             "description": "An omniscient narrator who guides the audience through the tale with wisdom and gravitas. Maintains a neutral but engaging presence throughout the story.",
             "voiceDescription": "Deep, resonant voice with clear enunciation. Warm and authoritative tone that commands attention without being overbearing. Slightly theatrical delivery."
         },
         {
             "name": "Elara Moonwhisper",
-            "gender": "female",
+            "gender": "FEMALE",
             "ageGroup": [24, 28],
             "description": "A determined elven ranger with silver hair and piercing green eyes. She's the protagonist of our story, brave yet compassionate, with a mysterious past that haunts her. Wears leather armor adorned with moon symbols.",
-            "voiceDescription": "Mid-range female voice with a slight ethereal quality. Confident and clear, with hints of vulnerability in emotional moments. Slight musical lilt to her speech."
+            "voiceDescription": "Mid-range FEMALE voice with a slight ethereal quality. Confident and clear, with hints of vulnerability in emotional moments. Slight musical lilt to her speech."
         },
         {
             "name": "Thorne Ironheart",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [35, 40],
             "description": "A grizzled dwarven warrior with a magnificent braided beard and battle scars. Loyal to a fault, he serves as both comic relief and the voice of experience. Carries a legendary war hammer passed down through generations.",
             "voiceDescription": "Deep, gruff voice with a Scottish-inspired accent. Hearty and boisterous, often ending statements with a chuckle. Voice should convey both strength and warmth."
         },
         {
             "name": "Lyra Starweaver",
-            "gender": "female",
+            "gender": "FEMALE",
             "ageGroup": [19, 22],
             "description": "A young human mage with wild curly red hair and freckles. Enthusiastic and sometimes reckless, she's still learning to control her immense magical powers. Her robes are constantly singed from spell mishaps.",
-            "voiceDescription": "Youthful, energetic female voice with quick pacing. Enthusiastic and excitable, often speaking rapidly when discussing magic. Occasionally squeaks when surprised."
+            "voiceDescription": "Youthful, energetic FEMALE voice with quick pacing. Enthusiastic and excitable, often speaking rapidly when discussing magic. Occasionally squeaks when surprised."
         },
         {
             "name": "Lord Malachai",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [45, 50],
             "description": "The primary antagonist, a fallen knight turned dark sorcerer. Once noble, now consumed by his quest for immortality. Tall and gaunt, with black robes and eyes that glow with unnatural power.",
             "voiceDescription": "Smooth, calculated voice with sinister undertones. Well-educated accent, speaks slowly and deliberately. Occasionally breaks into menacing whispers or cruel laughter."
         },
         {
             "name": "Master Aldric",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [68, 72],
             "description": "An ancient wizard and mentor figure. Wise beyond measure, with a long white beard and twinkling eyes. He provides guidance to the heroes but cannot directly intervene due to ancient magical laws.",
-            "voiceDescription": "Elderly male voice, soft and wise. Speaks slowly with careful consideration. Warm grandfather-like quality with occasional mysterious undertones."
+            "voiceDescription": "Elderly MALE voice, soft and wise. Speaks slowly with careful consideration. Warm grandfather-like quality with occasional mysterious undertones."
         },
         {
             "name": "Captain Brenna",
-            "gender": "female",
+            "gender": "FEMALE",
             "ageGroup": [32, 36],
             "description": "Leader of the Royal Guard, a no-nonsense human warrior with short black hair and a commanding presence. Skeptical of magic but respects those who prove themselves in battle.",
-            "voiceDescription": "Strong, authoritative female voice with military crispness. Direct and commanding, rarely raises voice but demands attention. Slight hoarseness from years of battlefield commands."
+            "voiceDescription": "Strong, authoritative FEMALE voice with military crispness. Direct and commanding, rarely raises voice but demands attention. Slight hoarseness from years of battlefield commands."
         },
         {
             "name": "Pip",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [14, 16],
             "description": "A young halfling thief with a heart of gold. Orphaned at a young age, he's street-smart and resourceful. His quick fingers have saved the party more than once. Has messy brown hair and oversized clothes.",
-            "voiceDescription": "Young male voice, slightly higher pitched. Quick-witted and cheeky, with a street urchin quality. Cockney-inspired accent. Often speaks in excited bursts."
+            "voiceDescription": "Young MALE voice, slightly higher pitched. Quick-witted and cheeky, with a street urchin quality. Cockney-inspired accent. Often speaks in excited bursts."
         },
         {
             "name": "The Shadow King",
-            "gender": "male",
+            "gender": "MALE",
             "ageGroup": [30, 40],
             "description": "An ancient evil entity, neither living nor dead. Exists as a voice in the darkness, manipulating events from behind the scenes. The true mastermind behind Lord Malachai's corruption.",
             "voiceDescription": "Multi-layered, distorted voice with echoing quality. Should sound otherworldly and terrifying. Deep and resonant with whispered undertones. Use effects to sound inhuman."
         },
         {
             "name": "Princess Arianna",
-            "gender": "female",
+            "gender": "FEMALE",
             "ageGroup": [26, 29],
             "description": "The kingdom's princess who refuses to be a damsel in distress. Trained in both diplomacy and swordplay. Has golden hair and wears practical armor beneath her royal robes. Becomes a key ally.",
-            "voiceDescription": "Elegant but strong female voice with royal bearing. Well-educated accent, confident without being haughty. Can shift from diplomatic sweetness to commanding authority."
+            "voiceDescription": "Elegant but strong FEMALE voice with royal bearing. Well-educated accent, confident without being haughty. Can shift from diplomatic sweetness to commanding authority."
         }
     ],
     "episodes": [
