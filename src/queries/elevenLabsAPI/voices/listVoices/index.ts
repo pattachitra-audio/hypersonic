@@ -1,9 +1,8 @@
-import { ELEVEN_LABS_API_BASE_URL } from "../constants";
-import NoThrow from "@/utils/NoThrow";
-import { ListVoicesInput } from "./listVoices/input";
-import { ListVoicesResponseSchema } from "./listVoices/response";
+import { ELEVEN_LABS_API_BASE_URL } from "../../constants";
+import { ListVoicesRequest, ListVoicesRequestSchema } from "./request";
+import { ListVoicesResponseSchema } from "./response";
 
-export async function listVoices(input: ListVoicesInput) {
+export async function listVoicesQuery(input: ListVoicesRequest) {
     const {
         nextPageToken,
         pageSize,
@@ -14,9 +13,9 @@ export async function listVoices(input: ListVoicesInput) {
         category,
         fineTuningState,
         collectionID,
-        includeTotalCount = true,
+        includeTotalCount,
         voiceIDs,
-    } = input;
+    } = ListVoicesRequestSchema.parse(input);
 
     const queryParams = new URLSearchParams();
 
@@ -94,18 +93,20 @@ export async function listVoices(input: ListVoicesInput) {
         voiceIDs.forEach((id) => queryParams.append("voice_ids", id));
     }
 
-    const url = `${ELEVEN_LABS_API_BASE_URL}/voices?${queryParams.toString()}`;
+    const url = `${ELEVEN_LABS_API_BASE_URL}/shared-voices?${queryParams.toString()}`;
 
     const response = await fetch(url, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
+            "XI-API-KEY": "sk_9e9df9c391690586f1d0e5404424aa7cce995b465f1dd4d3",
         },
     });
 
     if (!response.ok) {
         const errorText = await response.text();
-        return NoThrow.err(new Error(`ElevenLabs API error (${response.status}): ${errorText}`));
+        // return NoThrow.err(new Error(`ElevenLabs API error (${response.status}): ${errorText}`));
+        throw new Error(`ElevenLabs API error (${response.status}): ${errorText}`);
     }
 
     let rawData: unknown;
@@ -113,14 +114,17 @@ export async function listVoices(input: ListVoicesInput) {
     try {
         rawData = await response.json();
     } catch {
-        return NoThrow.err(new Error(`JSON parse error...`));
+        // return NoThrow.err(new Error(`JSON parse error...`));
+        throw new Error(`JSON parse error...`);
     }
 
     const result = await ListVoicesResponseSchema.safeParseAsync(rawData);
 
     if (!result.success) {
-        return NoThrow.err(result.error);
+        // return NoThrow.err(result.error);
+        throw result.error;
     }
 
-    return NoThrow.ok(result.data);
+    // return NoThrow.ok(result.data);
+    return result.data;
 }

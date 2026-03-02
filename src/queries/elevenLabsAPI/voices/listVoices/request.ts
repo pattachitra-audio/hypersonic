@@ -7,7 +7,7 @@ const VoiceTypeSchema = z.enum(LIST_VOICES_ENUMS.VOICE_TYPE);
 const FineTuningStateSchema = z.enum(LIST_VOICES_ENUMS.FINE_TUNING);
 const VoiceCategorySchema = z.enum(LIST_VOICES_ENUMS.CATEGORY);
 
-export const ListVoicesInputSchema = z.object({
+export const ListVoicesRequestSchema = z.object({
     nextPageToken: z.string().optional(),
     pageSize: z.number().min(1).max(100).default(10),
     search: z.string().optional(),
@@ -16,9 +16,9 @@ export const ListVoicesInputSchema = z.object({
     voiceType: VoiceTypeSchema.optional(),
     category: VoiceCategorySchema.optional(),
     fineTuningState: FineTuningStateSchema.optional(),
-    collectionID: z.string(),
+    collectionID: z.string().optional(),
     includeTotalCount: z.boolean().default(true),
     voiceIDs: z.array(z.string()).max(100).optional(),
 });
 
-export type ListVoicesInput = z.infer<typeof ListVoicesInputSchema>;
+export type ListVoicesRequest = Partial<z.infer<typeof ListVoicesRequestSchema>>;

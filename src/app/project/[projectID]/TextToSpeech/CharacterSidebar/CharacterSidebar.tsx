@@ -8,6 +8,7 @@ import CharacterDetails from "../CharacterDetails";
 import { cn } from "@/lib/utils";
 import { CharacterVoice, ElevenLabsTextToSpeechVoiceSettings } from "@/schemas/Character";
 import { SelectedCharacterType } from "@/app/types/SelectedCharacter";
+import VoiceSelector from "../VoiceSelector";
 // import { VoiceSettings } from "@/ext/elevenLabsAPI/textToSpeech";
 
 export default function CharacterSidebar({
@@ -48,7 +49,7 @@ export default function CharacterSidebar({
             {character && (
                 <div className="h-full flex flex-col animate-in slide-in-from-right-4 duration-300">
                     {/* Header */}
-                    <div className="flex items-center justify-between p-4 border-b shrink-0">
+                    <div className="flex items-center justify-between p-4 border-b shrink-0 h-16">
                         {showVoiceSelector ? (
                             <button
                                 onClick={() => setShowVoiceSelector(false)}
@@ -59,8 +60,8 @@ export default function CharacterSidebar({
                             </button>
                         ) : (
                             <div>
-                                <h2 className="font-semibold">Voice Settings</h2>
-                                <p className="text-sm text-muted-foreground">{character.name}</p>
+                                {/*<h2 className="font-semibold">Voice Settings</h2> */}
+                                <h2 className="text-xl">{character.name}</h2>
                             </div>
                         )}
                         <Button variant="ghost" size="icon" onClick={handleClose}>
@@ -93,16 +94,23 @@ export default function CharacterSidebar({
                         </div>
 
                         {/* Voice Selector View */}
-                        {/*<div
-                            className={cn(
-                                "absolute inset-0 transition-all duration-300 ease-out",
-                                showVoiceSelector
-                                    ? "opacity-100 translate-x-0"
-                                    : "opacity-0 translate-x-4 pointer-events-none",
-                            )}
-                        >
-                            <VoiceSelector onSelectVoice={handleVoiceSelect} />
-                        </div> */}
+                        {
+                            <div
+                                className={cn(
+                                    "absolute inset-0 transition-all duration-300 ease-out",
+                                    showVoiceSelector
+                                        ? "opacity-100 translate-x-0"
+                                        : "opacity-0 translate-x-4 pointer-events-none",
+                                )}
+                            >
+                                <VoiceSelector
+                                    onSelectVoice={(voice) => {
+                                        setShowVoiceSelector(false);
+                                        onVoiceChange(voice);
+                                    }}
+                                />
+                            </div>
+                        }
                     </div>
                 </div>
             )}

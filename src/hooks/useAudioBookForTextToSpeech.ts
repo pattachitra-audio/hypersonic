@@ -7,6 +7,12 @@ import {
 import { tRPC } from "@/utils/tRPC";
 import { useEffect, useState } from "react";
 import { produce } from "immer";
+import debug from "debug";
+
+const logger = debug("useAudioBookForTextToSpeech");
+debug.enable("useAudioBookForTextToSpeech");
+// console.log("here");
+// logger("gadha");
 
 type AudioBookStateType =
     | {
@@ -28,22 +34,30 @@ type AudioBookStateType =
       };
 
 export function useAudioBookForTextToSpeech(projectID: string) {
-    console.log("useAudioBookForTextToSpeech");
     const query = tRPC.project.get.useQuery(projectID);
     const [audioBookState, setAudioBookState] = useState<AudioBookStateType>({ state: "pending" });
 
+    // const audioBook = audioBookState.state === "success" ? audioBookState.audioBook : null;
+
     useEffect(() => {
-        if (query.isLoading) {
+        /*if (query.isLoading) {
+            return;
+        } */
+
+        if (query.status === "pending") {
             return;
         }
 
         (async function () {
-            if (query.isError || !query.data) {
+            if (query.status !== "success") {
                 setAudioBookState({ state: "error" });
+            }
+
+            if (!query.isSuccess) {
                 return;
             }
 
-            const audioBook = query.data;
+            const audioBook = query.data as AudioBook;
 
             const handleSelectVoice = (characterIndex: number, voice: CharacterVoice | null) => {
                 const draftFn = (audioBook: AudioBook) => {
@@ -68,7 +82,7 @@ export function useAudioBookForTextToSpeech(projectID: string) {
 
                     return {
                         ...audioBookState,
-                        audioBook: produce(audioBook, draftFn),
+                        audioBook: produce(audioBookState.audioBook, draftFn),
                     };
                 });
             };
@@ -81,6 +95,8 @@ export function useAudioBookForTextToSpeech(projectID: string) {
                 key: T,
                 value: V,
             ) => {
+                // console.log("handleVoiceSettingsChange");
+
                 const draftFn = (audioBookPrevState: AudioBook) => {
                     const character = audioBookPrevState.characters.at(characterIndex);
 
@@ -97,28 +113,31 @@ export function useAudioBookForTextToSpeech(projectID: string) {
                     }
 
                     if (!character.voice.voiceSettings.textToSpeech) {
-                        character.voice.voiceSettings.textToSpeech = ElevenLabsTextToSpeechVoiceSettingsDefaultValue;
+                        character.voice.voiceSettings.textToSpeech = structuredClone(
+                            ElevenLabsTextToSpeechVoiceSettingsDefaultValue,
+                        );
                     }
 
+                    // console.log("textToSpeech:", character.voice.voiceSettings.textToSpeech);
                     character.voice.voiceSettings.textToSpeech[key] = value;
                 };
 
-                setAudioBookState((audioBookState) => {
-                    if (audioBookState.state !== "success") {
-                        return audioBookState;
+                setAudioBookState((audioBookPrevState) => {
+                    if (audioBookPrevState.state !== "success") {
+                        return audioBookPrevState;
                     }
 
                     return {
-                        ...audioBookState,
-                        audioBook: produce(audioBookState.audioBook, draftFn),
+                        ...audioBookPrevState,
+                        audioBook: produce(audioBookPrevState.audioBook, draftFn),
                     };
                 });
             };
 
-            console.log("audioBook:", audioBook);
+            logger("audioBook:", audioBook);
             setAudioBookState({ state: "success", audioBook, handleSelectVoice, handleVoiceSettingsChange });
         })();
-    }, [query.isLoading, query.isError, query.data]);
+    }, [query.status, query.data, setAudioBookState]);
 
     return audioBookState;
 }

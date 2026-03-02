@@ -123,3 +123,33 @@
         @apply bg-background text-foreground;
     }
 }
+
+@layer base {
+    .pretty-scrollbar {
+        scrollbar-width: thin; /* Firefox */
+        scrollbar-color: #555 #1e1e1e; /* Firefox: thumb track */
+    }
+
+    .pretty-scrollbar::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    .pretty-scrollbar::-webkit-scrollbar-track {
+        background: #1e1e1e;
+        border-radius: 4px;
+    }
+
+    .pretty-scrollbar::-webkit-scrollbar-thumb {
+        background: #555;
+        border-radius: 4px;
+    }
+
+    .pretty-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #777;
+    }
+
+    .pretty-scrollbar::-webkit-scrollbar-corner {
+        background: #1e1e1e;
+    }
+}

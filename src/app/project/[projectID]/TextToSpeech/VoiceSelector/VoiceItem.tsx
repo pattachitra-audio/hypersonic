@@ -5,7 +5,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { VoiceResponse } from "@/ext/elevenLabsAPI/voices/listVoices/response";
+import { VoiceResponse } from "@/queries/elevenLabsAPI/voices/listVoices/response";
 import { cn } from "@/lib/utils";
 import { Copy, History, Link2, MoreHorizontal, Pause, Play } from "lucide-react";
 

@@ -26,6 +26,8 @@ export default function VoiceSettings({
         disabled = true;
     }
 
+    // console.log(`characterVoiceSettings for ${character.voice?.voiceSettings}:`, character.voice?.voiceSettings?.textToSpeech);
+
     const nonNullSettings =
         character.voice?.voiceSettings?.textToSpeech ?? ElevenLabsTextToSpeechVoiceSettingsDefaultValue;
 

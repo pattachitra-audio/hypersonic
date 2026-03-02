@@ -21,8 +21,8 @@ const ElevenLabsVoiceProviderSchema = z.object({
     provider: z.literal("ELEVENLABS").describe("Voice provider identifier for ElevenLabs"),
     voiceID: z.string().describe("Unique voice identifier from ElevenLabs voice library"),
     name: z.string().nullable(),
-    gender: z.enum(["male", "female"]),
-    category: z.enum(["generated", "cloned", "premade", "professional", "famous", "high_quality"]),
+    gender: z.enum(["MALE", "FEMALE", "NEUTRAL", "NOT_AVAILABLE"]),
+    category: z.enum(["GENERATED", "CLONED", "PREMADE", "PROFESSIONAL", "FAMOUS", "HIGH_QUALITY"]),
     description: z.string().nullable(),
     verifiedLanguages: z
         .array(
@@ -36,10 +36,10 @@ const ElevenLabsVoiceProviderSchema = z.object({
         .nullable(),
     voiceSettings: z
         .object({
-            textToSpeech: ElevenLabsTextToSpeechVoiceSettingsSchema.optional(),
+            textToSpeech: ElevenLabsTextToSpeechVoiceSettingsSchema.optional().nullable(),
             textToDialogue: z
                 .object({
-                    stability: ZeroToOneSchema.optional(),
+                    stability: ZeroToOneSchema.optional().nullable(),
                     seed: z.number().min(0).max(4294967295).optional(),
                     textNormalization: AutoOnOffSchema.optional(),
                 })
@@ -56,7 +56,7 @@ const HeyGenVoiceProviderSchema = z.object({
 
 export const CharacterSchema = z.object({
     name: z.string().max(64).describe("Character's name (maximum 64 characters)"),
-    gender: z.enum(["male", "female"]),
+    gender: z.enum(["MALE", "FEMALE"]),
     ageGroup: z
         .tuple([z.number().min(6), z.number().max(96)])
         .describe("Character's age range as [minimum age, maximum age], where min is at least 6 and max is at most 96"),

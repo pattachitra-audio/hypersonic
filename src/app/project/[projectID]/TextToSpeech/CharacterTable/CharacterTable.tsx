@@ -47,66 +47,102 @@ export default function CharacterTable({
                                 }}
                                 onClick={() => onSelectCharacter(index)}
                             >
-                                <TableCell>
-                                    <div className="flex items-center gap-3">
-                                        <div
-                                            className={cn(
-                                                "w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200",
-                                                isSelected
-                                                    ? "bg-primary text-primary-foreground"
-                                                    : "bg-muted group-hover:bg-muted-foreground/10",
-                                            )}
-                                        >
-                                            <User className="h-4 w-4" />
-                                        </div>
-                                        <span className="font-medium">{character.name}</span>
-                                    </div>
-                                </TableCell>
-                                <TableCell className="text-center">
-                                    <span className="text-muted-foreground">{character.gender}</span>
-                                </TableCell>
-                                <TableCell className="text-center">
-                                    <span className="text-muted-foreground">
-                                        {character.ageGroup[0]} - {character.ageGroup[1]}
-                                    </span>
-                                </TableCell>
-                                <TableCell className="text-muted-foreground max-w-75">
-                                    <span className="truncate block">{character.voiceDescription}</span>
-                                </TableCell>
-                                <TableCell>
-                                    {character.voice != null ? (
-                                        <div className="flex items-center gap-2">
-                                            <div
-                                                className="w-5 h-5 rounded-full shrink-0 ring-2 ring-background shadow-sm"
-                                                style={{
-                                                    background: `linear-gradient(135deg, red 0%, blue 100%)`,
-                                                }}
-                                            />
-                                            <Badge variant="secondary" className="font-medium">
-                                                {character.voice.name ?? "null"}
-                                            </Badge>
-                                        </div>
-                                    ) : (
-                                        <Badge
-                                            variant="outline"
-                                            className="text-orange-600 border-orange-200 bg-orange-50 dark:bg-orange-950/30 dark:border-orange-800 gap-1.5 animate-pulse"
-                                        >
-                                            <AlertCircle className="h-3 w-3" />
-                                            Not assigned
-                                        </Badge>
-                                    )}
-                                </TableCell>
-                                <TableCell className="text-center">
-                                    <div className="flex items-center justify-center gap-1.5">
-                                        <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
-                                        <span className="font-medium">{numberDialogues}</span>
-                                    </div>
-                                </TableCell>
+                                <CellName name={character.name} {...{ isSelected }} />
+                                <CellGender gender={character.gender} />
+                                <CellAgeGroup ageGroup={character.ageGroup} />
+                                <CellVoiceDescription voiceDescription={character.voiceDescription} />
+                                <CellVoice voice={character.voice} />
+                                <CellNumberDialogues {...{ numberDialogues }} />
                             </TableRow>
                         );
                     })}
                 </TableBody>
             </Table>
         </div>
+    );
+}
+
+function CellName({ isSelected, name }: { isSelected: boolean; name: string }) {
+    return (
+        <TableCell>
+            <div className="flex items-center gap-3">
+                <div
+                    className={cn(
+                        "w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200",
+                        isSelected
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted group-hover:bg-muted-foreground/10",
+                    )}
+                >
+                    <User className="h-4 w-4" />
+                </div>
+                <span className="font-medium">{name}</span>
+            </div>
+        </TableCell>
+    );
+}
+
+function CellGender({ gender }: { gender: string }) {
+    return (
+        <TableCell className="text-center">
+            <span className="text-muted-foreground">{gender}</span>
+        </TableCell>
+    );
+}
+
+function CellAgeGroup({ ageGroup }: { ageGroup: [number, number] }) {
+    return (
+        <TableCell className="text-center">
+            <span className="text-muted-foreground">
+                {ageGroup[0]} - {ageGroup[1]}
+            </span>
+        </TableCell>
+    );
+}
+
+function CellVoiceDescription({ voiceDescription }: { voiceDescription: string }) {
+    return (
+        <TableCell className="text-muted-foreground max-w-75">
+            <span className="truncate block">{voiceDescription}</span>
+        </TableCell>
+    );
+}
+
+function CellVoice({ voice }: { voice: AudioBook["characters"][number]["voice"] }) {
+    return (
+        <TableCell>
+            {voice != null ? (
+                <div className="flex items-center gap-2 text-muted-foreground">
+                    {/*<div
+                        className="w-5 h-5 rounded-full shrink-0 ring-2 ring-background shadow-sm"
+                        style={{
+                            background: `linear-gradient(135deg, red 0%, blue 100%)`,
+                        }}
+                    />*/}
+                    {/*<Badge variant="secondary" className="font-medium">
+                    </Badge> */}
+                    {voice.name ?? "null"}
+                </div>
+            ) : (
+                <Badge
+                    variant="outline"
+                    className="text-orange-600 border-orange-200 bg-orange-50 dark:bg-orange-950/30 dark:border-orange-800 gap-1.5 animate-pulse"
+                >
+                    <AlertCircle className="h-3 w-3" />
+                    Not assigned
+                </Badge>
+            )}
+        </TableCell>
+    );
+}
+
+function CellNumberDialogues({ numberDialogues }: { numberDialogues: number }) {
+    return (
+        <TableCell className="text-center">
+            <div className="flex items-center justify-center gap-1.5">
+                <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
+                <span className="font-medium">{numberDialogues}</span>
+            </div>
+        </TableCell>
     );
 }

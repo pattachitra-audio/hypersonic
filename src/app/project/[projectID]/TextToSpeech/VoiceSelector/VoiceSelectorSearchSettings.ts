@@ -10,7 +10,7 @@ export const VOICE_SELECTOR_SETTINGS_ENUMS = {
 
 export const VoiceSelectorSearchSettingsSchema = z.object({
     pageSize: z.number().min(1).max(100).default(10),
-    querySearch: z.string(),
+    searchQuery: z.string().default(""),
     sort: z.enum(VOICE_SELECTOR_SETTINGS_ENUMS.SORT).nullable().default(null),
     sortDirection: z.enum(VOICE_SELECTOR_SETTINGS_ENUMS.SORT_DIRECTION).nullable().default(null),
     voiceType: z.enum(VOICE_SELECTOR_SETTINGS_ENUMS.VOICE_TYPE).nullable().default(null),
@@ -21,5 +21,7 @@ export const VoiceSelectorSearchSettingsSchema = z.object({
     collectionID: z.string().nullable().default(null),
     voiceIDs: z.array(z.string()).nullable().default(null),
 });
+
+export const VoiceSelectorSearchSettingsDefaultValue = VoiceSelectorSearchSettingsSchema.parse({});
 
 export type VoiceSelectorSearchSettings = z.infer<typeof VoiceSelectorSearchSettingsSchema>;
