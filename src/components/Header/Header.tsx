@@ -11,7 +11,9 @@ import {
     DropdownMenuSeparator,
     DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
-import { useSidebar } from "@/components/ui/sidebar";
+// import { useSidebar } from "@/components/ui/sidebar";
+import { useSidebarStore } from "@/hooks/useSidebarStore";
+import { useHeaderStore } from "@/hooks/useHeaderStore";
 
 const themes = [
     { id: "light", label: "Light", color: "#ffffff" },
@@ -21,9 +23,12 @@ const themes = [
     { id: "sunset", label: "Sunset", color: "#f97316" },
 ];
 
-export function Header() {
+export default function Header() {
     const { setTheme, theme } = useTheme();
-    const { toggleSidebar } = useSidebar();
+    // const { toggleSidebar } = useSidebar();
+    const toggleSidebarLeft = useSidebarStore((state) => state.toggleSidebarLeft);
+    const headerText = useHeaderStore((state) => state.text);
+    // const headerText = "This is a test text...";
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-between border-b border-border bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -31,7 +36,7 @@ export function Header() {
                 <Button
                     variant="ghost"
                     size="icon"
-                    onClick={toggleSidebar}
+                    onClick={toggleSidebarLeft}
                     className="transition-transform hover:scale-105 active:scale-95"
                 >
                     <Menu className="h-5 w-5" />
@@ -44,6 +49,8 @@ export function Header() {
                     <span className="text-xl font-bold tracking-tight">HYPERSONIC</span>
                 </div>
             </div>
+
+            {headerText.length !== 0 ? <h2>{headerText}</h2> : <></>}
 
             <div className="flex items-center gap-2">
                 <Button

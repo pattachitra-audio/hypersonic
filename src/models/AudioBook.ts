@@ -18,7 +18,13 @@ export const AudioBookModelPromise = (async function () {
     return NoThrow.ok({
         async findOneByID(id: ObjectId) {
             try {
-                return NoThrow.ok(await collection.findOne<AudioBook>({ _id: id }));
+                const result = await collection.findOne<AudioBook>({ _id: id });
+
+                if (result === null) {
+                    return NoThrow.err(new Error("Data not found"));
+                }
+
+                return NoThrow.ok(result);
             } catch (err) {
                 if (err instanceof MongoError) {
                     return NoThrow.err(err);

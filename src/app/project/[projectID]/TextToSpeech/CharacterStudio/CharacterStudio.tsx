@@ -81,7 +81,7 @@ export default function CharacterStudio() {
 
     // console.log("selectedCharacter:", selectedCharacter);
     return (
-        <div className="flex h-full bg-muted/30">
+        <div className="flex h-full w-full bg-muted/30">
             <div className={cn("flex-1 overflow-auto p-8 transition-all duration-300 ease-out flex flex-col")}>
                 <header className="mb-8">
                     <div className="flex items-center gap-3 mb-2">

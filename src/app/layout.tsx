@@ -40,13 +40,14 @@ import type { Metadata } from "next";
 // import { Geist, Geist_Mono } from "next/font/google";
 // import { Analytics } from "@vercel/analytics/next"
 // <Analytics />
-import { SidebarProvider } from "@/components/ui/sidebar";
+// import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
-import { Header } from "@/components/header";
-import { AppSidebar } from "@/components/app-sidebar";
+import Header from "@/components/Header";
+// import { AppSidebar } from "@/components/app-sidebar";
 import { TypeScriptRPCProvider } from "./tRPCProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 // const _geist = Geist({ subsets: ["latin"] });
 // const _geistMono = Geist_Mono({ subsets: ["latin"] });
@@ -71,14 +72,14 @@ export default function RootLayout({
                     enableSystem
                     themes={["light", "dark", "ocean", "forest", "sunset"]}
                 >
-                    <SidebarProvider>
-                        <Header />
-                        <AppSidebar />
-                        <TypeScriptRPCProvider>
-                            <main className="w-full mt-14 bg-background">{children}</main>
-                            <Toaster />
-                        </TypeScriptRPCProvider>
-                    </SidebarProvider>
+                    {/*<SidebarProvider> */}
+                    <Header />
+                    {/*<AppSidebar /> */}
+                    <TypeScriptRPCProvider>
+                        <main className="pt-14 flex h-screen w-full">{children}</main>
+                    </TypeScriptRPCProvider>
+                    <Toaster />
+                    {/*</SidebarProvider> */}
                 </ThemeProvider>
             </body>
         </html>
