@@ -1,7 +1,6 @@
 import { INVALID_INDEX } from "@/constants";
-import { useHeaderStore } from "@/hooks/useHeaderStore";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CharacterTable from "../../TextToSpeech/CharacterTable";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
@@ -9,29 +8,18 @@ import CharacterSidebar from "../../TextToSpeech/CharacterSidebar";
 import { AudioBookSuccessStateType } from "@/hooks/useAudioBookForTextToSpeech";
 import { Character } from "@/schemas/Character";
 import { Progress } from "@/components/ui/progress";
+import { useRouter } from "next/navigation";
 
-export default function P0VoiceCasting({
-    nextPhase,
+export default function VoiceCasting({
+    // nextPhase,
     audioBookSuccessState,
 }: {
-    nextPhase: () => void;
+    // nextPhase: () => void;
     audioBookSuccessState: AudioBookSuccessStateType;
 }) {
-    const setText = useHeaderStore((state) => state.setText);
-    const resetText = useHeaderStore((state) => state.resetText);
-
-    const [selectedCharacterIndex, setSelectedCharacterIndex] = useState<number>(-1);
-
-    useEffect(() => {
-        setText("PHASE 0: VOICE CASTING");
-
-        return () => {
-            resetText();
-        };
-    });
-
     const { audioBook } = audioBookSuccessState;
     const { name, characters, dialogues } = audioBook;
+    const [selectedCharacterIndex, setSelectedCharacterIndex] = useState<number>(-1);
 
     const handleSelectCharacter = (index: number) => {
         if (index < 0 || index > characters.length) {
@@ -90,7 +78,7 @@ export default function P0VoiceCasting({
                 }
 
                 <ProceedToDialogueSynthesis
-                    {...{ numberCharactersAssignedVoices, nextPhase }}
+                    {...{ numberCharactersAssignedVoices }}
                     totalNumberCharacters={characters.length}
                 />
             </div>
@@ -114,12 +102,14 @@ export default function P0VoiceCasting({
 function ProceedToDialogueSynthesis({
     numberCharactersAssignedVoices,
     totalNumberCharacters,
-    nextPhase,
+    // nextPhase,
 }: {
     numberCharactersAssignedVoices: number;
     totalNumberCharacters: number;
-    nextPhase: () => void;
+    // nextPhase: () => void;
 }) {
+    const router = useRouter();
+
     const allCharactersHaveVoices = numberCharactersAssignedVoices === totalNumberCharacters;
     const progress = (numberCharactersAssignedVoices / totalNumberCharacters) * 100;
 
@@ -139,7 +129,8 @@ function ProceedToDialogueSynthesis({
                 <Button
                     size="lg"
                     disabled={!allCharactersHaveVoices}
-                    onClick={nextPhase}
+                    // onClick={nextPhase}
+                    onClick={() => router.push("./p1-dialogue-synthesis")}
                     className={cn(
                         "gap-2 transition-all duration-300 shadow-md",
                         allCharactersHaveVoices && "bg-green-600 hover:bg-green-700",

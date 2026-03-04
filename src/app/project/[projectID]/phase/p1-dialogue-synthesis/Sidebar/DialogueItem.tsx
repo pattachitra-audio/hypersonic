@@ -10,20 +10,20 @@ export default function DialogueItem({ audioBook, index }: { audioBook: AudioBoo
     const status = "";
 
     return (
-        <div className="group flex items-start gap-2.5 py-2 px-3 rounded-md hover:bg-white/3 transition-colors cursor-pointer">
+        <div className="group flex items-start gap-2.5 py-2 px-3 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
             <div className="mt-0.5 shrink-0">
-                <MessageSquare size={13} className="text-zinc-600" />
+                <MessageSquare size={13} className="text-muted-foreground" />
             </div>
             <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-0.5">
-                    <span className="text-[11px] font-semibold tracking-wide text-zinc-300 uppercase">
+                    <span className="text-[11px] font-semibold tracking-wide text-sidebar-foreground uppercase">
                         {character.name}
                     </span>
                     <StatusDot />
                 </div>
-                <p className="text-[12.5px] text-zinc-500 leading-relaxed truncate italic">{dialogue.text}</p>
+                <p className="text-[12.5px] text-muted-foreground leading-relaxed truncate italic">{dialogue.text}</p>
                 <div className="flex items-center gap-2 mt-1">
-                    {/*<span className="flex items-center gap-1 text-[10px] text-zinc-600">
+                    {/*<span className="flex items-center gap-1 text-[10px] text-muted-foreground">
                         <Mic size={9} />
                         {character.name}
                     </span>*/}

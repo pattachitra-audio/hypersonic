@@ -17,26 +17,26 @@ export function SceneItem({ audioBook, index }: { audioBook: AudioBook; index: n
     // const total = scene.dialogues.length;
 
     return (
-        <li className="ml-2 border-l border-zinc-800/80">
+        <li className="ml-2 border-l border-sidebar-border">
             <button
                 onClick={() => setOpen(!open)}
-                className="w-full flex items-center gap-2.5 py-2 px-3 rounded-md hover:bg-white/3 transition-colors text-left group"
+                className="w-full flex items-center gap-2.5 py-2 px-3 rounded-md hover:bg-sidebar-accent transition-colors text-left group"
             >
                 <span
-                    className="text-zinc-600 transition-transform"
+                    className="text-muted-foreground transition-transform"
                     style={{ transform: open ? "rotate(0)" : "rotate(-90deg)" }}
                 >
                     <ChevronDown size={13} />
                 </span>
-                <Film size={13} className="text-violet-400/70 shrink-0" />
+                <Film size={13} className="text-sidebar-primary shrink-0" />
                 <span className="flex-1 min-w-0">
-                    <span className="block text-[13px] font-medium text-zinc-300 truncate">{scene.name}</span>
+                    <span className="block text-[13px] font-medium text-sidebar-foreground truncate">{scene.name}</span>
                     <span className="flex items-center gap-2.5 mt-0.5">
-                        {/*<span className="flex items-center gap-1 text-[10px] text-zinc-600">
+                        {/*<span className="flex items-center gap-1 text-[10px] text-muted-foreground">
                             <Clock size={9} />
                             {scene.duration}
                         </span> */}
-                        <span className="text-[10px] text-zinc-600">
+                        <span className="text-[10px] text-muted-foreground">
                             {synthCount}/{numDialogues} lines
                         </span>
                         <StatusDot />

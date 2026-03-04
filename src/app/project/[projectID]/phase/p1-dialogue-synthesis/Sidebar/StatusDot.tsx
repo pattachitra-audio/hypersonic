@@ -8,7 +8,7 @@ export default function StatusDot({ status }: { status?: StatusBadgeType }) {
         COMPLETE: "bg-emerald-400",
         SYNTHESIZED: "bg-emerald-400",
         IN_PROGRESS: "bg-amber-400 animate-pulse",
-        PENDING: "bg-zinc-500",
+        PENDING: "bg-muted-foreground",
     };
 
     return <span className={`inline-block w-1.5 h-1.5 rounded-full ${colors[status] || colors.PENDING}`} />;

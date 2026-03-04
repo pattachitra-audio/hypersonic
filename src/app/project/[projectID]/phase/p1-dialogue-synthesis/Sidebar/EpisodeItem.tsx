@@ -15,25 +15,25 @@ export default function EpisodeItem({ audioBook, index }: { audioBook: AudioBook
         <li className="mb-1">
             <button
                 onClick={() => setOpen(!open)}
-                className="w-full flex items-center gap-2.5 py-2.5 px-3 rounded-lg hover:bg-white/4 transition-colors text-left"
+                className="w-full flex items-center gap-2.5 py-2.5 px-3 rounded-lg hover:bg-sidebar-accent transition-colors text-left"
             >
                 <span
-                    className="text-zinc-500 transition-transform"
+                    className="text-muted-foreground transition-transform"
                     style={{ transform: open ? "rotate(0)" : "rotate(-90deg)" }}
                 >
                     <ChevronDown size={14} />
                 </span>
-                <span className="flex items-center justify-center w-6 h-6 rounded-md bg-violet-500/10 text-violet-400 text-[11px] font-bold shrink-0">
+                <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sidebar-primary/20 text-sidebar-primary text-[11px] font-bold shrink-0">
                     {index + 1}
                 </span>
                 <span className="flex-1 min-w-0">
-                    <span className="block text-[13.5px] font-semibold text-zinc-200 truncate">{episode.name}</span>
+                    <span className="block text-[13.5px] font-semibold text-sidebar-foreground truncate">{episode.name}</span>
                     <span className="flex items-center gap-2.5 mt-0.5">
-                        <span className="flex items-center gap-1 text-[10px] text-zinc-600">
+                        <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
                             {/*<Clock size={9} /> */}
                             {/*episode.duration*/}
                         </span>
-                        <span className="text-[10px] text-zinc-600">
+                        <span className="text-[10px] text-muted-foreground">
                             {`$scenesDone`}/{`$episode.scenes.length`} scenes
                         </span>
                         <StatusDot />

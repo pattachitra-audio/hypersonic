@@ -11,43 +11,33 @@ export default function Sidebar({ audioBook }: { audioBook: AudioBook }) {
     // const uniqueVoices = [...new Set(allDialogues.map((d) => d.voice))].length;
 
     return (
-        <div
-            className="w-80 h-screen flex flex-col overflow-hidden"
-            style={{
-                background: "linear-gradient(180deg, #0f0f17 0%, #0a0a12 100%)",
-                fontFamily: "'DM Sans', 'Segoe UI', system-ui, sans-serif",
-                borderRight: "1px solid rgba(255,255,255,0.04)",
-            }}
-        >
+        <div className="w-80 h-screen flex flex-col overflow-hidden bg-sidebar border-r border-sidebar-border">
             {/* Header */}
             <div className="px-4 pt-5 pb-4">
                 <div className="flex items-center gap-2.5 mb-4">
-                    <div
-                        className="w-9 h-9 rounded-lg flex items-center justify-center"
-                        style={{ background: "linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%)" }}
-                    >
-                        <Volume2 size={16} className="text-white" />
+                    <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-sidebar-primary">
+                        <Volume2 size={16} className="text-sidebar-primary-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-[15px] font-bold text-zinc-100 leading-tight">{audioBook.name}</h1>
-                        {/*<p className="text-[11px] text-zinc-500">{book.author}</p> */}
+                        <h1 className="text-[15px] font-bold text-sidebar-foreground leading-tight">{audioBook.name}</h1>
+                        {/*<p className="text-[11px] text-muted-foreground">{book.author}</p> */}
                     </div>
                 </div>
 
                 {/* Stats strip */}
-                <div className="flex items-center gap-3 mb-4 text-[10.5px] text-zinc-500">
+                <div className="flex items-center gap-3 mb-4 text-[10.5px] text-muted-foreground">
                     <span className="flex items-center gap-1">
-                        <BookOpen size={10} className="text-zinc-600" />
+                        <BookOpen size={10} />
                         {audioBook.episodes.length} episodes
                     </span>
-                    <span className="text-zinc-800">·</span>
+                    <span className="text-sidebar-border">·</span>
                     <span className="flex items-center gap-1">
-                        <Film size={10} className="text-zinc-600" />
+                        <Film size={10} />
                         {audioBook.scenes.length} scenes
                     </span>
-                    <span className="text-zinc-800">·</span>
+                    <span className="text-sidebar-border">·</span>
                     <span className="flex items-center gap-1">
-                        <User size={10} className="text-zinc-600" />
+                        <User size={10} />
                         {audioBook.characters.length} characters
                     </span>
                 </div>
@@ -56,13 +46,10 @@ export default function Sidebar({ audioBook }: { audioBook: AudioBook }) {
             </div>
 
             {/* Divider */}
-            <div className="mx-4 h-px bg-zinc-800/60" />
+            <div className="mx-4 h-px bg-sidebar-border" />
 
             {/* Tree */}
-            <ul
-                className="flex-1 overflow-y-auto px-2 py-3 space-y-0.5"
-                style={{ scrollbarWidth: "thin", scrollbarColor: "#27272a transparent" }}
-            >
+            <ul className="flex-1 overflow-y-auto px-2 py-3 space-y-0.5 pretty-scrollbar">
                 {audioBook.episodes.map((_, index) => (
                     <EpisodeItem key={index} {...{ index, audioBook }} />
                 ))}
