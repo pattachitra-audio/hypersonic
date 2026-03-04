@@ -27,7 +27,7 @@ export default function DialogueItem({ audioBook, index }: { audioBook: AudioBoo
                         <Mic size={9} />
                         {character.name}
                     </span>*/}
-                    {status === "SYNTHESIZED" && (
+                    {false && (
                         <button className="opacity-0 group-hover:opacity-100 flex items-center gap-1 text-[10px] text-emerald-500 hover:text-emerald-400 transition-all">
                             <Play size={9} />
                             Preview
