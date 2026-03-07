@@ -9,17 +9,6 @@ import OpenProjectModal from "@/app/OpenProjectModal";
 import { tRPC } from "@/utils/tRPC";
 import { Separator } from "@/components/ui/separator";
 
-/*
-const recentProjects = [
-    { id: "1", name: "The Great Gatsby", lastOpened: "2 days ago" },
-    { id: "2", name: "Pride and Prejudice", lastOpened: "1 week ago" },
-    { id: "3", name: "Moby Dick", lastOpened: "2 weeks ago" },
-    { id: "4", name: "Jane Eyre", lastOpened: "3 weeks ago" },
-    { id: "5", name: "Wuthering Heights", lastOpened: "1 month ago" },
-    { id: "6", name: "The Odyssey", lastOpened: "2 months ago" },
-];
-*/
-
 export default function Dashboard() {
     const [newProjectModalWindowOpen, setNewProjetModalWindowOpen] = useState(false);
     const [openProjectModalWindowOpen, setOpenProjectModalWindowOpen] = useState(false);
