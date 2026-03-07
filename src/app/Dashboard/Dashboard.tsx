@@ -60,7 +60,7 @@ export default function Dashboard() {
 
             {/* Modals */}
             <NewProjectModal open={newProjectModalWindowOpen} updateOpen={setNewProjetModalWindowOpen} />
-            <OpenProjectModal open={openProjectOpen} onOpenChange={setOpenProjectOpen} />
+            <OpenProjectModal open={openProjectModalWindowOpen} updateOpen={setOpenProjectModalWindowOpen} />
         </main>
     );
 }

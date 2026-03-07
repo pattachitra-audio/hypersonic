@@ -22,12 +22,7 @@ const allProjects: Project[] = [
     { id: "8", name: "1984", lastOpened: "4 months ago" },
 ];
 
-interface OpenProjectModalProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-}
-
-export default function OpenProjectModal({ open, onOpenChange }: OpenProjectModalProps) {
+export default function OpenProjectModal({ open, updateOpen }: { open: boolean; updateOpen: (open: boolean) => void }) {
     const [searchQuery, setSearchQuery] = useState("");
 
     const filteredProjects = useMemo(() => {
@@ -38,11 +33,11 @@ export default function OpenProjectModal({ open, onOpenChange }: OpenProjectModa
     const handleSelectProject = (project: Project) => {
         console.log("Opening project:", project);
         setSearchQuery("");
-        onOpenChange(false);
+        updateOpen(false);
     };
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
+        <Dialog open={open} onOpenChange={updateOpen}>
             <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
                     <DialogTitle>Open Project</DialogTitle>

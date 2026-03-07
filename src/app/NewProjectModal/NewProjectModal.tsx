@@ -273,9 +273,9 @@ function CreateProjectButton({
     );
 }
 
-function CancelButton({ onOpenChange, creating }: { onOpenChange: OnOpenChangeFnType; creating: boolean }) {
+function CancelButton({ updateOpen, creating }: { updateOpen: (open: boolean) => void; creating: boolean }) {
     return (
-        <Button variant="outline" onClick={() => onOpenChange(false)} disabled={creating}>
+        <Button variant="outline" onClick={() => updateOpen(false)} disabled={creating}>
             Cancel
         </Button>
     );
@@ -304,9 +304,7 @@ type FileValidationStatusType =
 
 // type SetFileValidationStatusFnType = Dispatch<SetStateAction<FileValidationStatusType>>;
 
-type OnOpenChangeFnType = (open: boolean) => void;
-
-export default function NewProjectModal({ open, onOpenChange }: { open: boolean; onOpenChange: OnOpenChangeFnType }) {
+export default function NewProjectModal({ open, updateOpen }: { open: boolean; updateOpen: (open: boolean) => void }) {
     const [name, setName] = useState("");
     const [creating, setCreating] = useState(false);
     const [file, setFile] = useState<File | null>(null);
@@ -321,7 +319,7 @@ export default function NewProjectModal({ open, onOpenChange }: { open: boolean;
         setValidation({ status: "IDLE" });
         // setIsCreating(false);
         setCreating(false);
-        onOpenChange(false);
+        updateOpen(false);
     }
 
     const createAudioBook = tRPC.project.create.useMutation({
@@ -357,7 +355,7 @@ export default function NewProjectModal({ open, onOpenChange }: { open: boolean;
     const createDisabled = !name.trim() || !file || validation.status !== "VALID";
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
+        <Dialog open={open} onOpenChange={updateOpen}>
             <DialogContent className="sm:max-w-md absolute backdrop-blur-2xl">
                 <DialogHeader>
                     <CreatingProject isCreating={creating} />
@@ -373,7 +371,7 @@ export default function NewProjectModal({ open, onOpenChange }: { open: boolean;
                     />
                 </div>
                 <div className="flex justify-end gap-3">
-                    <CancelButton onOpenChange={onOpenChange} {...{ creating }} />
+                    <CancelButton {...{ creating, updateOpen }} />
                     <CreateProjectButton disabled={createDisabled} {...{ creating, onCreate }} />
                 </div>
             </DialogContent>
