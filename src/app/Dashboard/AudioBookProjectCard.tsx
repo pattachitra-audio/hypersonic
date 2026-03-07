@@ -10,21 +10,38 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { AudioBookSummaryType } from "@/server/router/projects";
 
-interface ProjectCardProps {
-    name: string;
-    lastOpened: string;
-    onOpen: () => void;
+function formatDate(date: number) {
+    const formatter = Intl.DateTimeFormat("en-us", {
+        dateStyle: "short",
+        timeStyle: "short",
+    });
+
+    return formatter.format(date);
 }
 
-export function ProjectCard({ name, lastOpened, onOpen }: ProjectCardProps) {
+export default function AudioBookProjectCard({
+    audioBookSummary,
+    // onOpen,
+}: {
+    audioBookSummary: AudioBookSummaryType;
+    // onOpen: () => void;
+}) {
+    const router = useRouter();
+
+    function openAudioBookProject() {
+        router.push(`/project/${audioBookSummary.id}`);
+    }
+
     return (
         <Card className="group relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 cursor-pointer border-border/50 hover:border-primary/30">
-            <div className="absolute inset-0 z-10" onClick={onOpen} />
+            <div className="absolute inset-0 z-10" onClick={() => {}} />
 
             <CardContent className="p-5">
                 <div className="flex items-start justify-between mb-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 transition-all duration-300 group-hover:scale-110 group-hover:from-primary/30 group-hover:to-primary/10">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-primary/20 to-primary/5 transition-all duration-300 group-hover:scale-110 group-hover:from-primary/30 group-hover:to-primary/10">
                         <Folder className="h-6 w-6 text-primary" />
                     </div>
 
@@ -40,9 +57,9 @@ export function ProjectCard({ name, lastOpened, onOpen }: ProjectCardProps) {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48">
-                            <DropdownMenuItem onClick={onOpen}>
+                            <DropdownMenuItem onClick={openAudioBookProject}>
                                 <ExternalLink className="mr-2 h-4 w-4" />
-                                Open Project
+                                Open project
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                                 <Copy className="mr-2 h-4 w-4" />
@@ -59,11 +76,11 @@ export function ProjectCard({ name, lastOpened, onOpen }: ProjectCardProps) {
 
                 <div className="space-y-1">
                     <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-1">
-                        {name}
+                        {audioBookSummary.name}
                     </h3>
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                         <Clock className="h-3 w-3" />
-                        <span>{lastOpened}</span>
+                        <span>{formatDate(audioBookSummary.lastAccessedAt)}</span>
                     </div>
                 </div>
 
@@ -73,11 +90,11 @@ export function ProjectCard({ name, lastOpened, onOpen }: ProjectCardProps) {
                     className="w-full mt-4 relative z-20 bg-primary/10 hover:bg-primary hover:text-primary-foreground transition-all duration-200 font-medium"
                     onClick={(e) => {
                         e.stopPropagation();
-                        onOpen();
+                        openAudioBookProject();
                     }}
                 >
                     <ExternalLink className="mr-2 h-4 w-4" />
-                    Open Project
+                    Open project
                 </Button>
             </CardContent>
         </Card>

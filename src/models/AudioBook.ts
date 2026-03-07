@@ -6,10 +6,12 @@ import { MongoError, ObjectId } from "mongodb";
 export type AudioBookDocumentType = AudioBook & {
     createdAt: Date;
     updatedAt: Date;
+    lastAccessedAt: Date;
     status: "ACTIVE" | "ARCHIVED" | "DELETED";
 };
 
-export type AudioBookSummaryType = {
+export type AudioBookSummaryDocumentType = {
+    id: ObjectId;
     name: string;
     plot: string;
     genre: string[];
@@ -21,6 +23,7 @@ export type AudioBookSummaryType = {
 
     createdAt: Date;
     updatedAt: Date;
+    lastAccessedAt: Date;
     status: "ACTIVE" | "ARCHIVED" | "DELETED";
 };
 
@@ -40,9 +43,10 @@ export const AudioBookModelPromise = (async function () {
         async findAllSummaries() {
             try {
                 const result = await collection
-                    .aggregate<AudioBookSummaryType>([
+                    .aggregate<AudioBookSummaryDocumentType>([
                         {
                             $project: {
+                                id: "$_id",
                                 _id: 0,
                                 name: 1,
                                 plot: 1,
@@ -53,11 +57,13 @@ export const AudioBookModelPromise = (async function () {
                                 numDialouges: { $size: "$dialogues" },
                                 createdAt: 1,
                                 updatedAt: 1,
+                                lastAccessedAt: 1,
                                 status: 1,
                             },
                         },
                     ])
                     .toArray();
+                console.log("result:", result);
                 return NoThrow.ok(result);
             } catch (error) {
                 if (error instanceof MongoError) {

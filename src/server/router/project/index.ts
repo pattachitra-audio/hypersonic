@@ -22,6 +22,7 @@ export const projectRouter = tRPCRouter({
             ...input,
             createdAt: new Date(),
             updatedAt: new Date(),
+            lastAccessedAt: new Date(),
             status: "ACTIVE",
         });
 
