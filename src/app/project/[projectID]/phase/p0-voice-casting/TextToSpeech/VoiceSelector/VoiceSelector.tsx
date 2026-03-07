@@ -37,7 +37,7 @@ export default function VoiceSelector({ onSelectVoice }: { onSelectVoice: (voice
     const searchQueryDebounced = useDebounce(searchSettings.searchQuery, 600);
     // console.log("searchQueryDebouned", searchQueryDebounced);
 
-    const searchQueryValue = searchQueryDebounced.toLowerCase().split(" ").join("+");
+    const searchQueryValue = searchQueryDebounced.trim().replaceAll(/\s+/g, "+");
 
     const queryResult = useQuery({
         queryKey: ["elevenLabs/listVoicesQuery", searchQueryValue],
