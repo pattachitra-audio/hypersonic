@@ -9,8 +9,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { RotateCcw, Edit2, Check, X, MoreVertical, ArrowUp, ArrowDown, Loader2, ChartCandlestick } from "lucide-react";
-// import MiniAudioPlayer from "@/components/MiniAudioPlayer";
+import { RotateCcw, Edit2, Check, X, MoreVertical, ArrowUp, ArrowDown, Loader2 } from "lucide-react";
 const MiniAudioPlayer = dynamic(() => import("@/components/MiniAudioPlayer"), { ssr: false });
 import type { AudioPlayerAdapterResourceStateType } from "@/components/MiniAudioPlayer/MiniAudioPlayer";
 import { AudioBook } from "@/schemas/AudioBook";
