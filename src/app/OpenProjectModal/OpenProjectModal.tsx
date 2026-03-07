@@ -27,7 +27,7 @@ interface OpenProjectModalProps {
     onOpenChange: (open: boolean) => void;
 }
 
-export function OpenProjectModal({ open, onOpenChange }: OpenProjectModalProps) {
+export default function OpenProjectModal({ open, onOpenChange }: OpenProjectModalProps) {
     const [searchQuery, setSearchQuery] = useState("");
 
     const filteredProjects = useMemo(() => {
@@ -58,7 +58,7 @@ export function OpenProjectModal({ open, onOpenChange }: OpenProjectModalProps) 
                             autoFocus
                         />
                     </div>
-                    <div className="max-h-[320px] space-y-1 overflow-y-auto pr-1">
+                    <div className="max-h-80 space-y-1 overflow-y-auto pr-1">
                         {filteredProjects.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-8 text-center">
                                 <Folder className="mb-2 h-10 w-10 text-muted-foreground/50" />

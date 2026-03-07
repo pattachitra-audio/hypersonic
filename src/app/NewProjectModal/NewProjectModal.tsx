@@ -64,37 +64,39 @@ async function validateFile(file: File) {
 function FileUpload({
     file,
     setFile,
-    setProjectName,
+    // setProjectName,
+    updateProjectName,
     validation,
-    setValidation,
+    updateValidationStatus,
 }: {
     file: File | null;
     setFile: Dispatch<SetStateAction<File | null>>;
-    setProjectName: Dispatch<SetStateAction<string>>;
+    updateProjectName: (projectName: string) => void;
     validation: FileValidationStatusType;
-    setValidation: SetFileValidationStatusFnType;
+    updateValidationStatus: (fileValidationStatus: FileValidationStatusType) => void;
 }) {
     const [dragActive, setDragActive] = useState(false);
 
-    // Validate file when it changes
     useEffect(() => {
-        if (file) {
-            (async function () {
-                setValidation({ type: "validating" });
-                const result = await validateFile(file);
-
-                if (result.isErr()) {
-                    console.error(result.error);
-                    setValidation({ type: "invalid" });
-                } else {
-                    setValidation({ type: "valid", audioBook: result.value });
-                    setProjectName(result.value.name);
-                }
-            })();
-        } else {
-            setValidation({ type: "idle" });
+        if (!file) {
+            updateValidationStatus({ status: "IDLE" });
+            return;
         }
-    }, [file, setValidation, setProjectName]);
+
+        (async function () {
+            updateValidationStatus({ status: "VALIDATING" });
+            const result = await validateFile(file);
+
+            if (result.isErr()) {
+                console.error(result.error);
+                updateValidationStatus({ status: "INVALID" });
+                return;
+            }
+
+            updateValidationStatus({ status: "VALID", audioBook: result.value });
+            updateProjectName(result.value.name);
+        })();
+    }, [file, updateValidationStatus, updateProjectName]);
 
     const handleDrag = useCallback((e: React.DragEvent) => {
         e.preventDefault();
@@ -130,10 +132,10 @@ function FileUpload({
     const handleRemoveFile = (e: React.MouseEvent) => {
         e.stopPropagation();
         setFile(null);
-        setValidation({ type: "idle" });
+        updateValidationStatus({ status: "IDLE" });
     };
 
-    const validationStatusType = validation.type;
+    const validationStatus = validation.status;
 
     return (
         <div className="space-y-2">
@@ -142,11 +144,11 @@ function FileUpload({
                 className={`relative flex min-h-40 flex-col items-center justify-center rounded-lg border-2 border-dashed transition-all duration-200 ${
                     dragActive
                         ? "border-primary bg-primary/5"
-                        : validationStatusType === "valid"
+                        : validationStatus === "VALID"
                           ? "border-green-500 bg-green-500/5"
-                          : validationStatusType === "invalid"
+                          : validationStatus === "INVALID"
                             ? "border-destructive bg-destructive/5"
-                            : validationStatusType === "validating"
+                            : validationStatus === "VALIDATING"
                               ? "border-primary/50 bg-primary/5"
                               : "border-border hover:border-primary/50 hover:bg-muted/50"
                 }`}
@@ -167,20 +169,20 @@ function FileUpload({
                         {/* Validation status icon with animation */}
                         <div
                             className={`flex h-12 w-12 items-center justify-center rounded-lg transition-all duration-300 ${
-                                validationStatusType === "validating"
+                                validationStatus === "VALIDATING"
                                     ? "bg-primary/10"
-                                    : validationStatusType === "valid"
+                                    : validationStatus === "VALID"
                                       ? "bg-green-500/10"
-                                      : validationStatusType === "invalid"
+                                      : validationStatus === "INVALID"
                                         ? "bg-destructive/10"
                                         : "bg-primary/10"
                             }`}
                         >
-                            {validationStatusType === "validating" ? (
+                            {validationStatus === "VALIDATING" ? (
                                 <Loader2 className="h-6 w-6 animate-spin text-primary" />
-                            ) : validationStatusType === "valid" ? (
+                            ) : validationStatus === "VALID" ? (
                                 <CheckCircle2 className="h-6 w-6 text-green-500 animate-in zoom-in-50 duration-300" />
-                            ) : validationStatusType === "invalid" ? (
+                            ) : validationStatus === "INVALID" ? (
                                 <XCircle className="h-6 w-6 text-destructive animate-in zoom-in-50 duration-300" />
                             ) : (
                                 <File className="h-6 w-6 text-primary" />
@@ -192,25 +194,25 @@ function FileUpload({
                         {/* Validation status text */}
                         <span
                             className={`text-xs font-medium transition-all duration-200 ${
-                                validationStatusType === "validating"
+                                validationStatus === "VALIDATING"
                                     ? "text-primary"
-                                    : validationStatusType === "valid"
+                                    : validationStatus === "VALID"
                                       ? "text-green-500"
-                                      : validationStatusType === "invalid"
+                                      : validationStatus === "INVALID"
                                         ? "text-destructive"
                                         : "text-muted-foreground"
                             }`}
                         >
-                            {validationStatusType === "validating" && "Validating file..."}
-                            {validationStatusType === "valid" && "File is valid ✓"}
-                            {validationStatusType === "invalid" && "File is invalid. Try another file."}
+                            {validationStatus === "VALIDATING" && "Validating file..."}
+                            {validationStatus === "VALID" && "File is valid ✓"}
+                            {validationStatus === "INVALID" && "File is invalid ✗"}
                         </span>
 
                         <Button
                             variant="ghost"
                             size="sm"
                             onClick={handleRemoveFile}
-                            disabled={validationStatusType === "validating"}
+                            disabled={validationStatus === "VALIDATING"}
                             className="text-muted-foreground border-red-400 hover:text-destructive"
                         >
                             <X className="mr-1 h-3 w-3" />
@@ -223,8 +225,8 @@ function FileUpload({
                             <Upload className="h-6 w-6 text-muted-foreground" />
                         </div>
                         <div className="text-center">
-                            <span className="text-sm font-medium">Drop files here</span>
-                            <p className="text-xs text-muted-foreground">or click to browse</p>
+                            <span className="text-sm font-medium">Drop files here...</span>
+                            <p className="text-xs text-muted-foreground">or Click to browse...</p>
                         </div>
                     </div>
                 )}
@@ -233,21 +235,15 @@ function FileUpload({
     );
 }
 
-function ProjectName({
-    projectName,
-    setProjectName,
-}: {
-    projectName: string;
-    setProjectName: Dispatch<SetStateAction<string>>;
-}) {
+function ProjectName({ name, updateName }: { name: string; updateName: (name: string) => void }) {
     return (
         <div className="space-y-2">
             <Label htmlFor="project-name">Project Name</Label>
             <Input
                 id="project-name"
                 placeholder="My awesome project"
-                value={projectName}
-                onChange={(e) => setProjectName(e.target.value)}
+                value={name}
+                onChange={(e) => updateName(e.target.value)}
                 className="transition-all focus:ring-2 focus:ring-primary/20"
             />
         </div>
@@ -255,31 +251,31 @@ function ProjectName({
 }
 
 function CreateProjectButton({
-    handleCreate,
-    isCreateDisabled,
-    isCreating,
+    onCreate,
+    disabled,
+    creating,
 }: {
-    handleCreate: () => void;
-    isCreateDisabled: boolean;
-    isCreating: boolean;
+    onCreate: () => void;
+    disabled: boolean;
+    creating: boolean;
 }) {
     return (
-        <Button onClick={handleCreate} disabled={isCreateDisabled || isCreating}>
-            {isCreating ? (
+        <Button onClick={onCreate} disabled={disabled || creating}>
+            {creating ? (
                 <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Creating...
                 </>
             ) : (
-                "Create Project"
+                "Create project"
             )}
         </Button>
     );
 }
 
-function CancelButton({ onOpenChange, isCreating }: { onOpenChange: OnOpenChangeFnType; isCreating: boolean }) {
+function CancelButton({ onOpenChange, creating }: { onOpenChange: OnOpenChangeFnType; creating: boolean }) {
     return (
-        <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isCreating}>
+        <Button variant="outline" onClick={() => onOpenChange(false)} disabled={creating}>
             Cancel
         </Button>
     );
@@ -301,35 +297,30 @@ function CreatingProject({ isCreating }: { isCreating: boolean }) {
 }
 
 type FileValidationStatusType =
-    | { type: "idle" }
-    | { type: "validating" }
-    | { type: "valid"; audioBook: AudioBook }
-    | { type: "invalid" };
+    | { status: "IDLE" }
+    | { status: "VALIDATING" }
+    | { status: "VALID"; audioBook: AudioBook }
+    | { status: "INVALID" };
 
-type SetFileValidationStatusFnType = Dispatch<SetStateAction<FileValidationStatusType>>;
+// type SetFileValidationStatusFnType = Dispatch<SetStateAction<FileValidationStatusType>>;
 
-type OnOpenChangeFnType = (isOpen: boolean) => void;
+type OnOpenChangeFnType = (open: boolean) => void;
 
-export default function CreateNewProjectModal({
-    isOpen,
-    onOpenChange,
-}: {
-    isOpen: boolean;
-    onOpenChange: OnOpenChangeFnType;
-}) {
-    const [projectName, setProjectName] = useState("");
-    const [isCreating, setIsCreating] = useState(false);
+export default function NewProjectModal({ open, onOpenChange }: { open: boolean; onOpenChange: OnOpenChangeFnType }) {
+    const [name, setName] = useState("");
+    const [creating, setCreating] = useState(false);
     const [file, setFile] = useState<File | null>(null);
-    const [validation, setValidation] = useState<FileValidationStatusType>({ type: "idle" });
+    const [validation, setValidation] = useState<FileValidationStatusType>({ status: "IDLE" });
 
     const router = useRouter();
     const { toast } = useToast();
 
     function resetState() {
         setFile(null);
-        setProjectName("");
-        setValidation({ type: "idle" });
-        setIsCreating(false);
+        setName("");
+        setValidation({ status: "IDLE" });
+        // setIsCreating(false);
+        setCreating(false);
         onOpenChange(false);
     }
 
@@ -354,8 +345,8 @@ export default function CreateNewProjectModal({
         },
     });
 
-    const handleCreate = async () => {
-        if (validation.type !== "valid") {
+    const onCreate = async () => {
+        if (validation.status !== "VALID") {
             return;
         }
 
@@ -363,39 +354,29 @@ export default function CreateNewProjectModal({
     };
 
     // Button is only enabled when project name exists AND file is valid
-    const isCreateDisabled = !projectName.trim() || !file || validation.type !== "valid";
+    const createDisabled = !name.trim() || !file || validation.status !== "VALID";
 
     return (
-        <Dialog open={isOpen} onOpenChange={onOpenChange}>
+        <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-md absolute backdrop-blur-2xl">
                 <DialogHeader>
-                    <CreatingProject isCreating={isCreating} />
+                    <CreatingProject isCreating={creating} />
                     <DialogTitle>Create New Project</DialogTitle>
                     <DialogDescription>Enter a name and upload a valid file to get started</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-6 py-4">
-                    <ProjectName {...{ projectName, setProjectName }} />
-                    <FileUpload {...{ validation, setValidation, setProjectName, file, setFile }} />
+                    <ProjectName {...{ name }} updateName={setName} />
+                    <FileUpload
+                        {...{ validation, file, setFile }}
+                        updateProjectName={setName}
+                        updateValidationStatus={setValidation}
+                    />
                 </div>
                 <div className="flex justify-end gap-3">
-                    <CancelButton onOpenChange={onOpenChange} isCreating={isCreating} />
-                    <CreateProjectButton
-                        handleCreate={handleCreate}
-                        isCreateDisabled={isCreateDisabled}
-                        isCreating={isCreating}
-                    />
+                    <CancelButton onOpenChange={onOpenChange} {...{ creating }} />
+                    <CreateProjectButton disabled={createDisabled} {...{ creating, onCreate }} />
                 </div>
             </DialogContent>
         </Dialog>
     );
 }
-
-/*
-Argument of type '{ characters: { name: string; gender: "male" | "female"; ageGroup: [number, number]; description: string; voiceDescription: string; voice?: { provider: "ELEVENLABS"; name: string | null; ... 4 more ...; verifiedLanguages: { ...; }[] | undefined; } | undefined; }[]; episodes: { ...; }[]; scenes: { ...; }[]; dialogues...' is not assignable to parameter of type '{ characters: { name: string; gender: "male" | "female"; ageGroup: [number, number]; description: string; voiceDescription: string; voice?: { provider: "ELEVENLABS"; voice_id: string; name: string | null; gender: "male" | "female"; category: "generated" | ... 4 more ... | "high_quality"; description: string | null; ...'.
-  Types of property 'characters' are incompatible.
-    Type '{ name: string; gender: "male" | "female"; ageGroup: [number, number]; description: string; voiceDescription: string; voice?: { provider: "ELEVENLABS"; name: string | null; gender: "male" | "female"; category: "generated" | ... 4 more ... | "high_quality"; description: string | null; voiceID: string; verifiedLanguag...' is not assignable to type '{ name: string; gender: "male" | "female"; ageGroup: [number, number]; description: string; voiceDescription: string; voice?: { provider: "ELEVENLABS"; voice_id: string; name: string | null; gender: "male" | "female"; category: "generated" | ... 4 more ... | "high_quality"; description: string | null; verified_langu...'.
-      Type '{ name: string; gender: "male" | "female"; ageGroup: [number, number]; description: string; voiceDescription: string; voice?: { provider: "ELEVENLABS"; name: string | null; gender: "male" | "female"; category: "generated" | ... 4 more ... | "high_quality"; description: string | null; voiceID: string; verifiedLanguag...' is not assignable to type '{ name: string; gender: "male" | "female"; ageGroup: [number, number]; description: string; voiceDescription: string; voice?: { provider: "ELEVENLABS"; voice_id: string; name: string | null; gender: "male" | "female"; category: "generated" | ... 4 more ... | "high_quality"; description: string | null; verified_langu...'.
-        Types of property 'voice' are incompatible.
-          Type '{ provider: "ELEVENLABS"; name: string | null; gender: "male" | "female"; category: "generated" | "cloned" | "premade" | "professional" | "famous" | "high_quality"; description: string | null; voiceID: string; verifiedLanguages: { ...; }[] | undefined; } | undefined' is not assignable to type '{ provider: "ELEVENLABS"; voice_id: string; name: string | null; gender: "male" | "female"; category: "generated" | "cloned" | "premade" | "professional" | "famous" | "high_quality"; description: string | null; verified_languages: { ...; }[] | null; } | undefined'.
-            Type '{ provider: "ELEVENLABS"; name: string | null; gender: "male" | "female"; category: "generated" | "cloned" | "premade" | "professional" | "famous" | "high_quality"; description: string | null; voiceID: string; verifiedLanguages: { ...; }[] | undefined; }' is missing the following properties from type '{ provider: "ELEVENLABS"; voice_id: string; name: string | null; gender: "male" | "female"; category: "generated" | "cloned" | "premade" | "professional" | "famous" | "high_quality"; description: string | null; verified_languages: { ...; }[] | null; }': voice_id, verified_languages
-*/

@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Plus, FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProjectCard } from "@/components/project-card";
-import CreateNewProjectModal from "@/app/CreateNewProjectModal";
-import { OpenProjectModal } from "@/components/open-project-modal";
+import NewProjectModal from "@/app/NewProjectModal";
+import OpenProjectModal from "@/app/OpenProjectModal";
 
 const recentProjects = [
     { id: "1", name: "The Great Gatsby", lastOpened: "2 days ago" },
@@ -16,9 +16,9 @@ const recentProjects = [
     { id: "6", name: "The Odyssey", lastOpened: "2 months ago" },
 ];
 
-export function Dashboard() {
-    const [createNewProjectModalWindowIsOpen, setCreateNewProjetModalWindowIsOpen] = useState(false);
-    const [openProjectOpen, setOpenProjectOpen] = useState(false);
+export default function Dashboard() {
+    const [newProjectModalWindowOpen, setNewProjetModalWindowOpen] = useState(false);
+    const [openProjectModalWindowOpen, setOpenProjectModalWindowOpen] = useState(false);
 
     return (
         <main className="flex-1 overflow-auto p-6 pt-20 md:p-8 md:pt-20">
@@ -26,7 +26,7 @@ export function Dashboard() {
                 {/* Action Buttons */}
                 <div className="mb-8 flex flex-wrap gap-3">
                     <Button
-                        onClick={() => setCreateNewProjetModalWindowIsOpen(true)}
+                        onClick={() => setNewProjetModalWindowOpen(true)}
                         className="gap-2 transition-all hover:scale-105 active:scale-95"
                     >
                         <Plus className="h-4 w-4" />
@@ -34,7 +34,7 @@ export function Dashboard() {
                     </Button>
                     <Button
                         variant="outline"
-                        onClick={() => setOpenProjectOpen(true)}
+                        onClick={() => setOpenProjectModalWindowOpen(true)}
                         className="gap-2 transition-all hover:scale-105 active:scale-95"
                     >
                         <FolderOpen className="h-4 w-4" />
@@ -59,10 +59,7 @@ export function Dashboard() {
             </div>
 
             {/* Modals */}
-            <CreateNewProjectModal
-                isOpen={createNewProjectModalWindowIsOpen}
-                onOpenChange={setCreateNewProjetModalWindowIsOpen}
-            />
+            <NewProjectModal open={newProjectModalWindowOpen} updateOpen={setNewProjetModalWindowOpen} />
             <OpenProjectModal open={openProjectOpen} onOpenChange={setOpenProjectOpen} />
         </main>
     );

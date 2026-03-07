@@ -5,7 +5,7 @@ import { getGlobalAudioContext } from "@/utils/audio/getGlobalAudioContext";
 import { PeaksAudioPlayerAdapter } from "@/utils/audio/PeaksAudioPlayerAdapter";
 import { Download, ExternalLink, Pause, Play } from "lucide-react";
 import Peaks, { PeaksInstance, PeaksOptions } from "peaks.js";
-import { useState, useRef, useEffect, useCallback, useId } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "../ui/button";
 import { pcmFloat32ToWAV } from "@/utils/audio/pcmFloat32ToWAV";
 
@@ -70,11 +70,11 @@ export default function MiniAudioPlayer({
 
     return (
         <div className="flex items-center gap-4 border-border border rounded-md px-4">
-            <Button variant="wrapper" size="wrapper" className="p-0" onClick={togglePlayPause}>
+            <Button variant="wrapper" size="wrapper" onClick={togglePlayPause}>
                 {playing ? <Pause className="size-4" /> : <Play className="size-4" />}
             </Button>
             <AudioWaveform audioPlayerAdapter={audioPlayerResourceState.data} />
-            <Button variant="wrapper" size="wrapper" className="p-0" onClick={download}>
+            <Button variant="wrapper" size="wrapper" onClick={download}>
                 <Download className="size-4" />
             </Button>
             <ExternalLink className="size-4" />
