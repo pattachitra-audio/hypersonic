@@ -1,10 +1,10 @@
 import { INVALID_INDEX } from "@/constants";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import CharacterTable from "../../TextToSpeech/CharacterTable";
+import CharacterTable from "./TextToSpeech/CharacterTable";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
-import CharacterSidebar from "../../TextToSpeech/CharacterSidebar";
+import CharacterSidebar from "./TextToSpeech/CharacterSidebar";
 import { AudioBookSuccessStateType } from "@/hooks/useAudioBookForTextToSpeech";
 import { Character } from "@/schemas/Character";
 import { Progress } from "@/components/ui/progress";
