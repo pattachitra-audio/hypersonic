@@ -11,8 +11,6 @@ import debug from "debug";
 
 const logger = debug("useAudioBookForTextToSpeech");
 debug.enable("useAudioBookForTextToSpeech");
-// console.log("here");
-// logger("gadha");
 
 export type AudioBookPendingStateType = {
     state: "pending";

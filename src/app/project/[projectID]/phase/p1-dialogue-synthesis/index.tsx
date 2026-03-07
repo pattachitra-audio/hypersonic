@@ -1,5 +1,5 @@
 import Sidebar from "./Sidebar";
-import MainContent from "./MainContent";
+import Main from "./Main";
 import { AudioBookSuccessStateType } from "@/hooks/useAudioBookForTextToSpeech";
 
 export default function DialogueSynthesis({
@@ -10,7 +10,7 @@ export default function DialogueSynthesis({
     return (
         <div className="flex h-full w-full overflow-hidden">
             <Sidebar audioBook={audioBookSuccessState.audioBook} />
-            <MainContent audioBook={audioBookSuccessState.audioBook} />
+            <Main audioBook={audioBookSuccessState.audioBook} />
         </div>
     );
 }
