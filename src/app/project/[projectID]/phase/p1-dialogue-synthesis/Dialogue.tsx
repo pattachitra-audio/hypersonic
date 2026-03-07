@@ -10,13 +10,14 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { RotateCcw, Edit2, Check, X, MoreVertical, ArrowUp, ArrowDown, Loader2 } from "lucide-react";
-const MiniAudioPlayer = dynamic(() => import("@/components/MiniAudioPlayer"), { ssr: false });
 import type { AudioPlayerAdapterResourceStateType } from "@/components/MiniAudioPlayer/MiniAudioPlayer";
 import { AudioBook } from "@/schemas/AudioBook";
 import { INVALID_INDEX } from "@/constants";
 import { PeaksAudioPlayerAdapter } from "@/utils/audio/PeaksAudioPlayerAdapter";
 import { produce } from "immer";
 import dynamic from "next/dynamic";
+
+const MiniAudioPlayer = dynamic(() => import("@/components/MiniAudioPlayer"), { ssr: false });
 
 type GenerationSettingsType = {
     numVariants: number;
