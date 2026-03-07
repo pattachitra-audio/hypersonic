@@ -9,6 +9,14 @@ const handler = (req: Request) => {
         req,
         router,
         createContext: () => ({}),
+        onError: ({ error, path, input }) => {
+            console.log("=== tRPC Error ===");
+            console.log("Path:", path);
+            console.log("Input:", input);
+            console.log("Error message:", error.message);
+            console.log("Error stack:", error.stack);
+            console.log("Error cause:", error.cause);
+        },
     });
 };
 
