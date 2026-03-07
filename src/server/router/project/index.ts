@@ -8,7 +8,6 @@ import z from "zod";
 export const projectRouter = tRPCRouter({
     create: tRPCProcedure.input(AudioBookSchema).mutation(async ({ input }) => {
         const AudioBookModelResult = await AudioBookModelPromise;
-        console.log(input);
 
         if (AudioBookModelResult.isErr()) {
             throw new TRPCError({
@@ -19,22 +18,25 @@ export const projectRouter = tRPCRouter({
         }
 
         const AudioBookModel = AudioBookModelResult.value;
+        const insertOneResult = await AudioBookModel.insertOne({
+            ...input,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            status: "ACTIVE",
+        });
 
-        const insertResult = await AudioBookModel.insertOne(input);
-
-        if (insertResult.isErr()) {
+        if (insertOneResult.isErr()) {
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
-                message: "Failed to create audiobook",
-                cause: insertResult.error,
+                message: "Failed to create 'audioBook'",
+                cause: insertOneResult.error,
             });
         }
 
-        return insertResult.value.toHexString();
+        return insertOneResult.value.toHexString();
     }),
     get: tRPCProcedure.input(z.hex().length(24)).query(async ({ input }) => {
         const AudioBookModelResult = await AudioBookModelPromise;
-        console.log(input);
 
         if (AudioBookModelResult.isErr()) {
             throw new TRPCError({
@@ -45,13 +47,12 @@ export const projectRouter = tRPCRouter({
         }
 
         const AudioBookModel = AudioBookModelResult.value;
-
         const findResult = await AudioBookModel.findOneByID(ObjectId.createFromHexString(input));
 
         if (findResult.isErr()) {
             throw new TRPCError({
                 code: "NOT_FOUND",
-                message: `No project with ID '${input}' found in db`,
+                message: `No project with ID: '${input}' found in database`,
             });
         }
 
