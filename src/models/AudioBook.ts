@@ -122,9 +122,9 @@ export const AudioBookModelPromise = (async function () {
             }
         },
 
-        async updateOneByID(id: ObjectId, document: AudioBookDocumentType) {
+        async replaceOneByID(id: ObjectId, document: AudioBookDocumentType) {
             try {
-                const result = await collection.updateOne({ _id: id }, document);
+                const result = await collection.replaceOne({ _id: id }, document);
 
                 /* if (!result.acknowledged) {
                     return NoThrow.err(new Error("Data not found"));

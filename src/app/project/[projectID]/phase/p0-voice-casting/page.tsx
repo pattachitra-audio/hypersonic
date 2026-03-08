@@ -19,7 +19,7 @@ export default function Page() {
     });
 
     const { projectID }: { projectID: string } = useParams<{ projectID: string }>();
-    const audioBookState = useAudioBookForTextToSpeech(projectID);
+    const { audioBookState, syncStatus } = useAudioBookForTextToSpeech(projectID);
 
     if (audioBookState.state === "pending") {
         return "Loading...";
@@ -29,5 +29,5 @@ export default function Page() {
         return "ERROR: AudioBook not found!";
     }
 
-    return <VoiceCasting audioBookSuccessState={audioBookState} />;
+    return <VoiceCasting audioBookSuccessState={audioBookState} {...{ syncStatus }} />;
 }

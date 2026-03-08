@@ -1,9 +1,9 @@
 import { INVALID_INDEX } from "@/constants";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CharacterTable from "./TextToSpeech/CharacterTable";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, CloudAlert, CloudCheck, CloudSync } from "lucide-react";
 import CharacterSidebar from "./TextToSpeech/CharacterSidebar";
 import { AudioBookSuccessStateType } from "@/hooks/useAudioBookForTextToSpeech";
 import { Character } from "@/schemas/Character";
@@ -12,9 +12,11 @@ import { useRouter } from "next/navigation";
 
 export default function VoiceCasting({
     // nextPhase,
+    syncStatus,
     audioBookSuccessState,
 }: {
     // nextPhase: () => void;
+    syncStatus: "IDLE" | "PENDING" | "SUCCESS" | "ERROR";
     audioBookSuccessState: AudioBookSuccessStateType;
 }) {
     const { audioBook } = audioBookSuccessState;
@@ -57,13 +59,7 @@ export default function VoiceCasting({
     return (
         <div className="flex h-full w-full bg-muted/30">
             <div className={cn("flex-1 overflow-auto p-8 transition-all duration-300 ease-out flex flex-col")}>
-                <header className="mb-8">
-                    <div className="flex items-center gap-3 mb-2">
-                        <div>
-                            <h1 className="text-2xl font-bold tracking-tight">:: {name}</h1>
-                        </div>
-                    </div>
-                </header>
+                <Header {...{ name, syncStatus }} />
 
                 {
                     <div className="flex-1">
@@ -96,6 +92,54 @@ export default function VoiceCasting({
                 />
             )}
         </div>
+    );
+}
+
+function getIconForSyncStatus(syncStatus: "IDLE" | "PENDING" | "SUCCESS" | "ERROR") {
+    switch (syncStatus) {
+        case "IDLE":
+            return <CloudSync />;
+
+        case "PENDING":
+            return <CloudSync />;
+
+        case "SUCCESS":
+            return <CloudCheck />;
+
+        case "ERROR":
+            return <CloudAlert />;
+    }
+}
+
+function LoadingDots() {
+    const [numDots, setNumDots] = useState(0);
+
+    useEffect(() => {
+        const id = setInterval(() => {
+            setNumDots((numDots) => (numDots + 1) % 4);
+        }, 400);
+
+        return () => clearInterval(id);
+    }, []);
+
+    return (
+        <div>
+            <span className={numDots >= 1 ? "" : "text-transparent"}>.</span>
+            <span className={numDots >= 2 ? "" : "text-transparent"}>.</span>
+            <span className={numDots >= 3 ? "" : "text-transparent"}>.</span>
+        </div>
+    );
+}
+
+function Header({ name, syncStatus }: { name: string; syncStatus: "IDLE" | "PENDING" | "SUCCESS" | "ERROR" }) {
+    return (
+        <header className="mb-8">
+            <div className="flex items-center gap-3 mb-2">
+                <h1 className="text-2xl font-bold tracking-tight mr-4">{name}</h1>
+                {getIconForSyncStatus(syncStatus)}
+                {(syncStatus === "IDLE" || syncStatus === "PENDING") && <LoadingDots />}
+            </div>
+        </header>
     );
 }
 

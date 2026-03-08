@@ -5,7 +5,7 @@ import {
     ElevenLabsTextToSpeechVoiceSettingsDefaultValue,
 } from "@/schemas/Character";
 import { tRPC } from "@/utils/tRPC";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { produce } from "immer";
 import debug from "debug";
 import { useDebounce } from "./useDebounce";
@@ -37,9 +37,14 @@ export type AudioBookStateType = AudioBookPendingStateType | AudioBookErrorState
 
 export function useAudioBookForTextToSpeech(projectID: string) {
     const query = tRPC.project.get.useQuery(projectID);
+    const mutation = tRPC.project.update.useMutation();
+
     const [audioBookState, setAudioBookState] = useState<AudioBookStateType>({ state: "pending" });
 
-    const debouncedValue = useDebounce(audioBookState, 5000);
+    const init = useRef(true);
+    const [syncStatus, setSyncStatus] = useState<"IDLE" | "PENDING" | "SUCCESS" | "ERROR">("SUCCESS");
+
+    const debouncedValue = useDebounce(audioBookState.state === "success" ? audioBookState.audioBook : null, 5000);
 
     useEffect(() => {
         if (query.status === "pending") {
@@ -80,6 +85,7 @@ export function useAudioBookForTextToSpeech(projectID: string) {
                         audioBook: produce(audioBookState.audioBook, draftFn),
                     };
                 });
+                setSyncStatus("IDLE");
             };
 
             const handleVoiceSettingsChange = <
@@ -124,6 +130,7 @@ export function useAudioBookForTextToSpeech(projectID: string) {
                         audioBook: produce(audioBookPrevState.audioBook, draftFn),
                     };
                 });
+                setSyncStatus("IDLE");
             };
 
             logger("audioBook:", audioBook);
@@ -131,7 +138,27 @@ export function useAudioBookForTextToSpeech(projectID: string) {
         })();
     }, [query.status, query.data, setAudioBookState]);
 
-    useEffect(() => {});
+    useEffect(() => {
+        if (!debouncedValue) {
+            return;
+        }
 
-    return audioBookState;
+        if (init.current) {
+            init.current = false;
+            return;
+        }
+
+        (async function () {
+            setSyncStatus("PENDING");
+
+            try {
+                await mutation.mutateAsync({ ...debouncedValue, id: projectID });
+                setSyncStatus("SUCCESS");
+            } catch {
+                setSyncStatus("ERROR");
+            }
+        })();
+    }, [debouncedValue, projectID, setSyncStatus]); // mutation.mutate generates a new mutation object
+
+    return { audioBookState, syncStatus };
 }

@@ -24,7 +24,7 @@ const ElevenLabsVoiceProviderSchema = z.object({
     gender: z.enum(["MALE", "FEMALE", "NEUTRAL", "NOT_AVAILABLE"]),
     category: z.enum(["GENERATED", "CLONED", "PREMADE", "PROFESSIONAL", "FAMOUS", "HIGH_QUALITY"]),
     description: z.string().nullable(),
-    verifiedLanguages: z
+    /* verifiedLanguages: z
         .array(
             z.object({
                 language: z.string(),
@@ -33,7 +33,7 @@ const ElevenLabsVoiceProviderSchema = z.object({
                 locale: z.string().nullable(),
             }),
         )
-        .nullable(),
+        .nullable(), */
     voiceSettings: z
         .object({
             textToSpeech: ElevenLabsTextToSpeechVoiceSettingsSchema.optional().nullable(),

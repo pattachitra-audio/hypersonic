@@ -19,7 +19,7 @@ export default function AudioBookStudio() {
     });
 
     const { projectID }: { projectID: string } = useParams<{ projectID: string }>();
-    const audioBookState = useAudioBookForTextToSpeech(projectID);
+    const { audioBookState } = useAudioBookForTextToSpeech(projectID);
 
     if (audioBookState.state === "pending") {
         return "Loading...";

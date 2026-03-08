@@ -150,7 +150,7 @@ function VoiceSearchResults({
                                 name: voice.name,
                                 gender: voice.gender,
                                 description: undefinedToNull(voice.description),
-                                verifiedLanguages: voice.verifiedLanguages,
+                                /* verifiedLanguages: voice.verifiedLanguages, */
                                 category: voice.category,
                                 /* voiceSettings: {
                                     textToSpeech: ElevenLabsTextToSpeechVoiceSettingsSchema.parse({

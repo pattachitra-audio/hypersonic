@@ -84,7 +84,7 @@ export const projectRouter = tRPCRouter({
         }
 
         const { id: _, ...inputWithoutID } = input;
-        const updateOneResult = await AudioBookModel.updateOneByID(id, {
+        const updateOneResult = await AudioBookModel.replaceOneByID(id, {
             ...inputWithoutID,
             createdAt: findOneResult.value.createdAt,
             updatedAt: new Date(),
