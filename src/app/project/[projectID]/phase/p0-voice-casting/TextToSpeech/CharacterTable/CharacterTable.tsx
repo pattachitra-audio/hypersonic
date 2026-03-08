@@ -4,16 +4,17 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { AlertCircle, User, MessageSquare, Mic2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SelectedCharacterType } from "@/app/types/SelectedCharacter";
 import { AudioBook } from "@/schemas/AudioBook";
 
 export default function CharacterTable({
     audioBook,
-    selectedCharacter,
+    // selectedCharacter,
+    selectedCharacterIndex,
     onSelectCharacter,
 }: {
     audioBook: AudioBook;
-    selectedCharacter: SelectedCharacterType | null;
+    // selectedCharacter: SelectedCharacterType | null;
+    selectedCharacterIndex: number;
     onSelectCharacter(index: number): void;
 }) {
     return (
@@ -33,26 +34,27 @@ export default function CharacterTable({
                 </TableHeader>
                 <TableBody>
                     {audioBook.characters.map((character, index) => {
-                        const isSelected = selectedCharacter !== null && selectedCharacter.index === index;
-                        const numberDialogues = audioBook.dialogues.filter(({ character: c }) => c === index).length;
+                        // const isSelected = selectedCharacter !== null && selectedCharacter.index === index;
+                        const selected = selectedCharacterIndex === index;
+                        const numDialogues = audioBook.dialogues.filter(({ character: c }) => c === index).length;
                         return (
                             <TableRow
                                 key={index}
                                 className={cn(
                                     "cursor-pointer transition-all duration-200 group",
-                                    isSelected ? "bg-primary/5 hover:bg-primary/10" : "hover:bg-muted/50",
+                                    selected ? "bg-primary/5 hover:bg-primary/10" : "hover:bg-muted/50",
                                 )}
                                 style={{
                                     animationDelay: `${index * 50}ms`,
                                 }}
                                 onClick={() => onSelectCharacter(index)}
                             >
-                                <CellName name={character.name} {...{ isSelected }} />
+                                <CellName name={character.name} {...{ selected }} />
                                 <CellGender gender={character.gender} />
                                 <CellAgeGroup ageGroup={character.ageGroup} />
                                 <CellVoiceDescription voiceDescription={character.voiceDescription} />
                                 <CellVoice voice={character.voice} />
-                                <CellNumberDialogues {...{ numberDialogues }} />
+                                <CellNumberDialogues {...{ numDialogues }} />
                             </TableRow>
                         );
                     })}
@@ -62,16 +64,14 @@ export default function CharacterTable({
     );
 }
 
-function CellName({ isSelected, name }: { isSelected: boolean; name: string }) {
+function CellName({ selected, name }: { selected: boolean; name: string }) {
     return (
         <TableCell>
             <div className="flex items-center gap-3">
                 <div
                     className={cn(
                         "w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200",
-                        isSelected
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-muted group-hover:bg-muted-foreground/10",
+                        selected ? "bg-primary text-primary-foreground" : "bg-muted group-hover:bg-muted-foreground/10",
                     )}
                 >
                     <User className="h-4 w-4" />
@@ -136,12 +136,12 @@ function CellVoice({ voice }: { voice: AudioBook["characters"][number]["voice"] 
     );
 }
 
-function CellNumberDialogues({ numberDialogues }: { numberDialogues: number }) {
+function CellNumberDialogues({ numDialogues }: { numDialogues: number }) {
     return (
         <TableCell className="text-center">
             <div className="flex items-center justify-center gap-1.5">
                 <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
-                <span className="font-medium">{numberDialogues}</span>
+                <span className="font-medium">{numDialogues}</span>
             </div>
         </TableCell>
     );

@@ -1,25 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-// import { CharacterDetails } from "./CharacterDetails";
 import CharacterDetails from "../CharacterDetails";
 import { cn } from "@/lib/utils";
 import { CharacterVoice, ElevenLabsTextToSpeechVoiceSettings } from "@/schemas/Character";
-import { SelectedCharacterType } from "@/app/types/SelectedCharacter";
 import VoiceSelector from "../VoiceSelector";
-// import { VoiceSettings } from "@/ext/elevenLabsAPI/textToSpeech";
+import { AudioBook } from "@/schemas/AudioBook";
+import { INVALID_INDEX } from "@/constants";
 
 export default function CharacterSidebar({
-    selectedCharacter,
-    // voiceSettings,
+    audioBook,
+    selectedCharacterIndex,
     onVoiceChange,
     onVoiceSettingsChange,
     onClose,
 }: {
-    selectedCharacter: SelectedCharacterType;
-    // voiceSettings: VoiceSettings;
+    audioBook: AudioBook;
+    selectedCharacterIndex: number;
     onVoiceChange: (voice: CharacterVoice | null) => void;
     onVoiceSettingsChange: <
         T extends keyof ElevenLabsTextToSpeechVoiceSettings,
@@ -29,25 +28,36 @@ export default function CharacterSidebar({
         value: V,
     ) => void;
     onClose: () => void;
-    // dialogues: { characterId: number; text: string }[];
 }) {
     const [showVoiceSelector, setShowVoiceSelector] = useState(false);
-    const { character, dialogues } = selectedCharacter;
+    const [lastSelectedCharacterIndex, setLastSelectedCharacterIndex] = useState(0);
 
     const handleClose = () => {
         setShowVoiceSelector(false);
         onClose();
     };
 
+    const validSelectedCharacterIndex = lastSelectedCharacterIndex;
+    const character = audioBook.characters[validSelectedCharacterIndex];
+    const dialogues = audioBook.dialogues.filter((d) => d.character === validSelectedCharacterIndex);
+
+    useEffect(() => {
+        (async function () {
+            if (selectedCharacterIndex !== INVALID_INDEX) {
+                setLastSelectedCharacterIndex(selectedCharacterIndex);
+            }
+        })();
+    }, [selectedCharacterIndex]);
+
     return (
         <div
             className={cn(
-                "border-l bg-card transition-all duration-300 ease-in-out overflow-hidden",
-                character ? "w-95" : "w-0",
+                "border-l bg-card transition-all duration-3000 ease-in-out overflow-hidden",
+                selectedCharacterIndex !== INVALID_INDEX ? "w-95" : "w-0",
             )}
         >
-            {character && (
-                <div className="h-full flex flex-col animate-in slide-in-from-right-4 duration-300">
+            {
+                <div className="h-full w-95 flex flex-col animate-in slide-in-from-right-4 duration-300">
                     {/* Header */}
                     <div className="flex items-center justify-between p-4 border-b shrink-0 h-16">
                         {showVoiceSelector ? (
@@ -113,7 +123,7 @@ export default function CharacterSidebar({
                         }
                     </div>
                 </div>
-            )}
+            }
         </div>
     );
 }

@@ -21,7 +21,7 @@ export default function VoiceCasting({
 }) {
     const { audioBook } = audioBookSuccessState;
     const { name, characters, dialogues } = audioBook;
-    const [selectedCharacterIndex, setSelectedCharacterIndex] = useState<number>(-1);
+    const [selectedCharacterIndex, setSelectedCharacterIndex] = useState<number>(INVALID_INDEX);
 
     const handleSelectCharacter = (index: number) => {
         if (index < 0 || index > characters.length) {
@@ -41,6 +41,7 @@ export default function VoiceCasting({
         return dialogues.filter((d) => d.character === characterIndex);
     };
 
+    /*
     const getSelectedCharacter = () => {
         const selectedCharacterTmp: Character | undefined = characters.at(selectedCharacterIndex);
 
@@ -54,7 +55,9 @@ export default function VoiceCasting({
         };
     };
 
-    const selectedCharacter = getSelectedCharacter();
+     const selectedCharacter = getSelectedCharacter();
+    const openCharacterSidebar = selectedCharacter !== null;
+    */
 
     return (
         <div className="flex h-full w-full bg-muted/30">
@@ -66,7 +69,7 @@ export default function VoiceCasting({
                         <CharacterTable
                             {...{
                                 audioBook,
-                                selectedCharacter,
+                                selectedCharacterIndex,
                                 onSelectCharacter: handleSelectCharacter,
                             }}
                         />
@@ -79,18 +82,16 @@ export default function VoiceCasting({
                 />
             </div>
 
-            {selectedCharacter !== null && (
-                <CharacterSidebar
-                    {...{ selectedCharacter }}
-                    onVoiceSettingsChange={(key, value) => {
-                        audioBookSuccessState.handleVoiceSettingsChange(selectedCharacterIndex, key, value);
-                    }}
-                    onVoiceChange={(voice) => {
-                        audioBookSuccessState.handleSelectVoice(selectedCharacterIndex, voice);
-                    }}
-                    onClose={handleCloseCharacterSidebar}
-                />
-            )}
+            <CharacterSidebar
+                {...{ audioBook, selectedCharacterIndex }}
+                onVoiceSettingsChange={(key, value) => {
+                    audioBookSuccessState.handleVoiceSettingsChange(selectedCharacterIndex, key, value);
+                }}
+                onVoiceChange={(voice) => {
+                    audioBookSuccessState.handleSelectVoice(selectedCharacterIndex, voice);
+                }}
+                onClose={handleCloseCharacterSidebar}
+            />
         </div>
     );
 }
