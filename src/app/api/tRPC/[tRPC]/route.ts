@@ -8,6 +8,7 @@ const handler = (req: Request) => {
         endpoint: "/api/tRPC",
         req,
         router,
+        allowMethodOverride: true,
         createContext: () => ({}),
         onError: ({ error, path, input }) => {
             console.log("=== tRPC Error ===");

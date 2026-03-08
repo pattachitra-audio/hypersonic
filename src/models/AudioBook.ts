@@ -1,7 +1,7 @@
 import { dbClientPromise } from "@/lib/db";
 import { AudioBook } from "@/schemas/AudioBook";
 import NoThrow from "@/utils/NoThrow";
-import { MongoError, ObjectId } from "mongodb";
+import { Filter, MongoError, ObjectId, UpdateFilter } from "mongodb";
 
 export type AudioBookDocumentType = AudioBook & {
     createdAt: Date;
@@ -79,7 +79,7 @@ export const AudioBookModelPromise = (async function () {
         },
         async findOneByID(id: ObjectId) {
             try {
-                const result = await collection.findOne({ _id: id });
+                const result = await collection.findOne({ _id: id, status: "ACTIVE" });
 
                 if (!result) {
                     return NoThrow.err(new Error("Data not found"));
@@ -103,11 +103,12 @@ export const AudioBookModelPromise = (async function () {
             try {
                 const result = await collection.insertOne(document);
 
-                if (result.acknowledged) {
+                /* if (result.acknowledged) {
                     return NoThrow.ok(result.insertedId);
-                }
+                } */
 
-                return NoThrow.err(new Error("MongoDB 'insertOne' err"));
+                return NoThrow.ok(result);
+                // return NoThrow.err(new Error("MongoDB 'insertOne' err"));
             } catch (error) {
                 if (error instanceof MongoError) {
                     return NoThrow.err(error);
@@ -125,9 +126,31 @@ export const AudioBookModelPromise = (async function () {
             try {
                 const result = await collection.updateOne({ _id: id }, document);
 
-                if (!result.acknowledged) {
+                /* if (!result.acknowledged) {
                     return NoThrow.err(new Error("Data not found"));
+                } */
+
+                return NoThrow.ok(result);
+            } catch (error) {
+                if (error instanceof MongoError) {
+                    return NoThrow.err(error);
                 }
+
+                if (error instanceof Error) {
+                    return NoThrow.err(error);
+                }
+
+                return NoThrow.err(new Error("Unknown error"));
+            }
+        },
+
+        async updateOne(filter: Filter<AudioBookDocumentType>, updateFilter: UpdateFilter<AudioBookDocumentType>) {
+            try {
+                const result = await collection.updateOne(filter, updateFilter);
+
+                /* if (!result.acknowledged) {
+                    return NoThrow.err(new Error(""))
+                } */
 
                 return NoThrow.ok(result);
             } catch (error) {

@@ -12,6 +12,7 @@ export function TypeScriptRPCProvider({ children }: { children: React.ReactNode 
             links: [
                 httpBatchLink({
                     url: "/api/tRPC",
+                    methodOverride: "POST",
                 }),
             ],
         }),

@@ -8,6 +8,7 @@ import { tRPC } from "@/utils/tRPC";
 import { useEffect, useState } from "react";
 import { produce } from "immer";
 import debug from "debug";
+import { useDebounce } from "./useDebounce";
 
 const logger = debug("useAudioBookForTextToSpeech");
 debug.enable("useAudioBookForTextToSpeech");
@@ -37,6 +38,8 @@ export type AudioBookStateType = AudioBookPendingStateType | AudioBookErrorState
 export function useAudioBookForTextToSpeech(projectID: string) {
     const query = tRPC.project.get.useQuery(projectID);
     const [audioBookState, setAudioBookState] = useState<AudioBookStateType>({ state: "pending" });
+
+    const debouncedValue = useDebounce(audioBookState, 5000);
 
     useEffect(() => {
         if (query.status === "pending") {
@@ -127,6 +130,8 @@ export function useAudioBookForTextToSpeech(projectID: string) {
             setAudioBookState({ state: "success", audioBook, handleSelectVoice, handleVoiceSettingsChange });
         })();
     }, [query.status, query.data, setAudioBookState]);
+
+    useEffect(() => {});
 
     return audioBookState;
 }
