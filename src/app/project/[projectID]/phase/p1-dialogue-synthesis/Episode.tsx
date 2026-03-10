@@ -13,8 +13,8 @@ export default function Episode({
 
     return (
         <article className="flex-1">
-            {scenes.map((_, index) => (
-                <Scene key={index} {...{ audioBookWithCharacterVoices, index }} />
+            {scenes.map((_, i) => (
+                <Scene key={i} audioBookWithCharacterVoices={audioBookWithCharacterVoices} index={episode.sceneBegin + i} />
             ))}
         </article>
     );

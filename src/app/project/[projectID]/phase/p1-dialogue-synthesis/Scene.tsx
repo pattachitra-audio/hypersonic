@@ -62,10 +62,11 @@ export default function Scene({
 
             {/* Dialogues */}
             <div className="px-8">
-                {dialogues.map((_, index) => (
+                {dialogues.map((_, i) => (
                     <Dialogue
-                        key={index}
-                        {...{ audioBookWithCharacterVoices, index }}
+                        key={i}
+                        audioBookWithCharacterVoices={audioBookWithCharacterVoices}
+                        index={scene.dialogueBegin + i}
 
                         // key={dialogue.id}
                         // dialogue={dialogue}
