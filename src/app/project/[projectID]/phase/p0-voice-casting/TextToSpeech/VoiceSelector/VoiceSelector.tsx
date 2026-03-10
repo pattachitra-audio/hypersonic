@@ -5,14 +5,13 @@ import { MoreHorizontal, Play, Search } from "lucide-react";
 import { useState } from "react";
 import {} from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { CharacterVoice, ElevenLabsTextToSpeechVoiceSettingsSchema } from "@/schemas/Character";
+import { CharacterVoice } from "@/schemas/Character";
 import { useQuery } from "@tanstack/react-query";
 import { listVoicesQuery } from "@/queries/elevenLabsAPI/voices/listVoices";
 import { VoiceResponse } from "@/queries/elevenLabsAPI/voices/listVoices/response";
 import { VoiceSelectorSearchSettings, VoiceSelectorSearchSettingsDefaultValue } from "./VoiceSelectorSearchSettings";
 import { useDebounce } from "@/hooks/useDebounce";
 import { INVALID_INDEX } from "@/constants";
-import { undefinedToNull } from "@/utils/undefinedToNull";
 
 export default function VoiceSelector({ onSelectVoice }: { onSelectVoice: (voice: CharacterVoice) => void }) {
     const [searchSettings, setSearchSettings] = useState<VoiceSelectorSearchSettings>(
@@ -252,8 +251,3 @@ function VerifiedBadge({ className }: { className?: string }) {
         </svg>
     );
 }
-
-/**
-Type '{ stability?: number | null | undefined; style?: number | null | undefined; speed?: number | null | undefined; useSpeakerBoost: boolean | null | undefined; similarityBoost: number | null | undefined; } | null | undefined' is not assignable to type '{ stability: number; speakerBoost: boolean; similarityBoost: number; style: number; speed: number; applyTextNormalization: "auto" | "on" | "off"; applyLanguageTextNormalization: boolean; } | null | undefined'.
-  Type '{ stability?: number | null | undefined; style?: number | null | undefined; speed?: number | null | undefined; useSpeakerBoost: boolean | null | undefined; similarityBoost: number | null | undefined; }' is missing the following properties from type '{ stability: number; speakerBoost: boolean; similarityBoost: number; style: number; speed: number; applyTextNormalization: "auto" | "on" | "off"; applyLanguageTextNormalization: boolean; }': speakerBoost, applyTextNormalization, applyLanguageTextNormalization
- */
