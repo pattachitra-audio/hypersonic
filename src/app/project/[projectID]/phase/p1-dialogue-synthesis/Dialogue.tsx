@@ -57,6 +57,7 @@ export default function Dialogue({
 }) {
     const dialogue = audioBookWithCharacterVoices.dialogues[index];
     const character = audioBookWithCharacterVoices.characters[dialogue.character];
+    const voice = character.voice;
     const [selectedGenerationIndex, setSelectedGenerationIndex] = useState(INVALID_INDEX);
     const [generations, setGenerations] = useState(new Array<AudioPlayerAdapterResourceStateType>(0));
     const [settings, setSettings] = useState<GenerationSettingsType>({
@@ -208,15 +209,15 @@ export default function Dialogue({
                     <span className="text-[11px] font-bold tracking-widest text-primary uppercase">
                         {character.name}
                     </span>
-                    {/*{dialogue.state === "INITIAL" && (
-                        <span className="text-[10px] text-muted-foreground">· not generated</span>
+                    <span className="text-xs text-muted-foreground capitalize">
+                        {character.gender.toLowerCase()}
+                    </span>
+                    {voice && (
+                        <>
+                            <span className="text-xs text-muted-foreground">·</span>
+                            <span className="text-xs text-muted-foreground">{voice.name}</span>
+                        </>
                     )}
-                    {dialogue.state === "GENERATED" && selectedGenerationId && (
-                        <span className="text-[10px] text-emerald-600">· selected</span>
-                    )}
-                    {dialogue.state === "GENERATED" && !selectedGenerationId && (
-                        <span className="text-[10px] text-amber-600">· pick a variant</span>
-                    )} */}
                 </div>
 
                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
