@@ -5,7 +5,7 @@ import CharacterTable from "./TextToSpeech/CharacterTable";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, CloudAlert, CloudCheck, CloudSync } from "lucide-react";
 import CharacterSidebar from "./TextToSpeech/CharacterSidebar";
-import { AudioBookSuccessStateType } from "@/hooks/useAudioBookForTextToSpeech";
+import { AudioBookSuccessStateType } from "@/hooks/useAudioBookForVoiceCastingPhase";
 import { Character } from "@/schemas/Character";
 import { Progress } from "@/components/ui/progress";
 import { useRouter } from "next/navigation";

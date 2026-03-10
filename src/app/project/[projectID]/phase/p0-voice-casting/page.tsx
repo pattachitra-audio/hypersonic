@@ -1,6 +1,6 @@
 "use client";
 
-import { useAudioBookForTextToSpeech } from "@/hooks/useAudioBookForTextToSpeech";
+import { useAudioBookForVoiceCastingPhase } from "@/hooks/useAudioBookForVoiceCastingPhase";
 import { useParams } from "next/navigation";
 import VoiceCasting from "./index";
 import { useHeaderStore } from "@/hooks/useHeaderStore";
@@ -19,7 +19,7 @@ export default function Page() {
     });
 
     const { projectID }: { projectID: string } = useParams<{ projectID: string }>();
-    const { audioBookState, syncStatus } = useAudioBookForTextToSpeech(projectID);
+    const { audioBookState, syncStatus } = useAudioBookForVoiceCastingPhase(projectID);
 
     if (audioBookState.state === "pending") {
         return "Loading...";

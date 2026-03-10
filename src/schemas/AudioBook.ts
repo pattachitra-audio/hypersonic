@@ -1,5 +1,5 @@
 import z from "zod";
-import { CharacterSchema } from "./Character";
+import { CharacterSchema, CharacterSchemaWithVoice } from "./Character";
 import { SceneSchema } from "./Scene";
 import { DialogueSchema } from "./Dialogue";
 import { EpisodeSchema } from "./Episode";
@@ -52,4 +52,9 @@ export const AudioBookSchema = z
         /* TODO: finish these */
     });
 
+export const AudioBookWithCharacterVoicesSchema = AudioBookSchema.safeExtend({
+    characters: z.array(CharacterSchemaWithVoice).describe("List of all characters appearing in the audiobook"),
+});
+
 export type AudioBook = z.infer<typeof AudioBookSchema>;
+export type AudioBookWithCharacterVoices = z.infer<typeof AudioBookWithCharacterVoicesSchema>;

@@ -1,16 +1,16 @@
 import Sidebar from "./Sidebar";
 import Main from "./Main";
-import { AudioBookSuccessStateType } from "@/hooks/useAudioBookForTextToSpeech";
+import { AudioBookWithCharacterVoicesSuccessAsyncStateType } from "@/hooks/useAudioBookForDialogueSynthesisPhase";
 
 export default function DialogueSynthesis({
-    audioBookSuccessState,
+    audioBookWithCharacterVoicesSuccessState,
 }: {
-    audioBookSuccessState: AudioBookSuccessStateType;
+    audioBookWithCharacterVoicesSuccessState: AudioBookWithCharacterVoicesSuccessAsyncStateType;
 }) {
     return (
         <div className="flex h-full w-full overflow-hidden">
-            <Sidebar audioBook={audioBookSuccessState.audioBook} />
-            <Main audioBook={audioBookSuccessState.audioBook} />
+            <Sidebar audioBookWithCharacterVoices={audioBookWithCharacterVoicesSuccessState.data} />
+            <Main audioBookWithCharacterVoices={audioBookWithCharacterVoicesSuccessState.data} />
         </div>
     );
 }

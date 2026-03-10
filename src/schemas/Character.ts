@@ -20,10 +20,10 @@ export type ElevenLabsTextToSpeechVoiceSettings = z.infer<typeof ElevenLabsTextT
 const ElevenLabsVoiceProviderSchema = z.object({
     provider: z.literal("ELEVENLABS").describe("Voice provider identifier for ElevenLabs"),
     voiceID: z.string().describe("Unique voice identifier from ElevenLabs voice library"),
-    name: z.string().nullable(),
+    name: z.string(),
     gender: z.enum(["MALE", "FEMALE", "NEUTRAL", "NOT_AVAILABLE"]),
     category: z.enum(["GENERATED", "CLONED", "PREMADE", "PROFESSIONAL", "FAMOUS", "HIGH_QUALITY"]),
-    description: z.string().nullable(),
+    description: z.string().optional(),
     /* verifiedLanguages: z
         .array(
             z.object({
@@ -70,6 +70,10 @@ export const CharacterSchema = z.object({
         .discriminatedUnion("provider", [ElevenLabsVoiceProviderSchema])
         .optional()
         .describe("Optional voice configuration from either ElevenLabs or HeyGen provider"),
+});
+
+export const CharacterSchemaWithVoice = CharacterSchema.extend({
+    voice: z.discriminatedUnion("provider", [ElevenLabsVoiceProviderSchema]),
 });
 
 export type Character = z.infer<typeof CharacterSchema>;

@@ -1,13 +1,19 @@
-import { AudioBook } from "@/schemas/AudioBook";
+import { AudioBookWithCharacterVoices } from "@/schemas/AudioBook";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import StatusDot from "./StatusDot";
 import { SceneItem } from "./SceneItem";
 
-export default function EpisodeItem({ audioBook, index }: { audioBook: AudioBook; index: number }) {
+export default function EpisodeItem({
+    audioBookWithCharacterVoices,
+    index,
+}: {
+    audioBookWithCharacterVoices: AudioBookWithCharacterVoices;
+    index: number;
+}) {
     const [open, setOpen] = useState<boolean>(index === 0);
 
-    const episode = audioBook.episodes[index];
+    const episode = audioBookWithCharacterVoices.episodes[index];
     const numScenes = episode.sceneEnd - episode.sceneBegin;
     // const scenesDone = episode.scenes.filter((s) => s.status === "complete").length;
 
@@ -27,7 +33,9 @@ export default function EpisodeItem({ audioBook, index }: { audioBook: AudioBook
                     {index + 1}
                 </span>
                 <span className="flex-1 min-w-0">
-                    <span className="block text-[13.5px] font-semibold text-sidebar-foreground truncate">{episode.name}</span>
+                    <span className="block text-[13.5px] font-semibold text-sidebar-foreground truncate">
+                        {episode.name}
+                    </span>
                     <span className="flex items-center gap-2.5 mt-0.5">
                         <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
                             {/*<Clock size={9} /> */}
@@ -44,7 +52,11 @@ export default function EpisodeItem({ audioBook, index }: { audioBook: AudioBook
             {open && (
                 <ul className="ml-3 mt-0.5 space-y-0.5">
                     {Array.from({ length: numScenes }).map((_, index) => (
-                        <SceneItem key={index} index={index + episode.sceneBegin} {...{ audioBook }} />
+                        <SceneItem
+                            key={index}
+                            index={index + episode.sceneBegin}
+                            {...{ audioBookWithCharacterVoices }}
+                        />
                     ))}
                     {/*episode.scenes.map((scene) => (
                         <SceneItem key={scene.id} scene={scene} />

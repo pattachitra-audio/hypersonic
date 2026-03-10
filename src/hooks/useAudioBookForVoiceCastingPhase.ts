@@ -10,8 +10,8 @@ import { produce } from "immer";
 import debug from "debug";
 import { useDebounce } from "./useDebounce";
 
-const logger = debug("useAudioBookForTextToSpeech");
-debug.enable("useAudioBookForTextToSpeech");
+const logger = debug("UseAudioBookForVoiceCastingPhase");
+debug.enable("UseAudioBookForVoiceCastingPhase");
 
 export type AudioBookPendingStateType = {
     state: "pending";
@@ -35,7 +35,7 @@ export type AudioBookSuccessStateType = {
 
 export type AudioBookStateType = AudioBookPendingStateType | AudioBookErrorStateType | AudioBookSuccessStateType;
 
-export function useAudioBookForTextToSpeech(projectID: string) {
+export function useAudioBookForVoiceCastingPhase(projectID: string) {
     const query = tRPC.project.get.useQuery(projectID);
     const mutation = tRPC.project.update.useMutation();
 

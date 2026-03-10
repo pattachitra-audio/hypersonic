@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { AudioBook } from "@/schemas/AudioBook";
+import { AudioBook, AudioBookWithCharacterVoices } from "@/schemas/AudioBook";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
@@ -13,7 +13,11 @@ export type GlobalGenerationSettingsType = {
     parallelism: number;
 };
 
-export default function Main({ audioBook }: { audioBook: AudioBook }) {
+export default function Main({
+    audioBookWithCharacterVoices,
+}: {
+    audioBookWithCharacterVoices: AudioBookWithCharacterVoices;
+}) {
     const [generating] = useState(false);
     const [globalGenerationSettings, setGlobalGenerationSettings] = useState<GlobalGenerationSettingsType>({
         numVariants: 2,
@@ -120,8 +124,8 @@ export default function Main({ audioBook }: { audioBook: AudioBook }) {
         <main className="flex-1 flex flex-col overflow-auto bg-background pretty-scrollbar">
             <GlobalConfigBar settings={globalGenerationSettings} {...{ generating, updateSetting, onApplyToAll }} />
 
-            {audioBook.episodes.map((_, index) => (
-                <Episode key={index} {...{ audioBook, index }} />
+            {audioBookWithCharacterVoices.episodes.map((_, index) => (
+                <Episode key={index} {...{ audioBookWithCharacterVoices, index }} />
             ))}
         </main>
     );

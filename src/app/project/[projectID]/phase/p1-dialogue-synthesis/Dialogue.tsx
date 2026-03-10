@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { RotateCcw, Edit2, Check, X, MoreVertical, ArrowUp, ArrowDown, Loader2 } from "lucide-react";
 import type { AudioPlayerAdapterResourceStateType } from "@/components/MiniAudioPlayer/MiniAudioPlayer";
-import { AudioBook } from "@/schemas/AudioBook";
+import { AudioBook, AudioBookWithCharacterVoices } from "@/schemas/AudioBook";
 import { INVALID_INDEX } from "@/constants";
 import { PeaksAudioPlayerAdapter } from "@/utils/audio/PeaksAudioPlayerAdapter";
 import { produce } from "immer";
@@ -27,7 +27,7 @@ type DialogueStateType = "INIT" | "GENERATING" | "GENERATED" | "REGENERATING" | 
 
 const VARIANT_OPTIONS = [1, 2, 4, 6, 8];
 export default function Dialogue({
-    audioBook,
+    audioBookWithCharacterVoices,
     index,
     // dialogue,
     // character,
@@ -41,7 +41,7 @@ export default function Dialogue({
     // onMoveUp,
     // onMoveDown,
 }: {
-    audioBook: AudioBook;
+    audioBookWithCharacterVoices: AudioBookWithCharacterVoices;
     index: number;
     // dialogue: DialogueGeneration;
     // character: Character;
@@ -55,8 +55,8 @@ export default function Dialogue({
     // onMoveUp: (id: string) => void;
     // onMoveDown: (id: string) => void;
 }) {
-    const dialogue = audioBook.dialogues[index];
-    const character = audioBook.characters[dialogue.character];
+    const dialogue = audioBookWithCharacterVoices.dialogues[index];
+    const character = audioBookWithCharacterVoices.characters[dialogue.character];
     const [selectedGenerationIndex, setSelectedGenerationIndex] = useState(INVALID_INDEX);
     const [generations, setGenerations] = useState(new Array<AudioPlayerAdapterResourceStateType>(0));
     const [settings, setSettings] = useState<GenerationSettingsType>({
@@ -280,7 +280,7 @@ export default function Dialogue({
                                         <ArrowUp className="mr-2 h-4 w-4" /> Move Up
                                     </DropdownMenuItem>
                                     <DropdownMenuItem
-                                        disabled={index === audioBook.dialogues.length - 1}
+                                        disabled={index === audioBookWithCharacterVoices.dialogues.length - 1}
                                         onClick={() => {} /* onMoveDown(dialogue.id) */}
                                     >
                                         <ArrowDown className="mr-2 h-4 w-4" /> Move Down
@@ -308,7 +308,11 @@ export default function Dialogue({
             {
                 <ul className="flex flex-wrap gap-2 mt-3">
                     {generations.map((generation, index) => (
-                        <Generation key={index} {...{ generation, index, audioBook }} onSelect={() => {}} />
+                        <Generation
+                            key={index}
+                            {...{ generation, index, audioBookWithCharacterVoices }}
+                            onSelect={() => {}}
+                        />
                     ))}
                 </ul>
             }
@@ -356,19 +360,19 @@ function formatCharacterName(name: string) {
 
 function Generation({
     index,
-    audioBook,
+    audioBookWithCharacterVoices,
     generation,
     onSelect,
 }: {
     index: number;
-    audioBook: AudioBook;
+    audioBookWithCharacterVoices: AudioBookWithCharacterVoices;
     onSelect: () => void;
     generation: AudioPlayerAdapterResourceStateType;
 }) {
-    const character = audioBook.characters[audioBook.dialogues[index].character];
+    const character = audioBookWithCharacterVoices.characters[audioBookWithCharacterVoices.dialogues[index].character];
     const voiceID = character.voice?.voiceID;
 
-    const downloadFileNameWithoutExtension = `${padIndex(index, audioBook.dialogues.length - 1)}_${formatCharacterName(character.name)}_${voiceID ?? "undefined-voice-id"}`;
+    const downloadFileNameWithoutExtension = `${padIndex(index, audioBookWithCharacterVoices.dialogues.length - 1)}_${formatCharacterName(character.name)}_${voiceID ?? "undefined-voice-id"}`;
 
     return (
         <MiniAudioPlayer key={index} audioPlayerResourceState={generation} {...{ downloadFileNameWithoutExtension }} />

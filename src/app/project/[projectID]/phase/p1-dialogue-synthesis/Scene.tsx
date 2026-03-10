@@ -1,11 +1,17 @@
 import { Clock, MapPin } from "lucide-react";
 import Dialogue from "./Dialogue";
-import { AudioBook } from "@/schemas/AudioBook";
-import { useReducer, useState } from "react";
+import { AudioBook, AudioBookWithCharacterVoices } from "@/schemas/AudioBook";
+import { useReducer } from "react";
 
-export default function Scene({ audioBook, index }: { audioBook: AudioBook; index: number }) {
-    const scene = audioBook.scenes[index];
-    const dialogues = audioBook.dialogues.slice(scene.dialogueBegin, scene.dialogueEnd);
+export default function Scene({
+    audioBookWithCharacterVoices,
+    index,
+}: {
+    audioBookWithCharacterVoices: AudioBookWithCharacterVoices;
+    index: number;
+}) {
+    const scene = audioBookWithCharacterVoices.scenes[index];
+    const dialogues = audioBookWithCharacterVoices.dialogues.slice(scene.dialogueBegin, scene.dialogueEnd);
     // const [numDialoguesSelected, setNumDialoguesSelected] = useState(0);
     const [numDialoguesSelected, dispatchActionForNumDialoguesSelected] = useReducer(function reducer(
         state: number,
@@ -59,7 +65,7 @@ export default function Scene({ audioBook, index }: { audioBook: AudioBook; inde
                 {dialogues.map((_, index) => (
                     <Dialogue
                         key={index}
-                        {...{ audioBook, index }}
+                        {...{ audioBookWithCharacterVoices, index }}
 
                         // key={dialogue.id}
                         // dialogue={dialogue}

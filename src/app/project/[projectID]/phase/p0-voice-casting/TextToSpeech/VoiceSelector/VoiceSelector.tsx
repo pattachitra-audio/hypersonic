@@ -143,13 +143,13 @@ function VoiceSearchResults({
                         voice={voice}
                         onPlay={() => setPlayingIndex(index)}
                         onPause={() => setPlayingIndex(INVALID_INDEX)}
-                        onClick={() =>
-                            onSelectVoice({
+                        onClick={() => {
+                            const setVoice: CharacterVoice = {
                                 provider: "ELEVENLABS",
                                 voiceID: voice.voiceID,
                                 name: voice.name,
                                 gender: voice.gender,
-                                description: undefinedToNull(voice.description),
+                                // description: undefinedToNull(voice.description),
                                 /* verifiedLanguages: voice.verifiedLanguages, */
                                 category: voice.category,
                                 /* voiceSettings: {
@@ -159,8 +159,14 @@ function VoiceSearchResults({
                                         ...voice.settings,
                                     }),
                                 },*/
-                            })
-                        }
+                            };
+
+                            if (voice.description) {
+                                setVoice.description = voice.description;
+                            }
+
+                            onSelectVoice(setVoice);
+                        }}
                     />
                 ))}
             </ul>

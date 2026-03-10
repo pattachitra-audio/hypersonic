@@ -1,14 +1,20 @@
-import { AudioBook } from "@/schemas/AudioBook";
+import { AudioBookWithCharacterVoices } from "@/schemas/AudioBook";
 import { ChevronDown, Film } from "lucide-react";
 // import { Scene } from "@/schemas/Scene";
 import { useState } from "react";
 import StatusDot from "./StatusDot";
 import DialogueItem from "./DialogueItem";
 
-export function SceneItem({ audioBook, index }: { audioBook: AudioBook; index: number }) {
+export function SceneItem({
+    audioBookWithCharacterVoices,
+    index,
+}: {
+    audioBookWithCharacterVoices: AudioBookWithCharacterVoices;
+    index: number;
+}) {
     const [open, setOpen] = useState<boolean>(false);
 
-    const scene = audioBook.scenes[index];
+    const scene = audioBookWithCharacterVoices.scenes[index];
     const synthCount = 0;
     const numDialogues = scene.dialogueEnd - scene.dialogueBegin;
 
@@ -47,7 +53,11 @@ export function SceneItem({ audioBook, index }: { audioBook: AudioBook; index: n
             {open && (
                 <ul className="ml-5 pb-1">
                     {Array.from({ length: numDialogues }).map((_, index) => (
-                        <DialogueItem key={index} {...{ audioBook }} index={index + scene.dialogueBegin} />
+                        <DialogueItem
+                            key={index}
+                            {...{ audioBookWithCharacterVoices }}
+                            index={index + scene.dialogueBegin}
+                        />
                     ))}
                 </ul>
             )}

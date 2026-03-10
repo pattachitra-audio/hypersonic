@@ -1,6 +1,6 @@
 "use client";
 
-import { useAudioBookForTextToSpeech } from "@/hooks/useAudioBookForTextToSpeech";
+import { useAudioBookForDialogueSynthesisPhase } from "@/hooks/useAudioBookForDialogueSynthesisPhase";
 import { useParams } from "next/navigation";
 import DialogueSynthesis from "./index";
 import { useEffect } from "react";
@@ -19,15 +19,15 @@ export default function AudioBookStudio() {
     });
 
     const { projectID }: { projectID: string } = useParams<{ projectID: string }>();
-    const { audioBookState } = useAudioBookForTextToSpeech(projectID);
+    const { audioBookWithCharacterVoicesState } = useAudioBookForDialogueSynthesisPhase(projectID);
 
-    if (audioBookState.state === "pending") {
+    if (audioBookWithCharacterVoicesState.status === "PENDING") {
         return "Loading...";
     }
 
-    if (audioBookState.state === "error") {
+    if (audioBookWithCharacterVoicesState.status === "ERROR") {
         return "ERROR: AudioBook not found!";
     }
 
-    return <DialogueSynthesis audioBookSuccessState={audioBookState} />;
+    return <DialogueSynthesis audioBookWithCharacterVoicesSuccessState={audioBookWithCharacterVoicesState} />;
 }

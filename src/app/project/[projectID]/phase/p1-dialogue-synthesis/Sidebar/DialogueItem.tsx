@@ -1,10 +1,16 @@
 import { MessageSquare, Play } from "lucide-react";
 import StatusDot from "./StatusDot";
-import { AudioBook } from "@/schemas/AudioBook";
+import { AudioBookWithCharacterVoices } from "@/schemas/AudioBook";
 
-export default function DialogueItem({ audioBook, index }: { audioBook: AudioBook; index: number }) {
-    const dialogue = audioBook.dialogues[index];
-    const character = audioBook.characters[dialogue.character];
+export default function DialogueItem({
+    audioBookWithCharacterVoices,
+    index,
+}: {
+    audioBookWithCharacterVoices: AudioBookWithCharacterVoices;
+    index: number;
+}) {
+    const dialogue = audioBookWithCharacterVoices.dialogues[index];
+    const character = audioBookWithCharacterVoices.characters[dialogue.character];
     // const synthesized = false;
     // const status = "SYNTHESIZED";
     const status = "";
