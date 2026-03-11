@@ -17,8 +17,8 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY --from=builder .next/standalone .
-COPY --from=builder .next/static .next/static
+COPY --from=builder /app/.next/standalone .
+COPY --from=builder /app/.next/static .next/static
 
 ENTRYPOINT ["bun"]
 CMD ["server.js"]
