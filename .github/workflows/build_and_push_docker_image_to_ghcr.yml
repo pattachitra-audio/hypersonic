@@ -40,9 +40,6 @@ jobs:
                       BUILDKIT_CONTEXT_KEEP_GIT_DIR=1
               id: docker_build_push
 
-            - name: List files inside the docker image
-              run: docker run ghcr.io/${{ github.repository }}:latest ls -lah /app
-
             - name: Echo image ID, digest
               run: |
                   echo Image ID: ${{ steps.docker_build_push.outputs.imageid }}
