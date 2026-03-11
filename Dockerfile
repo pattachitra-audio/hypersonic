@@ -7,6 +7,6 @@ COPY bun.lock ./
 
 RUN bun install
 
-COPY src ./
+COPY . ./
 
 RUN bun run build
