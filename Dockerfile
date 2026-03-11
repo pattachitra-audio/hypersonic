@@ -1,12 +1,24 @@
-FROM oven/bun:latest
+FROM oven/bun:latest AS builder
 
 WORKDIR /app
 
-COPY package.json ./
-COPY bun.lock ./
+COPY package.json .
+COPY bun.lock .
 
 RUN bun install
 
-COPY . ./
+COPY . .
 
 RUN bun run build
+
+FROM oven/bun:latest AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+COPY --from=builder .next/standalone .
+COPY --from=builder .next/static .next/static
+
+ENTRYPOINT ["bun"]
+CMD ["server.js"]
