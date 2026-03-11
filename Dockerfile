@@ -20,5 +20,10 @@ ENV NODE_ENV=production
 COPY --from=builder /app/.next/standalone .
 COPY --from=builder /app/.next/static .next/static
 
+EXPOSE 8080
+
+ENV PORT=8080
+ENV HOSTNAME=0.0.0.0
+
 ENTRYPOINT ["bun"]
 CMD ["server.js"]
