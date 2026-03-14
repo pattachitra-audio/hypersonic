@@ -1,160 +1,195 @@
 import z from "zod";
+import NoThrow from "@/utils/NoThrow";
 import { ELEVEN_LABS_API_BASE_URL } from "../constants";
+import { fetch as undiciFetch, ProxyAgent, Response } from "undici";
 
-// API Response schemas (snake_case from API)
+import { ElevenLabsAccountWithProxyDocumentType } from "@/repository/ElevenLabsAccountWithProxyRepository";
+
 const SubscriptionCurrencySchema = z.enum(["usd", "eur", "inr"]).nullable();
-
 const SubscriptionStatusSchema = z.enum(["trialing", "active", "incomplete", "past_due", "free", "free_disabled"]);
-
 const BillingPeriodSchema = z.enum(["monthly_period", "3_month_period", "6_month_period", "annual_period"]).nullable();
-
 const CharacterRefreshPeriodSchema = z
     .enum(["monthly_period", "3_month_period", "6_month_period", "annual_period"])
     .nullable();
 
-const SubscriptionAPIResponseSchema = z.object({
-    tier: z.string(),
-    character_count: z.number(),
-    character_limit: z.number(),
-    max_character_limit_extension: z.number().nullable(),
-    can_extend_character_limit: z.boolean(),
-    allowed_to_extend_character_limit: z.boolean(),
-    next_character_count_reset_unix: z.number().nullable().optional(),
-    voice_slots_used: z.number(),
-    professional_voice_slots_used: z.number(),
-    voice_limit: z.number(),
-    max_voice_add_edits: z.number().nullable().optional(),
-    voice_add_edit_counter: z.number(),
-    professional_voice_limit: z.number(),
-    can_extend_voice_limit: z.boolean(),
-    can_use_instant_voice_cloning: z.boolean(),
-    can_use_professional_voice_cloning: z.boolean(),
-    currency: SubscriptionCurrencySchema,
-    status: SubscriptionStatusSchema,
-    billing_period: BillingPeriodSchema,
-    character_refresh_period: CharacterRefreshPeriodSchema,
-});
+const SubscriptionAPIResponseSchema = z
+    .object({
+        tier: z.string(),
+        character_count: z.number(),
+        character_limit: z.number(),
+        max_character_limit_extension: z.number().nullable(),
+        can_extend_character_limit: z.boolean(),
+        allowed_to_extend_character_limit: z.boolean(),
+        next_character_count_reset_unix: z.number().nullable().optional(),
+        voice_slots_used: z.number(),
+        professional_voice_slots_used: z.number(),
+        voice_limit: z.number(),
+        max_voice_add_edits: z.number().nullable().optional(),
+        voice_add_edit_counter: z.number(),
+        professional_voice_limit: z.number(),
+        can_extend_voice_limit: z.boolean(),
+        can_use_instant_voice_cloning: z.boolean(),
+        can_use_professional_voice_cloning: z.boolean(),
+        currency: SubscriptionCurrencySchema,
+        status: SubscriptionStatusSchema,
+        billing_period: BillingPeriodSchema,
+        character_refresh_period: CharacterRefreshPeriodSchema,
+    })
+    .transform((data) => ({
+        tier: data.tier,
+        characterCount: data.character_count,
+        characterLimit: data.character_limit,
+        maxCharacterLimitExtension: data.max_character_limit_extension,
+        canExtendCharacterLimit: data.can_extend_character_limit,
+        allowedToExtendCharacterLimit: data.allowed_to_extend_character_limit,
+        nextCharacterCountResetUnix: data.next_character_count_reset_unix,
+        voiceSlotsUsed: data.voice_slots_used,
+        professionalVoiceSlotsUsed: data.professional_voice_slots_used,
+        voiceLimit: data.voice_limit,
+        maxVoiceAddEdits: data.max_voice_add_edits,
+        voiceAddEditCounter: data.voice_add_edit_counter,
+        professionalVoiceLimit: data.professional_voice_limit,
+        canExtendVoiceLimit: data.can_extend_voice_limit,
+        canUseInstantVoiceCloning: data.can_use_instant_voice_cloning,
+        canUseProfessionalVoiceCloning: data.can_use_professional_voice_cloning,
+        currency: data.currency,
+        status: data.status,
+        billingPeriod: data.billing_period,
+        characterRefreshPeriod: data.character_refresh_period,
+    }));
 
-const UserAPIResponseSchema = z.object({
-    user_id: z.string(),
-    subscription: SubscriptionAPIResponseSchema,
-    is_new_user: z.boolean(),
-    xi_api_key: z.string().nullable().optional(),
-    can_use_delayed_payment_methods: z.boolean(),
-    is_onboarding_completed: z.boolean(),
-    is_onboarding_checklist_completed: z.boolean(),
-    first_name: z.string().nullable().optional(),
-    is_api_key_hashed: z.boolean().optional().default(false),
-    xi_api_key_preview: z.string().nullable().optional(),
-    referral_link_code: z.string().nullable().optional(),
-    partnerstack_partner_default_link: z.string().nullable().optional(),
-    created_at: z.number(),
-});
+const UserAPIResponseSchema = z
+    .object({
+        user_id: z.string(),
+        subscription: SubscriptionAPIResponseSchema,
+        is_new_user: z.boolean(),
+        xi_api_key: z.string().nullable().optional(),
+        can_use_delayed_payment_methods: z.boolean(),
+        is_onboarding_completed: z.boolean(),
+        is_onboarding_checklist_completed: z.boolean(),
+        first_name: z.string().nullable().optional(),
+        is_api_key_hashed: z.boolean().optional().default(false),
+        xi_api_key_preview: z.string().nullable().optional(),
+        referral_link_code: z.string().nullable().optional(),
+        partnerstack_partner_default_link: z.string().nullable().optional(),
+        created_at: z.number(),
+    })
+    .transform((data) => ({
+        userID: data.user_id,
+        subscription: data.subscription,
+        isNewUser: data.is_new_user,
+        xiAPIKey: data.xi_api_key,
+        canUseDelayedPaymentMethods: data.can_use_delayed_payment_methods,
+        isOnboardingCompleted: data.is_onboarding_completed,
+        isOnboardingChecklistCompleted: data.is_onboarding_checklist_completed,
+        firstName: data.first_name,
+        isAPIKeyHashed: data.is_api_key_hashed,
+        xiAPIKeyPreview: data.xi_api_key_preview,
+        referralLinkCode: data.referral_link_code,
+        partnerstackPartnerDefaultLink: data.partnerstack_partner_default_link,
+        createdAt: data.created_at,
+    }))
+    .transform((data, ctx) => {
+        if (data.userID.length > 28 && data.userID.startsWith("user_")) {
+            data.userID = data.userID.slice(5);
+        }
 
-// Output schemas (camelCase with ID/URL uppercase)
-const SubscriptionOutputSchema = z.object({
-    tier: z.string(),
-    characterCount: z.number(),
-    characterLimit: z.number(),
-    maxCharacterLimitExtension: z.number().nullable(),
-    canExtendCharacterLimit: z.boolean(),
-    allowedToExtendCharacterLimit: z.boolean(),
-    nextCharacterCountResetUnix: z.number().nullable().optional(),
-    voiceSlotsUsed: z.number(),
-    professionalVoiceSlotsUsed: z.number(),
-    voiceLimit: z.number(),
-    maxVoiceAddEdits: z.number().nullable().optional(),
-    voiceAddEditCounter: z.number(),
-    professionalVoiceLimit: z.number(),
-    canExtendVoiceLimit: z.boolean(),
-    canUseInstantVoiceCloning: z.boolean(),
-    canUseProfessionalVoiceCloning: z.boolean(),
-    currency: SubscriptionCurrencySchema,
-    status: SubscriptionStatusSchema,
-    billingPeriod: BillingPeriodSchema,
-    characterRefreshPeriod: CharacterRefreshPeriodSchema,
-});
+        if (data.userID.length !== 28) {
+            ctx.addIssue({
+                code: "custom",
+                message: `Expected userID to be of 28 characters, got ${data.userID.length}; UserID: ${data.userID}`,
+            });
 
-const UserOutputSchema = z.object({
-    userID: z.string(),
-    subscription: SubscriptionOutputSchema,
-    isNewUser: z.boolean(),
-    xiAPIKey: z.string().nullable().optional(),
-    canUseDelayedPaymentMethods: z.boolean(),
-    isOnboardingCompleted: z.boolean(),
-    isOnboardingChecklistCompleted: z.boolean(),
-    firstName: z.string().nullable().optional(),
-    isAPIKeyHashed: z.boolean().optional(),
-    xiAPIKeyPreview: z.string().nullable().optional(),
-    referralLinkCode: z.string().nullable().optional(),
-    partnerstackPartnerDefaultLink: z.string().nullable().optional(),
-    createdAt: z.number(),
-});
+            return z.NEVER;
+        }
 
-// Types
+        return data;
+    });
+
 export type SubscriptionCurrency = z.infer<typeof SubscriptionCurrencySchema>;
 export type SubscriptionStatus = z.infer<typeof SubscriptionStatusSchema>;
 export type BillingPeriod = z.infer<typeof BillingPeriodSchema>;
 export type CharacterRefreshPeriod = z.infer<typeof CharacterRefreshPeriodSchema>;
-export type Subscription = z.infer<typeof SubscriptionOutputSchema>;
-export type User = z.infer<typeof UserOutputSchema>;
 
-// Data fetching function
-export async function getUser(): Promise<User> {
+// import { fetch as undiciFetch } from "node:undici";
+
+export async function getUser({
+    apiKey,
+    proxyURL,
+}: {
+    apiKey: ElevenLabsAccountWithProxyDocumentType["apiKey"];
+    proxyURL: ElevenLabsAccountWithProxyDocumentType["proxyURL"];
+}) {
     const url = `${ELEVEN_LABS_API_BASE_URL}/user`;
+    let response: Response;
 
-    const response = await fetch(url, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
+    try {
+        response = await undiciFetch(url, {
+            headers: {
+                "Content-Type": "application/json",
+                "XI-API-KEY": apiKey,
+            },
+            dispatcher: new ProxyAgent(proxyURL),
+        });
+    } catch (error) {
+        if (error instanceof TypeError) {
+            return NoThrow.err(error);
+        }
 
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`ElevenLabs API error (${response.status}): ${errorText}`);
+        if (error instanceof SyntaxError) {
+            return NoThrow.err(error);
+        }
+
+        if (error instanceof DOMException) {
+            return NoThrow.err(error);
+        }
+
+        return NoThrow.err(new Error("Unknown error"));
     }
 
-    const rawData = await response.json();
+    /* if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`ElevenLabs API error (${response.status}): ${errorText}`);
+    } */
 
-    // Validate the API response
-    const validatedData = UserAPIResponseSchema.parse(rawData);
+    /*
+    try {
+        console.log("proxyURL:", proxyURL);
+        const response = await undiciFetch("https://ipv4.webshare.io", { dispatcher: new ProxyAgent(proxyURL)})
+        const ipv4 = await response.text();
+        console.log("ipv4:", ipv4);
+        return NoThrow.ok(ipv4);
+    } catch (error) {
+        console.log("Error:", error);
+        return NoThrow.err(error);
+    }
+        */
 
-    // Transform snake_case to camelCase with ID/URL uppercase
-    return {
-        userID: validatedData.user_id,
-        subscription: {
-            tier: validatedData.subscription.tier,
-            characterCount: validatedData.subscription.character_count,
-            characterLimit: validatedData.subscription.character_limit,
-            maxCharacterLimitExtension: validatedData.subscription.max_character_limit_extension,
-            canExtendCharacterLimit: validatedData.subscription.can_extend_character_limit,
-            allowedToExtendCharacterLimit: validatedData.subscription.allowed_to_extend_character_limit,
-            nextCharacterCountResetUnix: validatedData.subscription.next_character_count_reset_unix,
-            voiceSlotsUsed: validatedData.subscription.voice_slots_used,
-            professionalVoiceSlotsUsed: validatedData.subscription.professional_voice_slots_used,
-            voiceLimit: validatedData.subscription.voice_limit,
-            maxVoiceAddEdits: validatedData.subscription.max_voice_add_edits,
-            voiceAddEditCounter: validatedData.subscription.voice_add_edit_counter,
-            professionalVoiceLimit: validatedData.subscription.professional_voice_limit,
-            canExtendVoiceLimit: validatedData.subscription.can_extend_voice_limit,
-            canUseInstantVoiceCloning: validatedData.subscription.can_use_instant_voice_cloning,
-            canUseProfessionalVoiceCloning: validatedData.subscription.can_use_professional_voice_cloning,
-            currency: validatedData.subscription.currency,
-            status: validatedData.subscription.status,
-            billingPeriod: validatedData.subscription.billing_period,
-            characterRefreshPeriod: validatedData.subscription.character_refresh_period,
-        },
-        isNewUser: validatedData.is_new_user,
-        xiAPIKey: validatedData.xi_api_key,
-        canUseDelayedPaymentMethods: validatedData.can_use_delayed_payment_methods,
-        isOnboardingCompleted: validatedData.is_onboarding_completed,
-        isOnboardingChecklistCompleted: validatedData.is_onboarding_checklist_completed,
-        firstName: validatedData.first_name,
-        isAPIKeyHashed: validatedData.is_api_key_hashed,
-        xiAPIKeyPreview: validatedData.xi_api_key_preview,
-        referralLinkCode: validatedData.referral_link_code,
-        partnerstackPartnerDefaultLink: validatedData.partnerstack_partner_default_link,
-        createdAt: validatedData.created_at,
-    };
+    let rawData: unknown;
+
+    try {
+        rawData = await response.json();
+    } catch (error) {
+        if (error instanceof TypeError) {
+            return NoThrow.err(error);
+        }
+
+        if (error instanceof SyntaxError) {
+            return NoThrow.err(error);
+        }
+
+        if (error instanceof DOMException) {
+            return NoThrow.err(error);
+        }
+
+        return NoThrow.err(new Error("Unknown error"));
+    }
+
+    const validatedDataResult = await UserAPIResponseSchema.safeParseAsync(rawData);
+
+    if (!validatedDataResult.success) {
+        return NoThrow.err(validatedDataResult.error);
+    }
+
+    return NoThrow.ok(validatedDataResult.data);
 }
