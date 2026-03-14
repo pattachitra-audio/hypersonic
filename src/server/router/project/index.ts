@@ -1,24 +1,25 @@
-import { AudioBookModelPromise } from "@/models/AudioBook";
+import { AudioBookRepositoryPromise } from "@/repository/AudioBookRepository";
 import { AudioBookSchema } from "@/schemas/AudioBook";
 import { tRPCRouter, tRPCProcedure } from "@/server/tRPC";
 import { TRPCError } from "@trpc/server";
 import { ObjectId } from "mongodb";
 import z from "zod";
+import { omit } from "lodash";
 
 export const projectRouter = tRPCRouter({
     create: tRPCProcedure.input(AudioBookSchema).mutation(async ({ input }) => {
-        const AudioBookModelResult = await AudioBookModelPromise;
+        const AudioBookRepositoryResult = await AudioBookRepositoryPromise;
 
-        if (AudioBookModelResult.isErr()) {
+        if (AudioBookRepositoryResult.isErr()) {
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
-                message: "Failed to init 'AudioBookModel'",
-                cause: AudioBookModelResult.error,
+                message: "Failed to init 'AudioBookRepository'",
+                cause: AudioBookRepositoryResult.error.cause,
             });
         }
 
-        const AudioBookModel = AudioBookModelResult.value;
-        const insertOneResult = await AudioBookModel.insertOne({
+        const AudioBookRepository = AudioBookRepositoryResult.value;
+        const insertOneResult = await AudioBookRepository.insertOne({
             ...input,
             createdAt: new Date(),
             updatedAt: new Date(),
@@ -29,63 +30,62 @@ export const projectRouter = tRPCRouter({
         if (insertOneResult.isErr()) {
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
-                message: "Failed to create 'audioBook'",
-                cause: insertOneResult.error,
+                message: "Failed to insert 'audioBook'",
+                cause: insertOneResult.error.cause,
             });
         }
 
         return insertOneResult.value.insertedId.toString("hex");
     }),
     get: tRPCProcedure.input(z.hex().length(24)).query(async ({ input }) => {
-        const AudioBookModelResult = await AudioBookModelPromise;
+        const AudioBookRepositoryResult = await AudioBookRepositoryPromise;
 
-        if (AudioBookModelResult.isErr()) {
+        if (AudioBookRepositoryResult.isErr()) {
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
-                message: "Failed to init 'AudioBookModel'",
-                cause: AudioBookModelResult.error,
+                message: "Failed to init 'AudioBookRepository'",
+                cause: AudioBookRepositoryResult.error.cause,
             });
         }
 
-        const AudioBookModel = AudioBookModelResult.value;
-        const findOneResult = await AudioBookModel.findOneByID(ObjectId.createFromHexString(input));
+        const AudioBookRepository = AudioBookRepositoryResult.value;
+        const findOneResult = await AudioBookRepository.findOneByID(ObjectId.createFromHexString(input));
 
         if (findOneResult.isErr()) {
             throw new TRPCError({
                 code: "NOT_FOUND",
                 message: `No 'active' project with ID: '${input}' found in database`,
-                cause: findOneResult.error,
+                cause: findOneResult.error.cause,
             });
         }
 
         return findOneResult.value;
     }),
     update: tRPCProcedure.input(AudioBookSchema.extend({ id: z.hex().length(24) })).mutation(async ({ input }) => {
-        const AudioBookModelResult = await AudioBookModelPromise;
+        const AudioBookRepositoryResult = await AudioBookRepositoryPromise;
 
-        if (AudioBookModelResult.isErr()) {
+        if (AudioBookRepositoryResult.isErr()) {
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
-                message: "Failed to init 'AudioBookModel'",
-                cause: AudioBookModelResult,
+                message: "Failed to init 'AudioBookRepository'",
+                cause: AudioBookRepositoryResult.error.cause,
             });
         }
 
-        const AudioBookModel = AudioBookModelResult.value;
+        const AudioBookRepository = AudioBookRepositoryResult.value;
         const id = ObjectId.createFromHexString(input.id);
-        const findOneResult = await AudioBookModel.findOneByID(id);
+        const findOneResult = await AudioBookRepository.findOneByID(id);
 
         if (findOneResult.isErr()) {
             throw new TRPCError({
                 code: "NOT_FOUND",
                 message: `No 'active' project with ID: ${input.id} found in database`,
-                cause: findOneResult.error,
+                cause: findOneResult.error.cause,
             });
         }
 
-        const { id: _, ...inputWithoutID } = input;
-        const updateOneResult = await AudioBookModel.replaceOneByID(id, {
-            ...inputWithoutID,
+        const updateOneResult = await AudioBookRepository.replaceOneByID(id, {
+            ...omit(input, "id"),
             createdAt: findOneResult.value.createdAt,
             updatedAt: new Date(),
             lastAccessedAt: new Date(),
@@ -110,20 +110,20 @@ export const projectRouter = tRPCRouter({
         return;
     }),
     archive: tRPCProcedure.input(z.hex().length(24)).mutation(async ({ input }) => {
-        const AudioBookModelResult = await AudioBookModelPromise;
+        const AudioBookRepositoryResult = await AudioBookRepositoryPromise;
 
-        if (AudioBookModelResult.isErr()) {
+        if (AudioBookRepositoryResult.isErr()) {
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
-                message: "Failed to init 'AudioBookModel'",
-                cause: AudioBookModelResult,
+                message: "Failed to init 'AudioBookRepository'",
+                cause: AudioBookRepositoryResult.error.cause,
             });
         }
 
-        const AudioBookModel = AudioBookModelResult.value;
+        const AudioBookRepository = AudioBookRepositoryResult.value;
         const id = ObjectId.createFromHexString(input);
 
-        const updateOneResult = await AudioBookModel.updateOne(
+        const updateOneResult = await AudioBookRepository.updateOne(
             { _id: id, status: "ACTIVE" },
             { $set: { status: "ARCHIVED" } },
         );
@@ -132,6 +132,7 @@ export const projectRouter = tRPCRouter({
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
                 message: `Failed to update 'active' project with ID: ${input}`,
+                cause: updateOneResult.error.cause,
             });
         }
 
@@ -145,20 +146,20 @@ export const projectRouter = tRPCRouter({
         return;
     }),
     delete: tRPCProcedure.input(z.hex().length(24)).mutation(async ({ input }) => {
-        const AudioBookModelResult = await AudioBookModelPromise;
+        const AudioBookRepositoryResult = await AudioBookRepositoryPromise;
 
-        if (AudioBookModelResult.isErr()) {
+        if (AudioBookRepositoryResult.isErr()) {
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
-                message: "Failed to init 'AudioBookModel'",
-                cause: AudioBookModelResult,
+                message: "Failed to init 'AudioBookRepository'",
+                cause: AudioBookRepositoryResult.error.cause,
             });
         }
 
-        const AudioBookModel = AudioBookModelResult.value;
+        const AudioBookRepository = AudioBookRepositoryResult.value;
         const id = ObjectId.createFromHexString(input);
 
-        const updateOneResult = await AudioBookModel.updateOne(
+        const updateOneResult = await AudioBookRepository.updateOne(
             { _id: id, status: "ACTIVE" },
             { $set: { status: "DELETED" } },
         );

@@ -1,4 +1,4 @@
-import { AudioBookModelPromise } from "@/models/AudioBook";
+import { AudioBookRepositoryPromise } from "@/repository/AudioBookRepository";
 import { tRPCProcedure, tRPCRouter } from "../../tRPC";
 import { TRPCError } from "@trpc/server";
 
@@ -21,18 +21,18 @@ export type AudioBookSummaryType = {
 
 export const projectsRouter = tRPCRouter({
     get: tRPCProcedure.query(async () => {
-        const AudioBookModelResult = await AudioBookModelPromise;
+        const AudioBookRepositoryResult = await AudioBookRepositoryPromise;
 
-        if (AudioBookModelResult.isErr()) {
+        if (AudioBookRepositoryResult.isErr()) {
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
                 message: "Failed to init 'AudioBookModel'",
-                cause: AudioBookModelResult.error,
+                cause: AudioBookRepositoryResult.error.cause,
             });
         }
 
-        const AudioBookModel = AudioBookModelResult.value;
-        const findAllSummariesResult = await AudioBookModel.findAllSummaries();
+        const AudioBookRepository = AudioBookRepositoryResult.value;
+        const findAllSummariesResult = await AudioBookRepository.findAllSummaries();
 
         if (findAllSummariesResult.isErr()) {
             throw new TRPCError({
