@@ -1,4 +1,5 @@
 import { dbClientPromise } from "@/lib/db";
+import { insertOne } from "@/lib/dbHelpers/insertOne";
 import { AudioBook } from "@/schemas/AudioBook";
 import NoThrow from "@/utils/NoThrow";
 import { Filter, MongoError, ObjectId, UpdateFilter } from "mongodb";
@@ -27,7 +28,7 @@ export type AudioBookSummaryDocumentType = {
     status: "ACTIVE" | "ARCHIVED" | "DELETED";
 };
 
-export const AudioBookModelPromise = (async function () {
+export const AudioBookRepositoryPromise = (async function () {
     const dbClientResult = await dbClientPromise;
 
     if (dbClientResult.isErr()) {
@@ -63,7 +64,7 @@ export const AudioBookModelPromise = (async function () {
                         },
                     ])
                     .toArray();
-                console.log("result:", result);
+
                 return NoThrow.ok(result);
             } catch (error) {
                 if (error instanceof MongoError) {
@@ -100,26 +101,7 @@ export const AudioBookModelPromise = (async function () {
         },
 
         async insertOne(document: AudioBookDocumentType) {
-            try {
-                const result = await collection.insertOne(document);
-
-                /* if (result.acknowledged) {
-                    return NoThrow.ok(result.insertedId);
-                } */
-
-                return NoThrow.ok(result);
-                // return NoThrow.err(new Error("MongoDB 'insertOne' err"));
-            } catch (error) {
-                if (error instanceof MongoError) {
-                    return NoThrow.err(error);
-                }
-
-                if (error instanceof Error) {
-                    return NoThrow.err(error);
-                }
-
-                return NoThrow.err(new Error("Unknown error"));
-            }
+            return insertOne(document, collection);
         },
 
         async replaceOneByID(id: ObjectId, document: AudioBookDocumentType) {
