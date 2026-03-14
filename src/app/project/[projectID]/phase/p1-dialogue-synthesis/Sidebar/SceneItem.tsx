@@ -4,6 +4,7 @@ import { ChevronDown, Film } from "lucide-react";
 import { useState } from "react";
 import StatusDot from "./StatusDot";
 import DialogueItem from "./DialogueItem";
+import { scrollToScene } from "../scrollUtils";
 
 export function SceneItem({
     audioBookWithCharacterVoices,
@@ -36,7 +37,10 @@ export function SceneItem({
                 </span>
                 <Film size={13} className="text-sidebar-primary shrink-0" />
                 <span className="flex-1 min-w-0">
-                    <span className="block text-[13px] font-medium text-sidebar-foreground truncate">{scene.name}</span>
+                    <span
+                        onClick={(e) => { e.stopPropagation(); scrollToScene(index); }}
+                        className="block text-[13px] font-medium text-sidebar-foreground truncate hover:underline cursor-pointer"
+                    >{scene.name}</span>
                     <span className="flex items-center gap-2.5 mt-0.5">
                         {/*<span className="flex items-center gap-1 text-[10px] text-muted-foreground">
                             <Clock size={9} />

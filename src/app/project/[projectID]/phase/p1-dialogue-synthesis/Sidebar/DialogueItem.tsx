@@ -1,6 +1,7 @@
 import { MessageSquare, Play } from "lucide-react";
 import StatusDot from "./StatusDot";
 import { AudioBookWithCharacterVoices } from "@/schemas/AudioBook";
+import { scrollToDialogue } from "../scrollUtils";
 
 export default function DialogueItem({
     audioBookWithCharacterVoices,
@@ -16,7 +17,7 @@ export default function DialogueItem({
     const status = "";
 
     return (
-        <div className="group flex items-start gap-2.5 py-2 px-3 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
+        <div className="group flex items-start gap-2.5 py-2 px-3 rounded-md hover:bg-sidebar-accent transition-colors cursor-default">
             <div className="mt-0.5 shrink-0">
                 <MessageSquare size={13} className="text-muted-foreground" />
             </div>
@@ -27,7 +28,10 @@ export default function DialogueItem({
                     </span>
                     <StatusDot />
                 </div>
-                <p className="text-[12.5px] text-muted-foreground leading-relaxed truncate italic">{dialogue.text}</p>
+                <p
+                    onClick={() => scrollToDialogue(index)}
+                    className="text-[12.5px] text-muted-foreground leading-relaxed truncate italic hover:underline cursor-pointer"
+                >{dialogue.text}</p>
                 <div className="flex items-center gap-2 mt-1">
                     {/*<span className="flex items-center gap-1 text-[10px] text-muted-foreground">
                         <Mic size={9} />

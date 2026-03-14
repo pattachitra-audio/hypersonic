@@ -121,7 +121,7 @@ export default function Main({
     );
 
     return (
-        <main className="flex-1 flex flex-col overflow-auto bg-background pretty-scrollbar">
+        <main data-scroll-container className="flex-1 flex flex-col overflow-auto bg-background pretty-scrollbar">
             <GlobalConfigBar settings={globalGenerationSettings} {...{ generating, updateSetting, onApplyToAll }} />
 
             {audioBookWithCharacterVoices.episodes.map((_, index) => (
@@ -148,7 +148,7 @@ function GlobalConfigBar({
     const VARIANT_OPTIONS = [1, 2, 4, 6, 8];
 
     return (
-        <div className="shrink-0 sticky top-0 z-20 bg-background/95 backdrop-blur border-b border-border px-8 py-3 flex items-center gap-5 flex-wrap">
+        <div data-global-config-bar className="shrink-0 sticky top-0 z-20 bg-background/95 backdrop-blur border-b border-border px-8 py-3 flex items-center gap-5 flex-wrap">
             {/* Variants */}
             <div className="flex items-center gap-2">
                 <Label className="text-xs text-muted-foreground whitespace-nowrap">Variants</Label>

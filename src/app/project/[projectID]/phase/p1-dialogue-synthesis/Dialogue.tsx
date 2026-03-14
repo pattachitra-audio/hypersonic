@@ -201,7 +201,7 @@ export default function Dialogue({
     function handleSave() {}
 
     return (
-        <article className="group py-4 border-b border-border/50 last:border-0">
+        <article id={`dialogue-${index}`} className="group py-4 border-b border-border/50 last:border-0">
             {/* Speaker + controls */}
             <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">

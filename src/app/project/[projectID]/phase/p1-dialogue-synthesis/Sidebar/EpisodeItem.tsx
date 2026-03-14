@@ -3,6 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import StatusDot from "./StatusDot";
 import { SceneItem } from "./SceneItem";
+import { scrollToEpisode } from "../scrollUtils";
 
 export default function EpisodeItem({
     audioBookWithCharacterVoices,
@@ -33,7 +34,10 @@ export default function EpisodeItem({
                     {index + 1}
                 </span>
                 <span className="flex-1 min-w-0">
-                    <span className="block text-[13.5px] font-semibold text-sidebar-foreground truncate">
+                    <span
+                        onClick={(e) => { e.stopPropagation(); scrollToEpisode(index); }}
+                        className="block text-[13.5px] font-semibold text-sidebar-foreground truncate hover:underline cursor-pointer"
+                    >
                         {episode.name}
                     </span>
                     <span className="flex items-center gap-2.5 mt-0.5">

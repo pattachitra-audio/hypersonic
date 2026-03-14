@@ -30,9 +30,9 @@ export default function Scene({
     // const selectedCount = sceneDialogues.filter((d) => !!selectedGenerations[d.id]).length;
 
     return (
-        <section>
+        <section id={`scene-${index}`}>
             {/* Scene header — sticky below config bar */}
-            <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border px-8 py-3">
+            <div data-scene-header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border px-8 py-3">
                 <div className="flex items-start justify-between">
                     <div>
                         <p className="text-[10px] font-semibold tracking-widest text-muted-foreground uppercase mb-0.5">
