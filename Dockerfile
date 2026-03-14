@@ -1,17 +1,19 @@
-FROM oven/bun:latest AS builder
+FROM node:slim AS builder
 
 WORKDIR /app
 
 COPY package.json .
-COPY bun.lock .
+COPY pnpm-lock.yaml .
+COPY pnpm-workspace.yaml .
 
-RUN bun install
+RUN npm install pnpm
+RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN bun run build
+RUN pnpm run build
 
-FROM oven/bun:latest AS runner
+FROM node:slim AS runner
 
 WORKDIR /app
 
@@ -25,5 +27,5 @@ EXPOSE 8080
 ENV PORT=8080
 ENV HOSTNAME=0.0.0.0
 
-ENTRYPOINT ["bun"]
+ENTRYPOINT ["node"]
 CMD ["server.js"]
