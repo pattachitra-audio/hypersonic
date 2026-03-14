@@ -6,7 +6,7 @@ COPY package.json .
 COPY pnpm-lock.yaml .
 COPY pnpm-workspace.yaml .
 
-RUN npm install pnpm
+RUN npm install -g pnpm
 RUN pnpm install --frozen-lockfile
 
 COPY . .
