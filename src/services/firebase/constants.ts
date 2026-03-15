@@ -1,0 +1,1 @@
+export const ELEVEN_LABS_FIREBASE_API_KEY = "AIzaSyBSsRE_1Os04-bxpd5JTLIniy3UK4OqKys";
