@@ -1,13 +1,14 @@
 import { dbClientPromise } from "@/lib/db";
 import { insertOne } from "@/lib/dbHelpers/insertOne";
 import { ElevenLabsAccountWithProxy } from "@/schemas/ElevenLabsAccountWithProxy";
-import NoThrow from "@/utils/NoThrow";
+import { ProxyURLType } from "@/types/proxyURL";
 import { Prettify } from "@/utils/prettify";
 import { MongoError } from "mongodb";
+import NoThrow from "@/utils/NoThrow";
 
 export type ElevenLabsAccountWithProxyDocumentType = Omit<ElevenLabsAccountWithProxy, "proxy" | "userID"> & {
     _id: string;
-    proxyURL: `http://${string}:${string}@${string}:${string}`;
+    proxyURL: ProxyURLType;
 };
 
 export type ElevenLabsAccountWithProxySummaryDocumentType = Prettify<
