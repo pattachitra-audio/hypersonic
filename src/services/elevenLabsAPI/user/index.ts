@@ -1,9 +1,10 @@
 import z from "zod";
 import NoThrow from "@/utils/NoThrow";
 import { ELEVEN_LABS_API_BASE_URL } from "../constants";
-import { fetch as undiciFetch, ProxyAgent, Response } from "undici";
+import { fetch as undiciFetch, Response } from "undici";
 
 import { ElevenLabsAccountWithProxyDocumentType } from "@/repository/ElevenLabsAccountWithProxyRepository";
+import { proxyAgentPool } from "@/lib/proxyAgentPool";
 
 const SubscriptionCurrencySchema = z.enum(["usd", "eur", "inr"]).nullable();
 const SubscriptionStatusSchema = z.enum(["trialing", "active", "incomplete", "past_due", "free", "free_disabled"]);
@@ -89,18 +90,9 @@ const UserAPIResponseSchema = z
         partnerstackPartnerDefaultLink: data.partnerstack_partner_default_link,
         createdAt: data.created_at,
     }))
-    .transform((data, ctx) => {
-        if (data.userID.length > 28 && data.userID.startsWith("user_")) {
+    .transform((data) => {
+        if (data.userID.startsWith("user_")) {
             data.userID = data.userID.slice(5);
-        }
-
-        if (data.userID.length !== 28) {
-            ctx.addIssue({
-                code: "custom",
-                message: `Expected userID to be of 28 characters, got ${data.userID.length}; UserID: ${data.userID}`,
-            });
-
-            return z.NEVER;
         }
 
         return data;
@@ -110,8 +102,6 @@ export type SubscriptionCurrency = z.infer<typeof SubscriptionCurrencySchema>;
 export type SubscriptionStatus = z.infer<typeof SubscriptionStatusSchema>;
 export type BillingPeriod = z.infer<typeof BillingPeriodSchema>;
 export type CharacterRefreshPeriod = z.infer<typeof CharacterRefreshPeriodSchema>;
-
-// import { fetch as undiciFetch } from "node:undici";
 
 export async function getUser({
     apiKey,
@@ -129,7 +119,7 @@ export async function getUser({
                 "Content-Type": "application/json",
                 "XI-API-KEY": apiKey,
             },
-            dispatcher: new ProxyAgent(proxyURL),
+            dispatcher: proxyAgentPool.get(proxyURL),
         });
     } catch (error) {
         if (error instanceof TypeError) {
@@ -146,24 +136,6 @@ export async function getUser({
 
         return NoThrow.err(new Error("Unknown error"));
     }
-
-    /* if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`ElevenLabs API error (${response.status}): ${errorText}`);
-    } */
-
-    /*
-    try {
-        console.log("proxyURL:", proxyURL);
-        const response = await undiciFetch("https://ipv4.webshare.io", { dispatcher: new ProxyAgent(proxyURL)})
-        const ipv4 = await response.text();
-        console.log("ipv4:", ipv4);
-        return NoThrow.ok(ipv4);
-    } catch (error) {
-        console.log("Error:", error);
-        return NoThrow.err(error);
-    }
-        */
 
     let rawData: unknown;
 
