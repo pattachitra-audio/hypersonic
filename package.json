@@ -2,6 +2,7 @@
     "name": "hypersonic",
     "version": "0.1.0",
     "private": true,
+    "type": "module",
     "scripts": {
         "dev": "next dev --hostname dev.hypersonic.pattachitraaudio.sbs --port 80 --turbopack",
         "build": "next build",
