@@ -1,8 +1,10 @@
 import path from "node:path";
 import { defineConfig } from "vitest/config";
-
 import dotEnv from "dotenv";
-dotEnv.config({ path: ".env.test", override: true });
+
+if (!process.env.GITHUB_ACTIONS) {
+    dotEnv.config({ path: ".env.test", override: true });
+}
 
 export default defineConfig({
     test: {
