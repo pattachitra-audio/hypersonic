@@ -1,7 +1,7 @@
 import { MongoClient, MongoError } from "mongodb";
 import { packageJSON } from "./packageJSON";
 import { envPromise } from "./env";
-import NoThrow from "@/utils/NoThrow";
+import { NoThrow } from "@/utils/NoThrow";
 
 export const dbClientPromise = (async function () {
     const envResult = await envPromise;

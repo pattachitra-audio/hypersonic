@@ -1,4 +1,4 @@
-import NoThrow from "@/utils/NoThrow";
+import { NoThrow } from "@/utils/NoThrow";
 import { Collection, Document, MongoError, OptionalUnlessRequiredId } from "mongodb";
 
 export async function insertOne<T extends Document>(document: OptionalUnlessRequiredId<T>, collection: Collection<T>) {

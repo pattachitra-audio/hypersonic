@@ -1,7 +1,7 @@
 import { fetch as undiciFetch, Response } from "undici";
 import { ELEVEN_LABS_INTERNAL_API_BASE_URL } from "../constants";
 import { RequestType } from "./request";
-import NoThrow from "@/utils/NoThrow";
+import { NoThrow } from "@/utils/NoThrow";
 import { proxyAgentPool } from "@/lib/proxyAgentPool";
 import { requestHeaders } from "@/requestHeaders";
 import { ResponseSchema } from "./response";

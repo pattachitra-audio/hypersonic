@@ -2,11 +2,9 @@
 import { err, ok } from "neverthrow";
 import type { Result, ResultAsync } from "neverthrow";
 
-const NoThrow = {
+export const NoThrow = {
     err,
     ok,
 };
 
 export { Result, ResultAsync };
-
-export default NoThrow;

@@ -1,5 +1,5 @@
 import z from "zod";
-import NoThrow from "@/utils/NoThrow";
+import { NoThrow } from "@/utils/NoThrow";
 
 const EnvSchema = z.object({
     MONGODB_URI: z.string(),

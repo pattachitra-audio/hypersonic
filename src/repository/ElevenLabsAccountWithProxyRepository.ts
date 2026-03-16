@@ -4,7 +4,7 @@ import { ElevenLabsAccountWithProxy } from "@/schemas/ElevenLabsAccountWithProxy
 import { ProxyURLType } from "@/types/proxyURL";
 import { Prettify } from "@/utils/prettify";
 import { MongoError } from "mongodb";
-import NoThrow from "@/utils/NoThrow";
+import { NoThrow } from "@/utils/NoThrow";
 
 export type ElevenLabsAccountWithProxyDocumentType = Omit<ElevenLabsAccountWithProxy, "proxy" | "userID"> & {
     _id: string;

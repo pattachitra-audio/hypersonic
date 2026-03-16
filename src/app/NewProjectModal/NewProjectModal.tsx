@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { File, Upload, X, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { AudioBook, AudioBookSchema } from "@/schemas/AudioBook";
-import NoThrow from "@/utils/NoThrow";
+import { NoThrow } from "@/utils/NoThrow";
 import { tRPC } from "@/utils/tRPC";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";

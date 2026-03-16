@@ -1,4 +1,4 @@
-import NoThrow from "@/utils/NoThrow";
+import { NoThrow } from "@/utils/NoThrow";
 import { Collection, Document, MongoError } from "mongodb";
 
 export default async function findAll<T extends Document>(collection: Collection<T>) {

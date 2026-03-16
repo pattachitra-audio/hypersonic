@@ -1,7 +1,7 @@
 import { dbClientPromise } from "@/lib/db";
 import { insertOne } from "@/lib/dbHelpers/insertOne";
 import { AudioBook } from "@/schemas/AudioBook";
-import NoThrow from "@/utils/NoThrow";
+import { NoThrow } from "@/utils/NoThrow";
 import { Filter, MongoError, ObjectId, UpdateFilter } from "mongodb";
 
 export type AudioBookDocumentType = AudioBook & {

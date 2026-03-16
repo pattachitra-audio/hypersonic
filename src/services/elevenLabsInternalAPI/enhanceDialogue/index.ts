@@ -3,7 +3,7 @@ import { Response, fetch as undiciFetch } from "undici";
 import { RequestType } from "./request";
 import { requestHeaders } from "@/requestHeaders";
 import { proxyAgentPool } from "@/lib/proxyAgentPool";
-import NoThrow from "@/utils/NoThrow";
+import { NoThrow } from "@/utils/NoThrow";
 import { ResponseSchema } from "./response";
 
 export async function enhanceDialogue(req: RequestType) {

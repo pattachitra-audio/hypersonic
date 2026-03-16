@@ -1,6 +1,6 @@
 import z from "zod";
 import { ELEVEN_LABS_API_BASE_URL } from "../constants";
-import NoThrow from "@/utils/NoThrow";
+import { NoThrow } from "@/utils/NoThrow";
 
 // API Request schemas
 const VoiceSettingsSchema = z

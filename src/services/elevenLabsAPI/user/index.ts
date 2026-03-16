@@ -1,5 +1,5 @@
 import z from "zod";
-import NoThrow from "@/utils/NoThrow";
+import { NoThrow } from "@/utils/NoThrow";
 import { ELEVEN_LABS_API_BASE_URL } from "../constants";
 import { fetch as undiciFetch, Response } from "undici";
 
