@@ -5,20 +5,20 @@ import { decodeElevenLabsFirebaseJWTPayload } from "@/utils/decodeElevenLabsFire
 
 describe("signInWithPassword", async () => {
     it("returns ID token and refresh token for valid credentials", async () => {
-        const email = process.env.EMAIL;
-        const password = process.env.PASSWORD;
-        const proxyURLVariable = process.env.PROXY_URL;
+        const email = process.env.TEST_EMAIL;
+        const password = process.env.TEST_PASSWORD;
+        const proxyURLVariable = process.env.TEST_PROXY_URL;
 
         if (!email) {
-            throw new Error("EMAIL env variable is required");
+            throw new Error("'TEST_EMAIL' env variable is required");
         }
 
         if (!password) {
-            throw new Error("PASSWORD env variable is required");
+            throw new Error("'TEST_PASSWORD' env variable is required");
         }
 
         if (!proxyURLVariable) {
-            throw new Error("PROXY_URL env variable is required");
+            throw new Error("'TEST_PROXY_URL' env variable is required");
         }
 
         const proxyURLResult = parseProxyURL(proxyURLVariable);
