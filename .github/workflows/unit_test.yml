@@ -28,3 +28,7 @@ jobs:
 
             - name: Run tests
               run: pnpm run unit-test
+              env:
+                  TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+                  TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+                  TEST_PROXY_URL: ${{ secrets.TEST_PROXY_URL }}
