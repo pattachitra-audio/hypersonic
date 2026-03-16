@@ -1,29 +1,30 @@
-import { proxyAgentPool } from "@/lib/proxyAgentPool";
+import { requestHeaders } from "@/requestHeaders";
+import { ELEVEN_LABS_FIREBASE_API_KEY } from "../constants";
 import { RequestType } from "./request";
 import { Response, fetch as undiciFetch } from "undici";
+import { NoThrow } from "@/utils/NoThrow";
 import { ResponseSchema } from "./response";
-import NoThrow from "@/utils/NoThrow";
-import { ELEVEN_LABS_FIREBASE_API_KEY } from "../constants";
-import { requestHeaders } from "@/requestHeaders";
 
-// Handle errors properly
-export async function signInWithPassword(req: RequestType) {
-    const body = JSON.stringify({ returnSecureToken: true, ...req });
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${ELEVEN_LABS_FIREBASE_API_KEY}`;
+// TODO: Handle errors properly
+export async function exchangeRefreshTokenForIDToken(req: RequestType) {
+    const data = new URLSearchParams();
+    data.append("grant_type", "refresh_token");
+    data.append("refresh_token", req.refreshToken);
+
+    const url = `https://securetoken.googleapis.com/v1/token?key=${ELEVEN_LABS_FIREBASE_API_KEY}`;
 
     let response: Response;
 
     try {
         response = await undiciFetch(url, {
             method: "POST",
-            body,
+            body: data.toString(),
             headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
                 ...requestHeaders,
-                "Content-Type": "application/json",
-                Referer: "https://elevenlabs.io/app/sign-in",
                 Origin: "https://elevenlabs.io",
+                Referer: "https://elevenlabs.io/",
             },
-            dispatcher: proxyAgentPool.get(req.proxyURL),
         });
     } catch (error) {
         return NoThrow.err(error);
@@ -45,7 +46,6 @@ export async function signInWithPassword(req: RequestType) {
         return NoThrow.err(error);
     }
 
-    console.log("json:", JSON.stringify(json, null, 4));
     const validatedDataResult = await ResponseSchema.safeParseAsync(json);
 
     if (!validatedDataResult.success) {
