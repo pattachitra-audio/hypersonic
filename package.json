@@ -9,7 +9,8 @@
         "start": "next start",
         "format": "prettier --write \"**/*.{mjs,ts,tsx,css,scss,json,yml,yaml}\"",
         "lint": "eslint",
-        "type-check": "tsc"
+        "type-check": "tsc -p tsconfig.app.json && tsc -p tsconfig.test.json",
+        "unit-test": "vitest run"
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.1008.0",
@@ -51,6 +52,7 @@
         "clsx": "^2.1.1",
         "cmdk": "^1.1.1",
         "debug": "^4.4.3",
+        "dotenv": "^17.3.1",
         "embla-carousel-react": "^8.6.0",
         "immer": "^11.1.4",
         "input-otp": "^1.4.2",
@@ -72,6 +74,7 @@
         "tailwind-merge": "^3.5.0",
         "undici": "^7.24.1",
         "vaul": "^1.1.2",
+        "vitest": "^4.1.0",
         "zod": "^4.3.6",
         "zustand": "^5.0.11"
     },
