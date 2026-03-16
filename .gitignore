@@ -1,6 +1,7 @@
 /node_modules
 /.next
-/tsconfig.tsbuildinfo
+/tsconfig.app.tsbuildinfo
+/tsconfig.test.tsbuildinfo
 
 /.env*
 /tmp
