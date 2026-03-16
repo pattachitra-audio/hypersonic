@@ -45,7 +45,6 @@ export async function signInWithPassword(req: RequestType) {
         return NoThrow.err(error);
     }
 
-    console.log("json:", JSON.stringify(json, null, 4));
     const validatedDataResult = await ResponseSchema.safeParseAsync(json);
 
     if (!validatedDataResult.success) {
