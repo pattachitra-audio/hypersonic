@@ -26,7 +26,18 @@ export async function setupFirebaseAuth() {
         return proxyURLResult;
     }
 
-    return await signInWithPassword({
+    const result = await signInWithPassword({
+        email,
+        password,
+        proxyURL: proxyURLResult.value,
+    });
+
+    if (result.isErr()) {
+        return result;
+    }
+
+    return NoThrow.ok({
+        ...result.value,
         email,
         password,
         proxyURL: proxyURLResult.value,
