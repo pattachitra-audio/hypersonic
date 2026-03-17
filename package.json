@@ -10,7 +10,7 @@
         "format": "prettier --write \"**/*.{mjs,ts,tsx,css,scss,json,yml,yaml}\"",
         "lint": "eslint",
         "type-check": "tsc -p tsconfig.app.json && tsc -p tsconfig.test.json",
-        "unit-test": "vitest run"
+        "unit-test": "vitest run --coverage"
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.1008.0",
@@ -83,6 +83,7 @@
         "@types/node": "^20.19.37",
         "@types/react": "^19.2.14",
         "@types/react-dom": "^19.2.3",
+        "@vitest/coverage-v8": "^4.1.0",
         "eslint": "^9.39.4",
         "eslint-config-next": "16.1.1",
         "tailwindcss": "^4.2.1",

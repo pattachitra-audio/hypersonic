@@ -3,5 +3,7 @@
 /tsconfig.app.tsbuildinfo
 /tsconfig.test.tsbuildinfo
 
+/coverage
+
 /.env*
 /tmp
