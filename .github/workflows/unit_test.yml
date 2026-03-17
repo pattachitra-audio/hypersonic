@@ -46,7 +46,6 @@ jobs:
 
             - name: Upload html code coverage reports to 'Workflow artifacts'
               uses: actions/deploy-pages@v4
-              if: git.ref == 'refs/heads/main'
               with:
                   path: x
 
