@@ -8,6 +8,8 @@ jobs:
     test:
         runs-on: ubuntu-latest
         environment: unit_test
+        permissions:
+            id-token: write
 
         steps:
             - name: Checkout repository
