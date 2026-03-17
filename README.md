@@ -1,6 +1,8 @@
 # Hypersonic
 
-[![codecov](https://codecov.io/github/pattachitra/hypersonic/branch/main/graph/badge.svg)](https://codecov.io/github/pattachitra/hypersonic)
+[![codecov](https://codecov.io/github/pattachitra/hypersonic/graph/badge.svg?token=VLGDOVU1F2)](https://codecov.io/github/pattachitra/hypersonic)
+
+[View Coverage Report](https://pattachitra.github.io/hypersonic/coverage/)
 
 Build audiobooks at lightspeed! Upload your story's JSON, assign custom voices to characters, and generate/refine individual dialogue lines. Once everything sounds perfect, seamlessly merge it all into a final, full-cast audio masterpiece.
 
