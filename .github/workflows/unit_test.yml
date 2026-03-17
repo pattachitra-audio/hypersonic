@@ -8,6 +8,8 @@ jobs:
     test:
         runs-on: ubuntu-latest
         environment: unit_test
+        permissions:
+            id-token: write
 
         steps:
             - name: Checkout repository
@@ -32,3 +34,9 @@ jobs:
                   TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
                   TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
                   TEST_PROXY_URL: ${{ secrets.TEST_PROXY_URL }}
+
+            - name: Upload coverage results to 'Codecov'
+              uses: codecov/codecov-action@v5
+              with:
+                  use_odic: true
+                  files: coverage/lcov.info
