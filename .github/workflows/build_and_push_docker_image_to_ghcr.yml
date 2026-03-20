@@ -6,13 +6,6 @@ on:
             - main
 
 jobs:
-    unit_test:
-        uses: ./.github/workflows/unit_test.yml
-        secrets: inherit
-        permissions:
-            id-token: write
-            pages: write
-
     push_to_ghcr:
         name: Push docker image to GHCR
         runs-on: ubuntu-latest
