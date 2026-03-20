@@ -7,7 +7,7 @@ import { NoThrow } from "@/utils/NoThrow";
 import { ResponseSchema } from "./response";
 
 export async function enhanceDialogue(req: RequestType) {
-    const url = `${ELEVEN_LABS_INTERNAL_API_BASE_URL}/user`;
+    const url = `${ELEVEN_LABS_INTERNAL_API_BASE_URL}/enhance-dialogue`;
     let response: Response;
 
     try {
@@ -18,6 +18,7 @@ export async function enhanceDialogue(req: RequestType) {
                 ...requestHeaders,
                 "Content-Type": "application/json",
                 "Cache-Control": "no-cache",
+                Authorization: `Bearer ${req.bearerToken}`,
             },
             dispatcher: proxyAgentPool.get(req.proxyURL),
         });
@@ -57,6 +58,7 @@ export async function enhanceDialogue(req: RequestType) {
         return NoThrow.err(new Error("Unknown error"));
     }
 
+    console.log("rawData:", JSON.stringify(rawData, null, 4));
     const validatedDataResult = await ResponseSchema.safeParseAsync(rawData);
 
     if (!validatedDataResult.success) {

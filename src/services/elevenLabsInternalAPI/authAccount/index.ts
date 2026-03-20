@@ -16,6 +16,7 @@ export async function authAccount(req: RequestType) {
                 ...requestHeaders,
                 "Content-Type": "application/json",
                 "Cache-Control": "no-cache",
+                Authorization: `Bearer ${req.bearerToken}`,
             },
             dispatcher: proxyAgentPool.get(req.proxyURL),
         });
@@ -55,6 +56,7 @@ export async function authAccount(req: RequestType) {
         return NoThrow.err(new Error("Unknown error"));
     }
 
+    console.log("JSON:", JSON.stringify(rawData, null, 4));
     const validatedDataResult = await ResponseSchema.safeParseAsync(rawData);
 
     if (!validatedDataResult.success) {
