@@ -31,7 +31,8 @@ describe("enhanceDialogue", async () => {
         for (let i = 0; i < dialogueBlocks.length; i++) {
             const dialogueBlock = dialogueBlocks[i];
             const enhancedBlock = result.value.enhancedBlocks[i];
-            expect(enhancedBlock).toContain(dialogueBlock);
+            const stripped = enhancedBlock.replaceAll(/\[.*?\]\s*/g, "");
+            expect(stripped).toBe(dialogueBlock);
         }
     });
 });
