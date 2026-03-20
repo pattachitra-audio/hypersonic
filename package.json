@@ -3,11 +3,16 @@
     "version": "0.1.0",
     "private": true,
     "type": "module",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/pattachitra/hypersonic"
+    },
     "scripts": {
         "dev": "next dev --hostname dev.hypersonic.pattachitraaudio.sbs --port 80 --turbopack",
         "build": "next build",
         "start": "next start",
         "format": "prettier --write \"**/*.{mjs,ts,tsx,css,scss,json,yml,yaml}\"",
+        "check-formatting": "prettier --check \"**/*.{mjs,ts,tsx,css,scss,json,yml,yaml}\"",
         "lint": "eslint",
         "type-check": "tsc -p tsconfig.app.json && tsc -p tsconfig.test.json",
         "unit-test": "vitest run --coverage"
