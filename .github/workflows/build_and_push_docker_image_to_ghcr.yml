@@ -1,15 +1,12 @@
 name: build_and_push_docker_image_to_ghcr
 
 on:
-    push:
-        branches:
-            - main
+    workflow_call:
 
 jobs:
     push_to_ghcr:
         name: Push docker image to GHCR
         runs-on: ubuntu-latest
-        needs: unit_test
         permissions:
             packages: write
             contents: read
