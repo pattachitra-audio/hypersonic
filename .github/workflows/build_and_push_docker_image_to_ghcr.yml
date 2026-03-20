@@ -8,6 +8,9 @@ on:
 jobs:
     unit_test:
         uses: ./.github/workflows/unit_test.yml
+        permissions:
+            id-token: write
+            pages: write
 
     push_to_ghcr:
         name: Push docker image to GHCR
