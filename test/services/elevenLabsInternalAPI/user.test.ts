@@ -18,5 +18,8 @@ describe("user", async () => {
         }
 
         expect(result.isOk()).toBe(true);
+        const userData = result.value;
+
+        expect(userData.email).toBe(firebaseAuth.email);
     });
 });

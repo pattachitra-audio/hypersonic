@@ -38,5 +38,5 @@ export async function user(req: RequestType) {
         return NoThrow.err(validatedDataResult.error);
     }
 
-    return NoThrow.ok(validatedDataResult.success);
+    return NoThrow.ok(validatedDataResult.data);
 }
