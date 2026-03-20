@@ -1,4 +1,4 @@
-import { ProxyURLType } from "@/types/proxyURL";
+import { ProxyURLType } from "@/schemas/ProxyURL";
 import { NoThrow } from "./NoThrow";
 
 export function parseProxyURL(proxyURL: string) {

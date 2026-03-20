@@ -1,7 +1,7 @@
 import { dbClientPromise } from "@/lib/db";
 import { insertOne } from "@/lib/dbHelpers/insertOne";
 import { ElevenLabsAccountWithProxy } from "@/schemas/ElevenLabsAccountWithProxy";
-import { ProxyURLType } from "@/types/proxyURL";
+import { ProxyURLType } from "@/schemas/ProxyURL";
 import { Prettify } from "@/utils/prettify";
 import { MongoError } from "mongodb";
 import { NoThrow } from "@/utils/NoThrow";

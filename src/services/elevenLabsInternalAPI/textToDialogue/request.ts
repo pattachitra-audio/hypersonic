@@ -1,5 +1,5 @@
 import z from "zod";
-import { ProxyURLSchema } from "@/types/proxyURL";
+import { ProxyURLSchema } from "@/schemas/ProxyURL";
 
 const OutputFormats = [
     "ALAW_8000",

@@ -1,4 +1,4 @@
-import { ProxyURLType } from "@/types/proxyURL";
+import { ProxyURLType } from "@/schemas/ProxyURL";
 
 export type RequestType = {
     proxyURL: ProxyURLType;
