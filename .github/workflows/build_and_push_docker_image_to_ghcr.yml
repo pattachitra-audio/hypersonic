@@ -8,6 +8,7 @@ on:
 jobs:
     unit_test:
         uses: ./.github/workflows/unit_test.yml
+        secrets: inherit
         permissions:
             id-token: write
             pages: write
