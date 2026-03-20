@@ -1,17 +1,20 @@
 name: build_and_push_docker_image_to_ghcr
 
 on:
-    workflow_run:
-        workflows: ["unit_test"]
-        types:
-            - completed
+    push:
         branches:
             - main
 
 jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: ./github/workflows/unit_test.yml
+
     push_to_ghcr:
         name: Push docker image to GHCR
         runs-on: ubuntu-latest
+        needs: test
         permissions:
             packages: write
             contents: read
