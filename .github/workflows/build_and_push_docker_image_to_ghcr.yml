@@ -1,4 +1,4 @@
-name: Push image to GHCR (Github Container Registry)
+name: build_and_push_docker_image_to_ghcr
 
 on:
     workflow_dispatch:
