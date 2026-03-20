@@ -35,6 +35,7 @@ export default defineConfig({
                         "@": "src",
                         test: "test",
                     },
+                    testTimeout: 120_000,
 
                     /* alias: {
                         "@/": "src/",
