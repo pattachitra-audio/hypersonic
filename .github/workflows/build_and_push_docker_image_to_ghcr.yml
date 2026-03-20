@@ -6,14 +6,8 @@ on:
             - main
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v6
-
-            - name: Run unit_test.yml
-              uses: ./.github/workflows/unit_test.yml
+    unit_test:
+        uses: ./.github/workflows/unit_test.yml
 
     push_to_ghcr:
         name: Push docker image to GHCR
