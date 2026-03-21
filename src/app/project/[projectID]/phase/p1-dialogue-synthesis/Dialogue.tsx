@@ -209,9 +209,7 @@ export default function Dialogue({
                     <span className="text-[11px] font-bold tracking-widest text-primary uppercase">
                         {character.name}
                     </span>
-                    <span className="text-xs text-muted-foreground capitalize">
-                        {character.gender.toLowerCase()}
-                    </span>
+                    <span className="text-xs text-muted-foreground capitalize">{character.gender.toLowerCase()}</span>
                     {voice && (
                         <>
                             <span className="text-xs text-muted-foreground">·</span>

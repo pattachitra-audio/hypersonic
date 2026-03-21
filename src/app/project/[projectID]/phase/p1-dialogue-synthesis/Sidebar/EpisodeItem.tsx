@@ -35,7 +35,10 @@ export default function EpisodeItem({
                 </span>
                 <span className="flex-1 min-w-0">
                     <span
-                        onClick={(e) => { e.stopPropagation(); scrollToEpisode(index); }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            scrollToEpisode(index);
+                        }}
                         className="block text-[13.5px] font-semibold text-sidebar-foreground truncate hover:underline cursor-pointer"
                     >
                         {episode.name}

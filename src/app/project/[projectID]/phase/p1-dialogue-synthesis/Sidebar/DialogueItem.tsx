@@ -31,7 +31,9 @@ export default function DialogueItem({
                 <p
                     onClick={() => scrollToDialogue(index)}
                     className="text-[12.5px] text-muted-foreground leading-relaxed truncate italic hover:underline cursor-pointer"
-                >{dialogue.text}</p>
+                >
+                    {dialogue.text}
+                </p>
                 <div className="flex items-center gap-2 mt-1">
                     {/*<span className="flex items-center gap-1 text-[10px] text-muted-foreground">
                         <Mic size={9} />

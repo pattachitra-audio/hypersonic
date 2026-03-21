@@ -3,8 +3,7 @@ function scrollInContainer(id: string, offset: number) {
     const el = document.getElementById(id);
     if (!container || !el) return;
 
-    const top =
-        el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - offset;
+    const top = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - offset;
     container.scrollTo({ top, behavior: "smooth" });
 }
 
@@ -28,7 +27,6 @@ export function scrollToDialogue(dialogueIndex: number) {
     const sceneHeader = el.closest("section")?.querySelector<HTMLElement>("[data-scene-header]");
     const offset = getGlobalConfigBarHeight() + (sceneHeader?.offsetHeight ?? 0);
 
-    const top =
-        el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - offset;
+    const top = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - offset;
     container.scrollTo({ top, behavior: "smooth" });
 }

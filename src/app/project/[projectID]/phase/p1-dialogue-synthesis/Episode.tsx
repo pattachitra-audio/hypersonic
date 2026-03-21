@@ -31,7 +31,11 @@ export default function Episode({
             <Separator />
 
             {scenes.map((_, i) => (
-                <Scene key={i} audioBookWithCharacterVoices={audioBookWithCharacterVoices} index={episode.sceneBegin + i} />
+                <Scene
+                    key={i}
+                    audioBookWithCharacterVoices={audioBookWithCharacterVoices}
+                    index={episode.sceneBegin + i}
+                />
             ))}
         </article>
     );

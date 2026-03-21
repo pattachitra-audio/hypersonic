@@ -38,9 +38,14 @@ export function SceneItem({
                 <Film size={13} className="text-sidebar-primary shrink-0" />
                 <span className="flex-1 min-w-0">
                     <span
-                        onClick={(e) => { e.stopPropagation(); scrollToScene(index); }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            scrollToScene(index);
+                        }}
                         className="block text-[13px] font-medium text-sidebar-foreground truncate hover:underline cursor-pointer"
-                    >{scene.name}</span>
+                    >
+                        {scene.name}
+                    </span>
                     <span className="flex items-center gap-2.5 mt-0.5">
                         {/*<span className="flex items-center gap-1 text-[10px] text-muted-foreground">
                             <Clock size={9} />
