@@ -35,7 +35,7 @@ const HistoryItemSchema = z
         share_link_id: z.string().nullable(),
         source: z.string(),
         alignments: z.unknown().nullable(),
-        dialogue: z.array(DialogueItemSchema),
+        dialogue: z.array(DialogueItemSchema).nullable(),
         output_format: z.string(),
     })
     .transform(
@@ -62,8 +62,10 @@ const HistoryItemSchema = z
             voiceName: voice_name,
             voiceCategory: voice_category,
             dateUnix: date_unix,
-            characterCountChangeFrom: character_count_change_from,
-            characterCountChangeTo: character_count_change_to,
+            characterCountChange: {
+                from: character_count_change_from,
+                to: character_count_change_to,
+            },
             contentType: content_type,
             shareLinkID: share_link_id,
             outputFormat: output_format,
@@ -73,14 +75,14 @@ const HistoryItemSchema = z
 export const ResponseSchema = z
     .object({
         history: z.array(HistoryItemSchema),
-        last_history_item_id: z.string(),
+        last_history_item_id: z.string().nullable(),
         has_more: z.boolean(),
-        scanned_until: z.number(),
+        scanned_until: z.number().nullable(),
     })
     .transform(({ history, last_history_item_id, has_more, scanned_until }) => ({
         history,
         lastHistoryItemID: last_history_item_id,
-        hasMore: has_more,
+        more: has_more,
         scannedUntil: scanned_until,
     }));
 

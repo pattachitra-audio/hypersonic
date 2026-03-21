@@ -8,22 +8,20 @@ describe("history", async () => {
     it("returns history data for a valid bearer token", async () => {
         const firebaseAuth = inject("firebaseAuth");
 
-        const result = await history({
+        const historyResult = await history({
             proxyURL: firebaseAuth.proxyURL,
             bearerToken: firebaseAuth.idToken,
         });
 
-        if (result.isErr()) {
-            throw new Error("Error fetching history", { cause: result.error });
+        if (historyResult.isErr()) {
+            throw new Error("Error fetching history", { cause: historyResult.error });
         }
 
-        expect(result.isOk()).toBe(true);
+        expect(historyResult.isOk()).toBe(true);
 
-        const data = result.value;
+        const historyData = historyResult.value;
 
-        expect(Array.isArray(data.history)).toBe(true);
-        expect(typeof data.lastHistoryItemID).toBe("string");
-        expect(typeof data.hasMore).toBe("boolean");
-        expect(typeof data.scannedUntil).toBe("number");
+        expect(Array.isArray(historyData.history)).toBe(true);
+        expect(typeof historyData.more).toBe("boolean");
     });
 });
