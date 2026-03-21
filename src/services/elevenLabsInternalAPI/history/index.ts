@@ -6,7 +6,6 @@ import { NoThrow } from "@/utils/NoThrow";
 import { proxyAgentPool } from "@/lib/proxyAgentPool";
 import { requestHeaders } from "@/requestHeaders";
 import { ResponseSchema } from "./response";
-import fs from "node:fs";
 
 function prepareQueryParams(validatedInput: z.output<typeof RequestSchema>) {
     const queryParams = new URLSearchParams();
@@ -68,8 +67,6 @@ export async function history(input: RequestType) {
     } catch (error) {
         return NoThrow.err(error);
     }
-
-    fs.writeFileSync("historyResponse.json", JSON.stringify(rawData, null, 4));
 
     return NoThrow.fromZodResultType(await ResponseSchema.safeParseAsync(rawData));
 }

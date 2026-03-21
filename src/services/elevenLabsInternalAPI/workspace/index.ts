@@ -5,7 +5,6 @@ import { NoThrow } from "@/utils/NoThrow";
 import { proxyAgentPool } from "@/lib/proxyAgentPool";
 import { requestHeaders } from "@/requestHeaders";
 import { ResponseSchema } from "./response";
-import fs from "node:fs";
 
 export async function workspace(req: RequestType) {
     const url = `${ELEVEN_LABS_INTERNAL_API_BASE_URL}/workspace`;
@@ -32,8 +31,6 @@ export async function workspace(req: RequestType) {
     } catch (error) {
         return NoThrow.err(error);
     }
-
-    fs.writeFileSync("workspaceResponse.json", JSON.stringify(rawData, null, 4));
 
     return NoThrow.fromZodResultType(await ResponseSchema.safeParseAsync(rawData));
 }
