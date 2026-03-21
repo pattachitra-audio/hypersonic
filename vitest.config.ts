@@ -29,7 +29,7 @@ export default defineConfig({
             {
                 test: {
                     name: "elevenLabsInternalAPI",
-                    include: ["test/services/elevenLabsInternalAPI/**/*test.ts"],
+                    include: ["test/services/elevenLabsInternalAPI/**/*.test.ts"],
                     // maxWorkers: 1,
                     alias: {
                         "@": "src",
@@ -41,6 +41,17 @@ export default defineConfig({
                         "@/": "src/",
                         // test: path.resolve(__dirname, "test"),
                     }, */
+                },
+            },
+            {
+                test: {
+                    name: "rest",
+                    include: ["test/**/*.test.ts"],
+                    exclude: ["test/services/elevenLabsInternalAPI/**/*.test.ts"],
+                    alias: {
+                        "@": "src",
+                        test: "test",
+                    },
                 },
             },
         ],
