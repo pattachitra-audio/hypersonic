@@ -21,7 +21,7 @@ export async function workspace(req: RequestType) {
             dispatcher: proxyAgentPool.get(req.proxyURL),
         });
     } catch (error) {
-        return NoThrow.err(error);
+        return NoThrow.error(error);
     }
 
     let rawData: unknown;
@@ -29,7 +29,7 @@ export async function workspace(req: RequestType) {
     try {
         rawData = await response.json();
     } catch (error) {
-        return NoThrow.err(error);
+        return NoThrow.error(error);
     }
 
     return NoThrow.fromZodResultType(await ResponseSchema.safeParseAsync(rawData));

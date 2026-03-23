@@ -24,18 +24,18 @@ export async function enhanceDialogue(req: RequestType) {
         });
     } catch (error) {
         if (error instanceof TypeError) {
-            return NoThrow.err(error);
+            return NoThrow.error(error);
         }
 
         if (error instanceof SyntaxError) {
-            return NoThrow.err(error);
+            return NoThrow.error(error);
         }
 
         if (error instanceof DOMException) {
-            return NoThrow.err(error);
+            return NoThrow.error(error);
         }
 
-        return NoThrow.err(new Error("Unknown error"));
+        return NoThrow.error(new Error("Unknown error"));
     }
 
     let rawData: unknown;
@@ -44,25 +44,25 @@ export async function enhanceDialogue(req: RequestType) {
         rawData = await response.json();
     } catch (error) {
         if (error instanceof TypeError) {
-            return NoThrow.err(error);
+            return NoThrow.error(error);
         }
 
         if (error instanceof SyntaxError) {
-            return NoThrow.err(error);
+            return NoThrow.error(error);
         }
 
         if (error instanceof DOMException) {
-            return NoThrow.err(error);
+            return NoThrow.error(error);
         }
 
-        return NoThrow.err(new Error("Unknown error"));
+        return NoThrow.error(new Error("Unknown error"));
     }
 
     console.log("rawData:", JSON.stringify(rawData, null, 4));
     const validatedDataResult = await ResponseSchema.safeParseAsync(rawData);
 
     if (!validatedDataResult.success) {
-        return NoThrow.err(validatedDataResult.error);
+        return NoThrow.error(validatedDataResult.error);
     }
 
     return NoThrow.ok(validatedDataResult.data);

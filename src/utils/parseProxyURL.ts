@@ -5,7 +5,7 @@ export function parseProxyURL(proxyURL: string) {
     const pattern = /^http:\/\/.+:.+@.+:.+$/;
 
     if (!pattern.test(proxyURL)) {
-        return NoThrow.err(
+        return NoThrow.error(
             new Error(`Invalid proxy url format '${proxyURL}'; Expected 'http://<username>:<password>@<host>:<port>`),
         );
     }

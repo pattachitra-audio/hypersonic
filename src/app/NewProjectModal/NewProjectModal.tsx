@@ -32,7 +32,7 @@ async function validateFile(file: File) {
     try {
         bytes = new Uint8Array(await loadFileToBufferPromise);
     } catch (err) {
-        return NoThrow.err(err as Error);
+        return NoThrow.error(err as Error);
     }
 
     const textDecoder = new TextDecoder("utf-8");
@@ -41,7 +41,7 @@ async function validateFile(file: File) {
     try {
         string = textDecoder.decode(bytes);
     } catch (err) {
-        return NoThrow.err(err as Error);
+        return NoThrow.error(err as Error);
     }
 
     let object: unknown;
@@ -49,13 +49,13 @@ async function validateFile(file: File) {
     try {
         object = JSON.parse(string);
     } catch (err) {
-        return NoThrow.err(err as SyntaxError);
+        return NoThrow.error(err as SyntaxError);
     }
 
     const audioBookResult = await AudioBookSchema.safeParseAsync(object);
 
     if (!audioBookResult.success) {
-        return NoThrow.err(audioBookResult.error);
+        return NoThrow.error(audioBookResult.error);
     }
 
     return NoThrow.ok(audioBookResult.data);

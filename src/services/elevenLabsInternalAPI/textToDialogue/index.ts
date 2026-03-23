@@ -11,7 +11,7 @@ export async function textToDialogue(input: RequestType) {
     const inputValidationResult = await RequestSchema.safeDecodeAsync(input);
 
     if (!inputValidationResult.success) {
-        return NoThrow.err(inputValidationResult.error);
+        return NoThrow.error(inputValidationResult.error);
     }
 
     const validatedInput = inputValidationResult.data;
@@ -46,22 +46,22 @@ export async function textToDialogue(input: RequestType) {
         // console.log("headers:", headers);
 
         if (response.status !== 200) {
-            NoThrow.err(new Error("Response status !== 200"));
+            NoThrow.error(new Error("Response status !== 200"));
         }
     } catch (error) {
         if (error instanceof TypeError) {
-            return NoThrow.err(error);
+            return NoThrow.error(error);
         }
 
         if (error instanceof SyntaxError) {
-            return NoThrow.err(error);
+            return NoThrow.error(error);
         }
 
         if (error instanceof DOMException) {
-            return NoThrow.err(error);
+            return NoThrow.error(error);
         }
 
-        return NoThrow.err(new Error("Unknown error"));
+        return NoThrow.error(new Error("Unknown error"));
     }
 
     try {
@@ -77,7 +77,7 @@ export async function textToDialogue(input: RequestType) {
         });
 
         if (!metadataResult.success) {
-            return NoThrow.err(metadataResult.error);
+            return NoThrow.error(metadataResult.error);
         }
 
         return NoThrow.ok({
@@ -85,6 +85,6 @@ export async function textToDialogue(input: RequestType) {
             buffer,
         });
     } catch (error) {
-        return NoThrow.err(new Error("Unknown error"));
+        return NoThrow.error(new Error("Unknown error"));
     }
 }

@@ -9,15 +9,15 @@ export async function setupFirebaseAuth() {
     const proxyURLString = process.env.TEST_PROXY_URL;
 
     if (!email) {
-        return NoThrow.err(new Error(`Env variable 'TEST_EMAIL' must be present`));
+        return NoThrow.error(new Error(`Env variable 'TEST_EMAIL' must be present`));
     }
 
     if (!password) {
-        return NoThrow.err(new Error(`Env variable 'TEST_PASSWORD' must be present`));
+        return NoThrow.error(new Error(`Env variable 'TEST_PASSWORD' must be present`));
     }
 
     if (!proxyURLString) {
-        return NoThrow.err(new Error(`Env variable 'TEST_PROXY_URL' must be present`));
+        return NoThrow.error(new Error(`Env variable 'TEST_PROXY_URL' must be present`));
     }
 
     const proxyURLResult = parseProxyURL(proxyURLString);

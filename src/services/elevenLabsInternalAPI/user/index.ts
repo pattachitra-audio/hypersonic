@@ -21,7 +21,7 @@ export async function user(req: RequestType) {
             dispatcher: proxyAgentPool.get(req.proxyURL),
         });
     } catch (error) {
-        return NoThrow.err(error);
+        return NoThrow.error(error);
     }
 
     let rawData: unknown;
@@ -29,13 +29,13 @@ export async function user(req: RequestType) {
     try {
         rawData = await response.json();
     } catch (error) {
-        return NoThrow.err(error);
+        return NoThrow.error(error);
     }
 
     const validatedDataResult = await ResponseSchema.safeParseAsync(rawData);
 
     if (!validatedDataResult.success) {
-        return NoThrow.err(validatedDataResult.error);
+        return NoThrow.error(validatedDataResult.error);
     }
 
     return NoThrow.ok(validatedDataResult.data);

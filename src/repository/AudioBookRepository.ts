@@ -68,14 +68,14 @@ export const AudioBookRepositoryPromise = (async function () {
                 return NoThrow.ok(result);
             } catch (error) {
                 if (error instanceof MongoError) {
-                    return NoThrow.err(error);
+                    return NoThrow.error(error);
                 }
 
                 if (error instanceof Error) {
-                    return NoThrow.err(error);
+                    return NoThrow.error(error);
                 }
 
-                return NoThrow.err(new Error("Unknown error"));
+                return NoThrow.error(new Error("Unknown error"));
             }
         },
         async findOneByID(id: ObjectId) {
@@ -83,20 +83,20 @@ export const AudioBookRepositoryPromise = (async function () {
                 const result = await collection.findOne({ _id: id, status: "ACTIVE" });
 
                 if (!result) {
-                    return NoThrow.err(new Error("Data not found"));
+                    return NoThrow.error(new Error("Data not found"));
                 }
 
                 return NoThrow.ok(result);
             } catch (error) {
                 if (error instanceof MongoError) {
-                    return NoThrow.err(error);
+                    return NoThrow.error(error);
                 }
 
                 if (error instanceof Error) {
-                    return NoThrow.err(error);
+                    return NoThrow.error(error);
                 }
 
-                return NoThrow.err(new Error("Unknown error"));
+                return NoThrow.error(new Error("Unknown error"));
             }
         },
 
@@ -109,20 +109,20 @@ export const AudioBookRepositoryPromise = (async function () {
                 const result = await collection.replaceOne({ _id: id }, document);
 
                 /* if (!result.acknowledged) {
-                    return NoThrow.err(new Error("Data not found"));
+                    return NoThrow.error(new Error("Data not found"));
                 } */
 
                 return NoThrow.ok(result);
             } catch (error) {
                 if (error instanceof MongoError) {
-                    return NoThrow.err(error);
+                    return NoThrow.error(error);
                 }
 
                 if (error instanceof Error) {
-                    return NoThrow.err(error);
+                    return NoThrow.error(error);
                 }
 
-                return NoThrow.err(new Error("Unknown error"));
+                return NoThrow.error(new Error("Unknown error"));
             }
         },
 
@@ -131,20 +131,20 @@ export const AudioBookRepositoryPromise = (async function () {
                 const result = await collection.updateOne(filter, updateFilter);
 
                 /* if (!result.acknowledged) {
-                    return NoThrow.err(new Error(""))
+                    return NoThrow.error(new Error(""))
                 } */
 
                 return NoThrow.ok(result);
             } catch (error) {
                 if (error instanceof MongoError) {
-                    return NoThrow.err(error);
+                    return NoThrow.error(error);
                 }
 
                 if (error instanceof Error) {
-                    return NoThrow.err(error);
+                    return NoThrow.error(error);
                 }
 
-                return NoThrow.err(new Error("Unknown error"));
+                return NoThrow.error(new Error("Unknown error"));
             }
         },
     });

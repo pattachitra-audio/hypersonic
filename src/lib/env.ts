@@ -15,5 +15,5 @@ export const envPromise = (async function () {
         return NoThrow.ok(result.data);
     }
 
-    return NoThrow.err(result.error);
+    return NoThrow.error(result.error);
 })();

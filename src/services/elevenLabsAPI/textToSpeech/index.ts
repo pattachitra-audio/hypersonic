@@ -155,7 +155,7 @@ export async function textToSpeech(input: TextToSpeechInput) {
 
     if (!response.ok) {
         const errorText = await response.text();
-        return NoThrow.err(new Error(`ElevenLabs API error (${response.status}): ${errorText}`));
+        return NoThrow.error(new Error(`ElevenLabs API error (${response.status}): ${errorText}`));
     }
 
     // Return the audio data as ArrayBuffer

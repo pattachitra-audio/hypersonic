@@ -37,7 +37,7 @@ export async function history(input: RequestType) {
     const inputValidationResult = await RequestSchema.safeDecodeAsync(input);
 
     if (!inputValidationResult.success) {
-        return NoThrow.err(inputValidationResult.error);
+        return NoThrow.error(inputValidationResult.error);
     }
 
     const validatedInput = inputValidationResult.data;
@@ -57,7 +57,7 @@ export async function history(input: RequestType) {
             dispatcher: proxyAgentPool.get(validatedInput.proxyURL),
         });
     } catch (error) {
-        return NoThrow.err(error);
+        return NoThrow.error(error);
     }
 
     let rawData: unknown;
@@ -65,7 +65,7 @@ export async function history(input: RequestType) {
     try {
         rawData = await response.json();
     } catch (error) {
-        return NoThrow.err(error);
+        return NoThrow.error(error);
     }
 
     return NoThrow.fromZodResultType(await ResponseSchema.safeParseAsync(rawData));

@@ -18,6 +18,6 @@ export const dbClientPromise = (async function () {
         const mongoClientConnected = await mongoClient.connect();
         return NoThrow.ok(mongoClientConnected);
     } catch (err) {
-        return NoThrow.err(err as MongoError);
+        return NoThrow.error(err as MongoError);
     }
 })();

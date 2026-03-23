@@ -105,7 +105,7 @@ export async function listVoicesQuery(input: ListVoicesRequest) {
 
     if (!response.ok) {
         const errorText = await response.text();
-        // return NoThrow.err(new Error(`ElevenLabs API error (${response.status}): ${errorText}`));
+        // return NoThrow.error(new Error(`ElevenLabs API error (${response.status}): ${errorText}`));
         throw new Error(`ElevenLabs API error (${response.status}): ${errorText}`);
     }
 
@@ -114,14 +114,14 @@ export async function listVoicesQuery(input: ListVoicesRequest) {
     try {
         rawData = await response.json();
     } catch {
-        // return NoThrow.err(new Error(`JSON parse error...`));
+        // return NoThrow.error(new Error(`JSON parse error...`));
         throw new Error(`JSON parse error...`);
     }
 
     const result = await ListVoicesResponseSchema.safeParseAsync(rawData);
 
     if (!result.success) {
-        // return NoThrow.err(result.error);
+        // return NoThrow.error(result.error);
         throw result.error;
     }
 

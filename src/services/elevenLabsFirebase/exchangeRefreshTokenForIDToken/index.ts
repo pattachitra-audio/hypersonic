@@ -27,7 +27,7 @@ export async function exchangeRefreshTokenForIDToken(req: RequestType) {
             },
         });
     } catch (error) {
-        return NoThrow.err(error);
+        return NoThrow.error(error);
     }
 
     let json: unknown;
@@ -36,20 +36,20 @@ export async function exchangeRefreshTokenForIDToken(req: RequestType) {
         json = await response.json();
 
         if (response.status !== 200) {
-            return NoThrow.err(new Error("Response status !== 200", { cause: json }));
+            return NoThrow.error(new Error("Response status !== 200", { cause: json }));
         }
     } catch (error) {
         if (error instanceof SyntaxError) {
-            return NoThrow.err(error);
+            return NoThrow.error(error);
         }
 
-        return NoThrow.err(error);
+        return NoThrow.error(error);
     }
 
     const validatedDataResult = await ResponseSchema.safeParseAsync(json);
 
     if (!validatedDataResult.success) {
-        return NoThrow.err(validatedDataResult.error);
+        return NoThrow.error(validatedDataResult.error);
     }
 
     return NoThrow.ok(validatedDataResult.data);

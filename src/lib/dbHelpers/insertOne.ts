@@ -10,16 +10,16 @@ export async function insertOne<T extends Document>(document: OptionalUnlessRequ
                 } */
 
         return NoThrow.ok(result);
-        // return NoThrow.err(new Error("MongoDB 'insertOne' err"));
+        // return NoThrow.error(new Error("MongoDB 'insertOne' err"));
     } catch (error) {
         if (error instanceof MongoError) {
-            return NoThrow.err(error);
+            return NoThrow.error(error);
         }
 
         if (error instanceof Error) {
-            return NoThrow.err(error);
+            return NoThrow.error(error);
         }
 
-        return NoThrow.err(new Error("Unknown error"));
+        return NoThrow.error(new Error("Unknown error"));
     }
 }

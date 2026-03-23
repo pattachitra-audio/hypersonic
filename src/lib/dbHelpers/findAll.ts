@@ -8,13 +8,13 @@ export default async function findAll<T extends Document>(collection: Collection
         return NoThrow.ok(result);
     } catch (error) {
         if (error instanceof MongoError) {
-            return NoThrow.err(error);
+            return NoThrow.error(error);
         }
 
         if (error instanceof Error) {
-            return NoThrow.err(error);
+            return NoThrow.error(error);
         }
 
-        return NoThrow.err(new Error("Unknown error"));
+        return NoThrow.error(new Error("Unknown error"));
     }
 }

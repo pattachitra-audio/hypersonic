@@ -29,7 +29,7 @@ export async function decodeElevenLabsFirebaseJWTPayload(jwt: string) {
     const parts = jwt.split(".");
 
     if (parts.length !== 3) {
-        return NoThrow.err(
+        return NoThrow.error(
             new Error(
                 `Invalid jwt format; Expected '<header>.<payload>.<signature>', where 'header', 'payload', and 'signature' are base64 strings`,
             ),
@@ -42,7 +42,7 @@ export async function decodeElevenLabsFirebaseJWTPayload(jwt: string) {
     try {
         payloadString = atob(payloadBase64);
     } catch (error) {
-        return NoThrow.err(new Error("Error while decoding base64", { cause: error }));
+        return NoThrow.error(new Error("Error while decoding base64", { cause: error }));
     }
 
     let payloadObject: unknown;
@@ -50,13 +50,13 @@ export async function decodeElevenLabsFirebaseJWTPayload(jwt: string) {
     try {
         payloadObject = JSON.parse(payloadString);
     } catch (error) {
-        return NoThrow.err(new Error("Error while parsing (JSON) payload string", { cause: error }));
+        return NoThrow.error(new Error("Error while parsing (JSON) payload string", { cause: error }));
     }
 
     const payloadResult = await ElevenLabsFirebaseJWTSchema.safeParseAsync(payloadObject);
 
     if (!payloadResult.success) {
-        return NoThrow.err(payloadResult.error);
+        return NoThrow.error(payloadResult.error);
     }
 
     return NoThrow.ok(payloadResult.data);
