@@ -63,5 +63,5 @@ export async function authAccount(req: RequestType) {
         return NoThrow.error(validatedDataResult.error);
     }
 
-    return NoThrow.ok(validatedDataResult.data);
+    return NoThrow.success(validatedDataResult.data);
 }

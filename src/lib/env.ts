@@ -12,7 +12,7 @@ export const envPromise = (async function () {
     const result = await EnvSchema.safeParseAsync(process.env);
 
     if (result.success) {
-        return NoThrow.ok(result.data);
+        return NoThrow.success(result.data);
     }
 
     return NoThrow.error(result.error);

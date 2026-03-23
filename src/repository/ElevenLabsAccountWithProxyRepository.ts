@@ -28,7 +28,7 @@ export const ElevenLabsAccountWithProxyRepositoryPromise = (async function () {
     const db = dbClient.db("core");
     const collection = db.collection<ElevenLabsAccountWithProxyDocumentType>("ElevenLabsAccountWithProxy");
 
-    return NoThrow.ok({
+    return NoThrow.success({
         async findAllSummaries() {
             try {
                 const result = await collection
@@ -43,7 +43,7 @@ export const ElevenLabsAccountWithProxyRepositoryPromise = (async function () {
                     ])
                     .toArray();
 
-                return NoThrow.ok(result);
+                return NoThrow.success(result);
             } catch (error) {
                 if (error instanceof MongoError) {
                     return NoThrow.error(error);

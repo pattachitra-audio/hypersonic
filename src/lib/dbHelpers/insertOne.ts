@@ -6,10 +6,10 @@ export async function insertOne<T extends Document>(document: OptionalUnlessRequ
         const result = await collection.insertOne(document);
 
         /* if (result.acknowledged) {
-                    return NoThrow.ok(result.insertedId);
+                    return NoThrow.success(result.insertedId);
                 } */
 
-        return NoThrow.ok(result);
+        return NoThrow.success(result);
         // return NoThrow.error(new Error("MongoDB 'insertOne' err"));
     } catch (error) {
         if (error instanceof MongoError) {

@@ -80,7 +80,7 @@ export async function textToDialogue(input: RequestType) {
             return NoThrow.error(metadataResult.error);
         }
 
-        return NoThrow.ok({
+        return NoThrow.success({
             ...metadataResult.data,
             buffer,
         });

@@ -5,7 +5,7 @@ export default async function findAll<T extends Document>(collection: Collection
     try {
         const result = await collection.find().toArray();
         console.log("result:", result);
-        return NoThrow.ok(result);
+        return NoThrow.success(result);
     } catch (error) {
         if (error instanceof MongoError) {
             return NoThrow.error(error);

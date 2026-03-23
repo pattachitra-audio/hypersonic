@@ -10,5 +10,5 @@ export function parseProxyURL(proxyURL: string) {
         );
     }
 
-    return NoThrow.ok(proxyURL as ProxyURLType);
+    return NoThrow.success(proxyURL as ProxyURLType);
 }

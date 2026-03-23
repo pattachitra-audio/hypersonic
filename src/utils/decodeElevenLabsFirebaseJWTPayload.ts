@@ -59,5 +59,5 @@ export async function decodeElevenLabsFirebaseJWTPayload(jwt: string) {
         return NoThrow.error(payloadResult.error);
     }
 
-    return NoThrow.ok(payloadResult.data);
+    return NoThrow.success(payloadResult.data);
 }

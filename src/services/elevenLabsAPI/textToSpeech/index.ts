@@ -159,5 +159,5 @@ export async function textToSpeech(input: TextToSpeechInput) {
     }
 
     // Return the audio data as ArrayBuffer
-    return NoThrow.ok(await response.blob());
+    return NoThrow.success(await response.blob());
 }

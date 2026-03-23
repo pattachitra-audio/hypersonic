@@ -125,6 +125,6 @@ export async function listVoicesQuery(input: ListVoicesRequest) {
         throw result.error;
     }
 
-    // return NoThrow.ok(result.data);
+    // return NoThrow.success(result.data);
     return result.data;
 }

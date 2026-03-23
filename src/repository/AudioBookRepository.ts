@@ -40,7 +40,7 @@ export const AudioBookRepositoryPromise = (async function () {
     const db = dbClient.db("core");
     const collection = db.collection<AudioBookDocumentType>("AudioBook");
 
-    return NoThrow.ok({
+    return NoThrow.success({
         async findAllSummaries() {
             try {
                 const result = await collection
@@ -65,7 +65,7 @@ export const AudioBookRepositoryPromise = (async function () {
                     ])
                     .toArray();
 
-                return NoThrow.ok(result);
+                return NoThrow.success(result);
             } catch (error) {
                 if (error instanceof MongoError) {
                     return NoThrow.error(error);
@@ -86,7 +86,7 @@ export const AudioBookRepositoryPromise = (async function () {
                     return NoThrow.error(new Error("Data not found"));
                 }
 
-                return NoThrow.ok(result);
+                return NoThrow.success(result);
             } catch (error) {
                 if (error instanceof MongoError) {
                     return NoThrow.error(error);
@@ -112,7 +112,7 @@ export const AudioBookRepositoryPromise = (async function () {
                     return NoThrow.error(new Error("Data not found"));
                 } */
 
-                return NoThrow.ok(result);
+                return NoThrow.success(result);
             } catch (error) {
                 if (error instanceof MongoError) {
                     return NoThrow.error(error);
@@ -134,7 +134,7 @@ export const AudioBookRepositoryPromise = (async function () {
                     return NoThrow.error(new Error(""))
                 } */
 
-                return NoThrow.ok(result);
+                return NoThrow.success(result);
             } catch (error) {
                 if (error instanceof MongoError) {
                     return NoThrow.error(error);

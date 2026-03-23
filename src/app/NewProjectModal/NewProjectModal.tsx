@@ -58,7 +58,7 @@ async function validateFile(file: File) {
         return NoThrow.error(audioBookResult.error);
     }
 
-    return NoThrow.ok(audioBookResult.data);
+    return NoThrow.success(audioBookResult.data);
 }
 
 function FileUpload({

@@ -36,7 +36,7 @@ export async function setupFirebaseAuth() {
         return result;
     }
 
-    return NoThrow.ok({
+    return NoThrow.success({
         ...result.value,
         email,
         password,
