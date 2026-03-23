@@ -1,18 +1,20 @@
-// import { Err, Ok } from "neverthrow";
 import z from "zod";
 import { err, ok } from "neverthrow";
 import type { Result, ResultAsync } from "neverthrow";
 
 export const NoThrow = {
-    err,
-    ok,
+    error: err,
+    success: ok,
 
-    fromZodResultType<T>(result: z.ZodSafeParseResult<T>) {
+    fromZodResult<T>(result: z.ZodSafeParseResult<T>) {
         if (!result.success) {
-            return NoThrow.err(result.error);
+            return err(result.error);
         }
 
-        return NoThrow.ok(result.data);
+        return ok(result.data);
+    },
+    createError(message: string, options: ErrorOptions) {
+        return err(new Error(message, options));
     },
 };
 
