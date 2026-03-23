@@ -3,6 +3,7 @@ import { NoThrow } from "@/utils/NoThrow";
 
 const EnvSchema = z.object({
     MONGODB_URI: z.string(),
+    REDIS_URL: z.string(),
 });
 
 export type EnvSchemaType = z.infer<typeof EnvSchema>;
