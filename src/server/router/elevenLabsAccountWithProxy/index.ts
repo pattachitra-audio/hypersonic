@@ -1,7 +1,9 @@
+import { createProxyURL } from "@/brands/proxyURL";
+import { OWNER_ID } from "@/constants";
 import { ElevenLabsAccountWithProxyRepositoryPromise } from "@/repository/ElevenLabsAccountWithProxyRepository";
 import { ElevenLabsAccountWithProxySchema } from "@/schemas/ElevenLabsAccountWithProxy";
 import { tRPCProcedure, tRPCRouter } from "@/server/tRPC";
-import { getUser } from "@/services/elevenLabsAPI/user";
+import { signInWithPassword } from "@/services/elevenLabsFirebase/signInWithPassword";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { TRPCError } from "@trpc/server";
 import { omit } from "lodash";
@@ -20,28 +22,49 @@ export const elevenLabsAccountWithProxyRouter = tRPCRouter({
         }
 
         const ElevenLabsAccountWithProxyRepository = ElevenLabsAccountWithProxyRepositoryResult.value;
+        const proxyURLResult = createProxyURL(
+            input.proxy.username,
+            input.proxy.password,
+            input.proxy.host,
+            input.proxy.port,
+        );
 
-        const proxyURL =
-            `http://${input.proxy.username}:${input.proxy.password}@${input.proxy.host}:${input.proxy.port}` as const;
-
-        const elevenLabsAPIResult = await getUser({ apiKey: input.apiKey, proxyURL });
-
-        if (elevenLabsAPIResult.isErr()) {
-            const error = elevenLabsAPIResult.error;
-
+        if (proxyURLResult.isErr()) {
             throw new TRPCError({
                 code: "BAD_REQUEST",
-                message: getErrorMessage(error),
-                cause: error.cause,
+                message: `Failed to create proxyURL from username: '${input.proxy.username}', password: '${input.proxy.password}, host: '${input.proxy.host}', port: '${input.proxy.port}'`,
             });
         }
 
-        const elevenLabsAPIResponse = elevenLabsAPIResult.value;
+        const proxyURL = proxyURLResult.value;
+
+        const elevenLabsFirebaseSignInResult = await signInWithPassword({
+            email: input.email,
+            password: input.password,
+            proxyURL,
+        });
+
+        if (elevenLabsFirebaseSignInResult.isErr()) {
+            throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: getErrorMessage(elevenLabsFirebaseSignInResult.error),
+                cause: elevenLabsFirebaseSignInResult.error,
+            });
+        }
+
+        const refreshToken = elevenLabsFirebaseSignInResult.value.refreshToken;
+
+        const ownerID = OWNER_ID;
+        const elevenLabsUserID = elevenLabsFirebaseSignInResult.value.localID;
 
         const insertOneResult = await ElevenLabsAccountWithProxyRepository.insertOne({
-            _id: elevenLabsAPIResponse.userID,
+            ownerID,
+            _id: elevenLabsUserID,
             ...omit(input, "proxy"),
             proxyURL,
+            firebaseAuthCreds: {
+                refreshToken,
+            },
         });
 
         if (insertOneResult.isErr()) {
@@ -51,7 +74,7 @@ export const elevenLabsAccountWithProxyRouter = tRPCRouter({
             if (error instanceof MongoError && error.code === 11000) {
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `User ID: ${elevenLabsAPIResponse.userID} already present`,
+                    message: `ElevenLabs userID '${elevenLabsUserID}' already present`,
                     cause: error.cause,
                 });
             }
