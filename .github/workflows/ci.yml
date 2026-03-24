@@ -16,6 +16,10 @@ jobs:
         needs: check_formatting
         uses: ./.github/workflows/lint.yml
 
+    type_check:
+        needs: lint
+        uses: ./.github/workflows/type_check.yml
+
     unit_test:
         needs: lint
         uses: ./.github/workflows/unit_test.yml
