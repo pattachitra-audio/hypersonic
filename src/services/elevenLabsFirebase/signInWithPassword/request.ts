@@ -1,7 +1,7 @@
-import { ProxyURLType } from "@/schemas/ProxyURL";
+import { ProxyURLBrand } from "@/brands/proxyURL";
 
 export type RequestType = {
     email: string;
     password: string;
-    proxyURL: ProxyURLType;
+    proxyURL: ProxyURLBrand;
 };
