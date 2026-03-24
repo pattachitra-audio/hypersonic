@@ -10,7 +10,7 @@ import { omit } from "lodash";
 import { MongoError } from "mongodb";
 
 export const elevenLabsAccountWithProxyRouter = tRPCRouter({
-    create: tRPCProcedure.input(ElevenLabsAccountWithProxySchema).mutation(async ({ input }) => {
+    add: tRPCProcedure.input(ElevenLabsAccountWithProxySchema).mutation(async ({ input }) => {
         const ElevenLabsAccountWithProxyRepositoryResult = await ElevenLabsAccountWithProxyRepositoryPromise;
 
         if (ElevenLabsAccountWithProxyRepositoryResult.isErr()) {
