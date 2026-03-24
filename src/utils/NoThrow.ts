@@ -13,7 +13,7 @@ export const NoThrow = {
 
         return ok(result.data);
     },
-    createError(message: string, options: ErrorOptions) {
+    createError(message: string, options?: ErrorOptions) {
         return err(new Error(message, options));
     },
 };
