@@ -5,12 +5,11 @@ export const ResponseSchema = z
         idToken: z.string(),
         email: z.email(),
         refreshToken: z.string(),
-        expiresIn: z.string(),
+        expiresIn: z.coerce.number(),
         localId: z.string(),
         registered: z.boolean(),
     })
-    .transform(({ localId: localID, expiresIn, ...rest }) => ({
+    .transform(({ localId: localID, ...rest }) => ({
         localID,
-        expiresIn: parseInt(expiresIn),
         ...rest,
     }));
