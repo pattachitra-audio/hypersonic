@@ -26,7 +26,7 @@ export async function signInWithPassword(req: RequestType) {
             dispatcher: proxyAgentPool.get(req.proxyURL),
         });
     } catch (error) {
-        return NoThrow.error(error);
+        return NoThrow.createError(`Error fetching ${url}`, { cause: error });
     }
 
     let json: unknown;
@@ -42,7 +42,7 @@ export async function signInWithPassword(req: RequestType) {
             return NoThrow.error(error);
         }
 
-        return NoThrow.error(error);
+        return NoThrow.createError("Error parsing json", { cause: error });
     }
 
     const validatedDataResult = await ResponseSchema.safeParseAsync(json);
