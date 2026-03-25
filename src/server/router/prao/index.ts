@@ -67,8 +67,11 @@ export const praoRouter = tRPCRouter({
                 }),
             ),
         );
+        
+        const isError = idTokenPromises.reduce((idTokenResult => idTokenResult.isErr()), false);
+        const idTokens = idTokenPromises.map(idTokenResult => )
 
-        // const promises = accounts.map(account => user({proxyURL: account.proxyURL, bearerToken: account.firebaseAuthCreds.})
+        const userInfoPromises = accounts.map(account => user({proxyURL: account.proxyURL, bearerToken: account.firebaseAuthCreds})
 
         return;
     }),
