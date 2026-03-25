@@ -3,8 +3,8 @@ import { NoThrow } from "@/utils/NoThrow";
 import { ELEVEN_LABS_API_BASE_URL } from "../constants";
 import { fetch as undiciFetch, Response } from "undici";
 
-import { ElevenLabsAccountWithProxyDocumentType } from "@/repository/ElevenLabsAccountWithProxyRepository";
 import { proxyAgentPool } from "@/lib/proxyAgentPool";
+import { ProxyURLBrand } from "@/brands/proxyURL";
 
 const SubscriptionCurrencySchema = z.enum(["usd", "eur", "inr"]).nullable();
 const SubscriptionStatusSchema = z.enum(["trialing", "active", "incomplete", "past_due", "free", "free_disabled"]);
@@ -107,8 +107,10 @@ export async function getUser({
     apiKey,
     proxyURL,
 }: {
-    apiKey: ElevenLabsAccountWithProxyDocumentType["apiKey"];
-    proxyURL: ElevenLabsAccountWithProxyDocumentType["proxyURL"];
+    // apiKey: ElevenLabsAccountWithProxyDocumentType["apiKey"];
+    apiKey: string;
+    // proxyURL: ElevenLabsAccountWithProxyDocumentType["proxyURL"];
+    proxyURL: ProxyURLBrand;
 }) {
     const url = `${ELEVEN_LABS_API_BASE_URL}/user`;
     let response: Response;
