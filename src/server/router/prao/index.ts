@@ -1,4 +1,5 @@
 import { OWNER_ID } from "@/constants";
+import findAll from "@/lib/dbHelpers/findAll";
 import { insertOne } from "@/lib/dbHelpers/insertOne";
 import { ElevenLabsAccountWithProxyRepositoryPromise } from "@/repository/ElevenLabsAccountWithProxyRepository";
 import { PRAOSessionRepositoryPromise } from "@/repository/PRAOSession";
@@ -23,16 +24,16 @@ export const praoRouter = tRPCRouter({
         const ElevenLabsAccountWithProxyRepository = ElevenLabsAccountWithProxyRepositoryResult.value;
 
         const ownerID = OWNER_ID;
-        const findAllByUserIDResult = await ElevenLabsAccountWithProxyRepository.findAllByOwnerID(ownerID);
+        const findAllByOwnerIDResult = await ElevenLabsAccountWithProxyRepository.findAllByOwnerID(ownerID);
 
-        if (findAllByUserIDResult.isErr()) {
+        if (findAllByOwnerIDResult.isErr()) {
             throw new TRPCError({
                 code: "NOT_FOUND",
                 message: `Failed to find all elevenLabs accounts for current ownerID`,
             });
         }
 
-        const accounts = findAllByUserIDResult.value;
+        const accounts = findAllByOwnerIDResult.value;
         const accountIDs = accounts.map((account) => account._id);
 
         const PRAOSessionRepositoryResult = await PRAOSessionRepositoryPromise;
