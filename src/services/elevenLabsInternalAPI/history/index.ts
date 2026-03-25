@@ -68,5 +68,5 @@ export async function history(input: RequestType) {
         return NoThrow.error(error);
     }
 
-    return NoThrow.fromZodResultType(await ResponseSchema.safeParseAsync(rawData));
+    return NoThrow.fromZodResult(await ResponseSchema.safeParseAsync(rawData));
 }
