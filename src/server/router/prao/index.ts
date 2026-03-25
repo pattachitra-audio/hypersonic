@@ -1,4 +1,4 @@
-import { OWNER_ID } from "@/constants";
+import { OWNER_ID } from "@/backendConstants";
 import findAll from "@/lib/dbHelpers/findAll";
 import { insertOne } from "@/lib/dbHelpers/insertOne";
 import { ElevenLabsAccountWithProxyRepositoryPromise } from "@/repository/ElevenLabsAccountWithProxyRepository";

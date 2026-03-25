@@ -1,5 +1,5 @@
+import { OWNER_ID } from "@/backendConstants";
 import { createProxyURL } from "@/brands/proxyURL";
-import { OWNER_ID } from "@/constants";
 import { ElevenLabsAccountWithProxyRepositoryPromise } from "@/repository/ElevenLabsAccountWithProxyRepository";
 import { ElevenLabsAccountWithProxySchema } from "@/schemas/ElevenLabsAccountWithProxy";
 import { tRPCProcedure, tRPCRouter } from "@/server/tRPC";
