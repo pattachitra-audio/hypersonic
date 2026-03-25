@@ -1,5 +1,7 @@
 import { Brand } from "@/utils/brand";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import { NoThrow } from "@/utils/NoThrow";
+import z from "zod";
 
 export type ProxyURLBrand = Brand<`http://${string}:${string}@${string}:${string}`, "ProxyURL">;
 
@@ -37,3 +39,14 @@ export function parseProxyURL(proxyURL: string) {
 export function createProxyURL(username: string, password: string, host: string, port: number) {
     return NoThrow.success(`http://${username}:${password}@${host}:${port}` as ProxyURLBrand);
 }
+
+export const ProxyURLSchema = z.string().transform((value, context) => {
+    const result = parseProxyURL(value);
+
+    if (result.isErr()) {
+        context.addIssue(getErrorMessage(result.error));
+        return z.NEVER;
+    }
+
+    return result.value;
+});
