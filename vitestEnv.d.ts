@@ -1,3 +1,4 @@
+import type { ProxyURLBrand } from "@/brands/proxyURL";
 import "vitest";
 
 declare module "vitest" {
@@ -5,7 +6,7 @@ declare module "vitest" {
         firebaseAuth: {
             email: string;
             password: string;
-            proxyURL: `http://${string}:${string}@${string}:${string}`;
+            proxyURL: ProxyURLBrand;
             idToken: string;
             refreshToken: string;
             registered: boolean;
