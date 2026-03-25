@@ -11,7 +11,8 @@ export type ElevenLabsAccountWithProxyDocumentType = Prettify<
         _id: string;
         proxyURL: ProxyURLBrand;
         ownerID: ObjectId;
-    }
+    },
+    ProxyURLBrand
 >;
 
 export type ElevenLabsAccountWithProxySummaryDocumentType = Prettify<

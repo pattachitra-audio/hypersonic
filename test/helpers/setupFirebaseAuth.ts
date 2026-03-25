@@ -1,6 +1,6 @@
 import { NoThrow } from "@/utils/NoThrow";
 import { signInWithPassword } from "@/services/elevenLabsFirebase/signInWithPassword";
-import { parseProxyURL } from "@/utils/parseProxyURL";
+import { parseProxyURL } from "@/brands/proxyURL";
 
 export async function setupFirebaseAuth() {
     const email = process.env.TEST_EMAIL;

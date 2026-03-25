@@ -1,4 +1,4 @@
-import { ProxyURLSchema } from "@/schemas/ProxyURL";
+import { ProxyURLSchema } from "@/brands/proxyURL";
 import z from "zod";
 
 export const RequestSchema = z.object({

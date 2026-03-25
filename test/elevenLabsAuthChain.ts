@@ -1,6 +1,6 @@
 import { describe, it } from "vitest";
 import { signInWithPassword } from "@/services/elevenLabsFirebase/signInWithPassword";
-import { parseProxyURL } from "@/utils/parseProxyURL";
+import { parseProxyURL } from "@/brands/proxyURL";
 
 describe("elevenLabsAuthChain", async () => {
     it("signs in, refreshes token, hits internal API", async () => {

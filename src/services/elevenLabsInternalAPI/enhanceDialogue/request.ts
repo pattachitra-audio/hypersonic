@@ -1,7 +1,7 @@
-import { ProxyURLType } from "@/schemas/ProxyURL";
+import { ProxyURLBrand } from "@/brands/proxyURL";
 
 export type RequestType = {
-    proxyURL: ProxyURLType;
+    proxyURL: ProxyURLBrand;
     bearerToken: string;
 
     dialogueBlocks: string[];

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { signInWithPassword } from "@/services/elevenLabsFirebase/signInWithPassword";
-import { parseProxyURL } from "@/utils/parseProxyURL";
 import { decodeElevenLabsFirebaseJWTPayload } from "@/utils/decodeElevenLabsFirebaseJWTPayload";
+import { parseProxyURL } from "@/brands/proxyURL";
 
 describe("signInWithPassword", async () => {
     it("returns ID token and refresh token for valid credentials", async () => {

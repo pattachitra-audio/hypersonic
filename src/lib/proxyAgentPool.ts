@@ -1,4 +1,4 @@
-import { ProxyURLType } from "@/schemas/ProxyURL";
+import { ProxyURLBrand } from "@/brands/proxyURL";
 import { ProxyAgent } from "undici";
 
 class ProxyAgentPool {
@@ -8,7 +8,7 @@ class ProxyAgentPool {
         this.proxyURLToAgent = new Map<string, ProxyAgent>();
     }
 
-    get(proxyURL: ProxyURLType) {
+    get(proxyURL: ProxyURLBrand) {
         const proxyAgent = this.proxyURLToAgent.get(proxyURL);
 
         if (proxyAgent) {
@@ -25,7 +25,7 @@ class ProxyAgentPool {
         return newProxyAgent;
     }
 
-    async close(proxyURL: ProxyURLType) {
+    async close(proxyURL: ProxyURLBrand) {
         const proxyAgent = this.proxyURLToAgent.get(proxyURL);
 
         if (!proxyAgent) {
