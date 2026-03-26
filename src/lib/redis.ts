@@ -1,23 +1,15 @@
-import { NoThrow } from "@/utils/NoThrow";
+import { ResultAsync } from "neverthrow";
 import { envPromise } from "./env";
 import { createClient } from "redis";
 
-export const redisClientPromise = (async function () {
-    const envResult = await envPromise;
+export const redisClientPromise = (function () {
+    return envPromise.andThen((env) => {
+        const redisClient = createClient({
+            url: env.REDIS_URL,
+        });
 
-    if (envResult.isErr()) {
-        return envResult;
-    }
-
-    const env = envResult.value;
-
-    const redisClient = createClient({
-        url: env.REDIS_URL,
+        return ResultAsync.fromPromise(redisClient.connect(), (error: unknown) => {
+            return new Error("Redis connection error", { cause: error });
+        });
     });
-
-    try {
-        return await redisClient.connect();
-    } catch (error) {
-        return NoThrow.createError("Redis connection error", { cause: error });
-    }
 })();

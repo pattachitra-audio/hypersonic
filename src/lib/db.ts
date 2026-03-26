@@ -1,23 +1,18 @@
 import { MongoClient, MongoError } from "mongodb";
 import { packageJSON } from "./packageJSON";
 import { envPromise } from "./env";
-import { NoThrow } from "@/utils/NoThrow";
+import { ResultAsync } from "neverthrow";
 
-export const dbClientPromise = (async function () {
-    const envResult = await envPromise;
+export const dbClientPromise = (function () {
+    return envPromise.andThen((env) => {
+        const mongoClient = new MongoClient(env.MONGODB_URI, { appName: packageJSON.name });
 
-    if (envResult.isErr()) {
-        return envResult;
-    }
+        return ResultAsync.fromPromise(mongoClient.connect(), (error) => {
+            if (error instanceof MongoError || error instanceof Error) {
+                return error;
+            }
 
-    const env = envResult.value;
-
-    const mongoClient = new MongoClient(env.MONGODB_URI, { appName: packageJSON.name });
-
-    try {
-        const mongoClientConnected = await mongoClient.connect();
-        return NoThrow.success(mongoClientConnected);
-    } catch (err) {
-        return NoThrow.error(err as MongoError);
-    }
+            return `An unknown error occured while connecting to MongoDB`;
+        });
+    });
 })();

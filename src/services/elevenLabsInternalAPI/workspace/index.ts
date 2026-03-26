@@ -1,36 +1,23 @@
-import { fetch as undiciFetch, Response } from "undici";
 import { ELEVEN_LABS_INTERNAL_API_BASE_URL } from "../constants";
 import { RequestType } from "./request";
-import { NoThrow } from "@/utils/NoThrow";
 import { proxyAgentPool } from "@/lib/proxyAgentPool";
 import { requestHeaders } from "@/requestHeaders";
 import { ResponseSchema } from "./response";
+import { undiciFetch } from "@/utils/undiciFetch";
+import { parseResponseJSON } from "@/utils/parseResponseJSON";
+import { zodParse } from "@/utils/zodParse";
 
-export async function workspace(req: RequestType) {
+export function workspace(input: RequestType) {
     const url = `${ELEVEN_LABS_INTERNAL_API_BASE_URL}/workspace`;
 
-    let response: Response;
-
-    try {
-        response = await undiciFetch(url, {
-            headers: {
-                ...requestHeaders,
-                "Cache-Control": "no-cache",
-                Authorization: `Bearer ${req.bearerToken}`,
-            },
-            dispatcher: proxyAgentPool.get(req.proxyURL),
-        });
-    } catch (error) {
-        return NoThrow.error(error);
-    }
-
-    let rawData: unknown;
-
-    try {
-        rawData = await response.json();
-    } catch (error) {
-        return NoThrow.error(error);
-    }
-
-    return NoThrow.fromZodResult(await ResponseSchema.safeParseAsync(rawData));
+    return undiciFetch(url, {
+        headers: {
+            ...requestHeaders,
+            "Cache-Control": "no-cache",
+            Authorization: `Bearer ${input.bearerToken}`,
+        },
+        dispatcher: proxyAgentPool.get(input.proxyURL),
+    })
+        .andThen((response) => parseResponseJSON(response))
+        .andThen((obj) => zodParse(ResponseSchema, obj));
 }
