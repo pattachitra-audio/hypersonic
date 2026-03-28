@@ -12,7 +12,7 @@ export const dbClientPromise = (function () {
                 return error;
             }
 
-            return `An unknown error occured while connecting to MongoDB`;
+            return `An unknown error occured while connecting to db`;
         });
     });
 })();
