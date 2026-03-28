@@ -6,4 +6,6 @@ export const requestHeaders = {
     "Sec-Fetch-Dest": "empty",
     "Sec-Fetch-Mode": "cors",
     "Sec-Fetch-Site": "same-origin",
+    Origin: "https://elevenlabs.io",
+    Referer: "https://elevenlabs.io/",
 };
