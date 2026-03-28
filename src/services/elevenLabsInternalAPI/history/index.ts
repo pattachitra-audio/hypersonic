@@ -1,11 +1,12 @@
-import { fetch as undiciFetch, Response } from "undici";
 import z from "zod";
 import { ELEVEN_LABS_INTERNAL_API_BASE_URL } from "../constants";
 import { RequestSchema, RequestType } from "./request";
-import { NoThrow } from "@/utils/NoThrow";
 import { proxyAgentPool } from "@/lib/proxyAgentPool";
 import { requestHeaders } from "@/requestHeaders";
 import { ResponseSchema } from "./response";
+import { zodParse } from "@/utils/zodParse";
+import { parseResponseJSON } from "@/utils/parseResponseJSON";
+import { undiciFetch } from "@/utils/undiciFetch";
 
 function prepareQueryParams(validatedInput: z.output<typeof RequestSchema>) {
     const queryParams = new URLSearchParams();
@@ -34,39 +35,20 @@ function prepareQueryParams(validatedInput: z.output<typeof RequestSchema>) {
 }
 
 export async function history(input: RequestType) {
-    const inputValidationResult = await RequestSchema.safeDecodeAsync(input);
+    return zodParse(RequestSchema, input)
+        .asyncAndThen((validatedInput) => {
+            const url = `${ELEVEN_LABS_INTERNAL_API_BASE_URL}/history`;
+            const queryParams = prepareQueryParams(validatedInput);
 
-    if (!inputValidationResult.success) {
-        return NoThrow.error(inputValidationResult.error);
-    }
-
-    const validatedInput = inputValidationResult.data;
-
-    const url = `${ELEVEN_LABS_INTERNAL_API_BASE_URL}/history`;
-    let response: Response;
-
-    const queryParams = prepareQueryParams(validatedInput);
-
-    try {
-        response = await undiciFetch(`${url}?${queryParams.toString()}`, {
-            headers: {
-                ...requestHeaders,
-                "Cache-Control": "no-cache",
-                Authorization: `Bearer ${validatedInput.bearerToken}`,
-            },
-            dispatcher: proxyAgentPool.get(validatedInput.proxyURL),
-        });
-    } catch (error) {
-        return NoThrow.error(error);
-    }
-
-    let rawData: unknown;
-
-    try {
-        rawData = await response.json();
-    } catch (error) {
-        return NoThrow.error(error);
-    }
-
-    return NoThrow.fromZodResult(await ResponseSchema.safeParseAsync(rawData));
+            return undiciFetch(`${url}?${queryParams.toString()}`, {
+                headers: {
+                    ...requestHeaders,
+                    "Cache-Control": "no-cache",
+                    Authorization: `Bearer ${validatedInput.bearerToken}`,
+                },
+                dispatcher: proxyAgentPool.get(validatedInput.proxyURL),
+            });
+        })
+        .andThen((response) => parseResponseJSON(response))
+        .andThen((obj) => zodParse(ResponseSchema, obj));
 }

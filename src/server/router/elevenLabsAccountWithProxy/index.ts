@@ -17,7 +17,7 @@ export const elevenLabsAccountWithProxyRouter = tRPCRouter({
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
                 message: "Failed to init 'ElevenLabsAccountWithProxyRepository'",
-                cause: ElevenLabsAccountWithProxyRepositoryResult.error.cause,
+                cause: ElevenLabsAccountWithProxyRepositoryResult.error,
             });
         }
 
@@ -96,13 +96,15 @@ export const elevenLabsAccountWithProxyRouter = tRPCRouter({
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
                 message: "Failed to init 'ElevenLabsAccountWithProxyRepository'",
-                cause: ElevenLabsAccountWithProxyRepositoryResult.error.cause,
+                cause: ElevenLabsAccountWithProxyRepositoryResult.error,
             });
         }
 
         const ElevenLabsAccountWithProxyRepository = ElevenLabsAccountWithProxyRepositoryResult.value;
 
-        const findAllResult = await ElevenLabsAccountWithProxyRepository.findAllSummaries();
+        const ownerID = OWNER_ID;
+
+        const findAllResult = await ElevenLabsAccountWithProxyRepository.findAllSummariesByOwnerID(ownerID);
 
         if (findAllResult.isErr()) {
             throw new TRPCError({

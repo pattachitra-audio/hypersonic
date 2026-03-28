@@ -5,7 +5,12 @@ type JSONParseErrorTypes = SyntaxError | TypeError | DOMException | Error;
 
 export function parseResponseJSON(response: Response): ResultAsync<unknown, JSONParseErrorTypes> {
     return ResultAsync.fromPromise(response.json(), (error) => {
-        if (error instanceof SyntaxError || error instanceof TypeError || error instanceof DOMException) {
+        if (
+            error instanceof SyntaxError ||
+            error instanceof TypeError ||
+            error instanceof DOMException ||
+            error instanceof Error
+        ) {
             return error;
         }
 

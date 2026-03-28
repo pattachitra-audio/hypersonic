@@ -14,7 +14,7 @@ export const projectRouter = tRPCRouter({
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
                 message: "Failed to init 'AudioBookRepository'",
-                cause: AudioBookRepositoryResult.error.cause,
+                // cause: AudioBookRepositoryResult.error.cause,
             });
         }
 
@@ -44,7 +44,7 @@ export const projectRouter = tRPCRouter({
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
                 message: "Failed to init 'AudioBookRepository'",
-                cause: AudioBookRepositoryResult.error.cause,
+                // cause: AudioBookRepositoryResult.error.cause,
             });
         }
 
@@ -68,7 +68,7 @@ export const projectRouter = tRPCRouter({
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
                 message: "Failed to init 'AudioBookRepository'",
-                cause: AudioBookRepositoryResult.error.cause,
+                // cause: AudioBookRepositoryResult.error.cause,
             });
         }
 
@@ -76,11 +76,11 @@ export const projectRouter = tRPCRouter({
         const id = ObjectId.createFromHexString(input.id);
         const findOneResult = await AudioBookRepository.findOneByID(id);
 
-        if (findOneResult.isErr()) {
+        if (findOneResult.isErr() || findOneResult.value === null) {
             throw new TRPCError({
                 code: "NOT_FOUND",
                 message: `No 'active' project with ID: ${input.id} found in database`,
-                cause: findOneResult.error.cause,
+                // cause: findOneResult.error.cause,
             });
         }
 
@@ -116,7 +116,7 @@ export const projectRouter = tRPCRouter({
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
                 message: "Failed to init 'AudioBookRepository'",
-                cause: AudioBookRepositoryResult.error.cause,
+                // cause: AudioBookRepositoryResult.error.cause,
             });
         }
 
@@ -152,7 +152,7 @@ export const projectRouter = tRPCRouter({
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
                 message: "Failed to init 'AudioBookRepository'",
-                cause: AudioBookRepositoryResult.error.cause,
+                // cause: AudioBookRepositoryResult.error.cause,
             });
         }
 

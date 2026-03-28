@@ -1,25 +1,7 @@
-import { NoThrow } from "@/utils/NoThrow";
-import { Collection, Document, MongoError, OptionalUnlessRequiredId } from "mongodb";
+import { Collection, Document, OptionalUnlessRequiredId } from "mongodb";
+import { ResultAsync } from "neverthrow";
+import { handleMongoError } from "./handleMongoError";
 
-export async function insertOne<T extends Document>(document: OptionalUnlessRequiredId<T>, collection: Collection<T>) {
-    try {
-        const result = await collection.insertOne(document);
-
-        /* if (result.acknowledged) {
-                    return NoThrow.success(result.insertedId);
-                } */
-
-        return NoThrow.success(result);
-        // return NoThrow.error(new Error("MongoDB 'insertOne' err"));
-    } catch (error) {
-        if (error instanceof MongoError) {
-            return NoThrow.error(error);
-        }
-
-        if (error instanceof Error) {
-            return NoThrow.error(error);
-        }
-
-        return NoThrow.error(new Error("Unknown error"));
-    }
+export function insertOne<T extends Document>(document: OptionalUnlessRequiredId<T>, collection: Collection<T>) {
+    return ResultAsync.fromPromise(collection.insertOne(document), handleMongoError);
 }

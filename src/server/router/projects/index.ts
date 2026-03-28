@@ -27,7 +27,7 @@ export const projectsRouter = tRPCRouter({
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
                 message: "Failed to init 'AudioBookModel'",
-                cause: AudioBookRepositoryResult.error.cause,
+                // cause: AudioBookRepositoryResult.error.cause,
             });
         }
 

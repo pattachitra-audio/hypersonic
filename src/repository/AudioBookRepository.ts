@@ -1,8 +1,9 @@
 import { dbClientPromise } from "@/lib/db";
+import { handleMongoError } from "@/lib/dbHelpers/handleMongoError";
 import { insertOne } from "@/lib/dbHelpers/insertOne";
 import { AudioBook } from "@/schemas/AudioBook";
-import { NoThrow } from "@/utils/NoThrow";
-import { Filter, MongoError, ObjectId, UpdateFilter } from "mongodb";
+import { Filter, ObjectId, UpdateFilter } from "mongodb";
+import { ok, ResultAsync } from "neverthrow";
 
 export type AudioBookDocumentType = AudioBook & {
     createdAt: Date;
@@ -28,124 +29,53 @@ export type AudioBookSummaryDocumentType = {
     status: "ACTIVE" | "ARCHIVED" | "DELETED";
 };
 
-export const AudioBookRepositoryPromise = (async function () {
-    const dbClientResult = await dbClientPromise;
+export const AudioBookRepositoryPromise = (function () {
+    return dbClientPromise.andThen((dbClient) => {
+        const db = dbClient.db("core");
+        const collection = db.collection<AudioBookDocumentType>("AudioBook");
 
-    if (dbClientResult.isErr()) {
-        return dbClientResult;
-    }
-
-    const dbClient = dbClientResult.value;
-
-    const db = dbClient.db("core");
-    const collection = db.collection<AudioBookDocumentType>("AudioBook");
-
-    return NoThrow.success({
-        async findAllSummaries() {
-            try {
-                const result = await collection
-                    .aggregate<AudioBookSummaryDocumentType>([
-                        {
-                            $project: {
-                                id: "$_id",
-                                _id: 0,
-                                name: 1,
-                                plot: 1,
-                                genre: 1,
-                                numCharacters: { $size: "$characters" },
-                                numEpisodes: { $size: "$episodes" },
-                                numScenes: { $size: "$scenes" },
-                                numDialouges: { $size: "$dialogues" },
-                                createdAt: 1,
-                                updatedAt: 1,
-                                lastAccessedAt: 1,
-                                status: 1,
+        return ok({
+            findAllSummaries() {
+                return ResultAsync.fromPromise(
+                    collection
+                        .aggregate<AudioBookSummaryDocumentType>([
+                            {
+                                $project: {
+                                    id: "$_id",
+                                    _id: 0,
+                                    name: 1,
+                                    plot: 1,
+                                    genre: 1,
+                                    numCharacters: { $size: "$characters" },
+                                    numEpisodes: { $size: "$episodes" },
+                                    numScenes: { $size: "$scenes" },
+                                    numDialouges: { $size: "$dialogues" },
+                                    createdAt: 1,
+                                    updatedAt: 1,
+                                    lastAccessedAt: 1,
+                                    status: 1,
+                                },
                             },
-                        },
-                    ])
-                    .toArray();
+                        ])
+                        .toArray(),
+                    handleMongoError,
+                );
+            },
+            findOneByID(id: ObjectId) {
+                return ResultAsync.fromPromise(collection.findOne({ _id: id, status: "ACTIVE" }), handleMongoError);
+            },
 
-                return NoThrow.success(result);
-            } catch (error) {
-                if (error instanceof MongoError) {
-                    return NoThrow.error(error);
-                }
+            insertOne(document: AudioBookDocumentType) {
+                return insertOne(document, collection);
+            },
 
-                if (error instanceof Error) {
-                    return NoThrow.error(error);
-                }
+            replaceOneByID(id: ObjectId, document: AudioBookDocumentType) {
+                return ResultAsync.fromPromise(collection.replaceOne({ _id: id }, document), handleMongoError);
+            },
 
-                return NoThrow.error(new Error("Unknown error"));
-            }
-        },
-        async findOneByID(id: ObjectId) {
-            try {
-                const result = await collection.findOne({ _id: id, status: "ACTIVE" });
-
-                if (!result) {
-                    return NoThrow.error(new Error("Data not found"));
-                }
-
-                return NoThrow.success(result);
-            } catch (error) {
-                if (error instanceof MongoError) {
-                    return NoThrow.error(error);
-                }
-
-                if (error instanceof Error) {
-                    return NoThrow.error(error);
-                }
-
-                return NoThrow.error(new Error("Unknown error"));
-            }
-        },
-
-        async insertOne(document: AudioBookDocumentType) {
-            return insertOne(document, collection);
-        },
-
-        async replaceOneByID(id: ObjectId, document: AudioBookDocumentType) {
-            try {
-                const result = await collection.replaceOne({ _id: id }, document);
-
-                /* if (!result.acknowledged) {
-                    return NoThrow.error(new Error("Data not found"));
-                } */
-
-                return NoThrow.success(result);
-            } catch (error) {
-                if (error instanceof MongoError) {
-                    return NoThrow.error(error);
-                }
-
-                if (error instanceof Error) {
-                    return NoThrow.error(error);
-                }
-
-                return NoThrow.error(new Error("Unknown error"));
-            }
-        },
-
-        async updateOne(filter: Filter<AudioBookDocumentType>, updateFilter: UpdateFilter<AudioBookDocumentType>) {
-            try {
-                const result = await collection.updateOne(filter, updateFilter);
-
-                /* if (!result.acknowledged) {
-                    return NoThrow.error(new Error(""))
-                } */
-
-                return NoThrow.success(result);
-            } catch (error) {
-                if (error instanceof MongoError) {
-                    return NoThrow.error(error);
-                }
-
-                if (error instanceof Error) {
-                    return NoThrow.error(error);
-                }
-
-                return NoThrow.error(new Error("Unknown error"));
-            }
-        },
+            updateOne(filter: Filter<AudioBookDocumentType>, updateFilter: UpdateFilter<AudioBookDocumentType>) {
+                return ResultAsync.fromPromise(collection.updateOne(filter, updateFilter), handleMongoError);
+            },
+        });
     });
 })();
