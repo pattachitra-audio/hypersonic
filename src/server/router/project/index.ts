@@ -53,9 +53,16 @@ export const projectRouter = tRPCRouter({
 
         if (findOneResult.isErr()) {
             throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: `Error querying 'AudioBookRepository'`,
+                cause: findOneResult.error,
+            });
+        }
+
+        if (findOneResult.value === null) {
+            throw new TRPCError({
                 code: "NOT_FOUND",
                 message: `No 'active' project with ID: '${input}' found in database`,
-                cause: findOneResult.error.cause,
             });
         }
 
