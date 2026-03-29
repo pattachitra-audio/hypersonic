@@ -13,6 +13,12 @@ const eslintConfig = defineConfig([
         "coverage/**",
         "tmp/**",
     ]),
+
+    {
+        rules: {
+            "@typescript-eslint/no-this-alias": "off",
+        },
+    },
 ]);
 
 export default eslintConfig;
