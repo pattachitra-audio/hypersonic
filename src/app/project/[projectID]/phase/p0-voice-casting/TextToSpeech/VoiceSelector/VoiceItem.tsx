@@ -1,13 +1,15 @@
 import { Button } from "@/components/ui/button";
+import z from "zod";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { VoiceResponse } from "@/services/elevenLabsAPI/voices/listVoices/response";
+// import { VoiceResponse } from "@/services/elevenLabsAPI/voices/listVoices/response";
 import { cn } from "@/lib/utils";
 import { Copy, History, Link2, MoreHorizontal, Pause, Play } from "lucide-react";
+import { VoiceSchema } from "@/services/elevenLabsInternalAPI/sharedVoices/output";
 
 export function VoiceItem({
     voice,
@@ -16,7 +18,8 @@ export function VoiceItem({
     onPlayToggle,
     onSelect,
 }: {
-    voice: VoiceResponse;
+    // voice: VoiceResponse;
+    voice: z.output<typeof VoiceSchema>;
     isPlaying: boolean;
     isSelected: boolean;
     onPlayToggle: () => void;
