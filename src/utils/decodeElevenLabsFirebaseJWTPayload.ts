@@ -1,9 +1,9 @@
 import z from "zod";
 import { err } from "neverthrow";
 import { decodeBase64 } from "./decodeBase64";
-import { parseUTF8String } from "./parseUTF8String";
 import { parseJSON } from "./parseJSON";
 import { zodParse } from "./zodParse";
+import { parseStringFromBuffer } from "./parseStringFromBuffer";
 
 const ElevenLabsFirebaseJWTSchema = z
     .object({
@@ -40,7 +40,7 @@ export function decodeElevenLabsFirebaseJWTPayload(jwt: string) {
 
     const payloadBase64 = parts[1];
     return decodeBase64(payloadBase64)
-        .andThen(parseUTF8String)
+        .andThen(parseStringFromBuffer)
         .andThen(parseJSON)
         .andThen((obj) => zodParse(ElevenLabsFirebaseJWTSchema, obj));
 }
