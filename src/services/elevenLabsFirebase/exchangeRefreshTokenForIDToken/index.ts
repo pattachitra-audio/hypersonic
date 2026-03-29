@@ -6,14 +6,14 @@ import { undiciFetch } from "@/utils/undiciFetch";
 import { parseResponseJSON } from "@/utils/parseResponseJSON";
 import { zodParse } from "@/utils/zodParse";
 
-export async function exchangeRefreshTokenForIDToken(req: RequestType) {
+export function exchangeRefreshTokenForIDToken(req: RequestType) {
     const data = new URLSearchParams();
     data.append("grant_type", "refresh_token");
     data.append("refresh_token", req.refreshToken);
 
     const url = `https://securetoken.googleapis.com/v1/token?key=${ELEVEN_LABS_FIREBASE_API_KEY}`;
 
-    undiciFetch(url, {
+    return undiciFetch(url, {
         method: "POST",
         body: data.toString(),
         headers: {
