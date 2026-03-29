@@ -1,7 +1,5 @@
 "use client";
 
-import type React from "react";
-
 import { useState, useCallback, useEffect, Dispatch, SetStateAction } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -9,56 +7,40 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { File, Upload, X, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { AudioBook, AudioBookSchema } from "@/schemas/AudioBook";
-import { NoThrow } from "@/utils/NoThrow";
 import { tRPC } from "@/utils/tRPC";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
+import { ResultAsync } from "neverthrow";
+import { parseStringFromArrayBuffer } from "@/utils/parseStringFromArrayBuffer";
+import { zodParse } from "@/utils/zodParse";
 
-async function validateFile(file: File) {
-    let bytes: Uint8Array<ArrayBuffer>;
+function readFileAsArrayBuffer(file: File) {
     const reader = new FileReader();
+
     reader.readAsArrayBuffer(file);
 
-    const loadFileToBufferPromise = new Promise<ArrayBuffer>((resolve, reject) => {
+    const readFileAsArrayBufferPromise = new Promise<ArrayBuffer>((resolve, reject) => {
         reader.onerror = () => {
             reject();
         };
 
-        reader.onloadend = () => {
+        reader.onload = () => {
             resolve(reader.result as ArrayBuffer);
         };
     });
 
-    try {
-        bytes = new Uint8Array(await loadFileToBufferPromise);
-    } catch (err) {
-        return NoThrow.error(err as Error);
-    }
+    return ResultAsync.fromPromise(
+        readFileAsArrayBufferPromise,
+        () => `Failed to read 'File' as 'ArrayBuffer'` as const,
+    );
+}
 
-    const textDecoder = new TextDecoder("utf-8");
+function loadFile(file: File) {
+    return readFileAsArrayBuffer(file).andThen(parseStringFromArrayBuffer);
+}
 
-    let string: string;
-    try {
-        string = textDecoder.decode(bytes);
-    } catch (err) {
-        return NoThrow.error(err as Error);
-    }
-
-    let object: unknown;
-
-    try {
-        object = JSON.parse(string);
-    } catch (err) {
-        return NoThrow.error(err as SyntaxError);
-    }
-
-    const audioBookResult = await AudioBookSchema.safeParseAsync(object);
-
-    if (!audioBookResult.success) {
-        return NoThrow.error(audioBookResult.error);
-    }
-
-    return NoThrow.success(audioBookResult.data);
+function parseFile(file: File) {
+    return loadFile(file).andThen((obj) => zodParse(AudioBookSchema, obj));
 }
 
 function FileUpload({
@@ -85,7 +67,7 @@ function FileUpload({
 
         (async function () {
             updateValidationStatus({ status: "VALIDATING" });
-            const result = await validateFile(file);
+            const result = await parseFile(file);
 
             if (result.isErr()) {
                 console.error(result.error);
@@ -378,3 +360,16 @@ export default function NewProjectModal({ open, updateOpen }: { open: boolean; u
         </Dialog>
     );
 }
+
+/*
+No overload matches this call.
+  Overload 1 of 3, '(f: (t: ArrayBuffer) => Result<unknown, unknown>): ResultAsync<unknown, unknown>', gave the following error.
+    Argument of type '(arrayBuffer: ArrayBuffer, encoding?: EncodingType) => () => Result<string, RangeError>' is not assignable to parameter of type '(t: ArrayBuffer) => Result<unknown, unknown>'.
+      Type '() => Result<string, RangeError>' is not assignable to type 'Result<unknown, unknown>'.
+  Overload 2 of 3, '(f: (t: ArrayBuffer) => ResultAsync<unknown, unknown>): ResultAsync<unknown, unknown>', gave the following error.
+    Argument of type '(arrayBuffer: ArrayBuffer, encoding?: EncodingType) => () => Result<string, RangeError>' is not assignable to parameter of type '(t: ArrayBuffer) => ResultAsync<unknown, unknown>'.
+      Type '() => Result<string, RangeError>' is not assignable to type 'ResultAsync<unknown, unknown>'.
+  Overload 3 of 3, '(f: (t: ArrayBuffer) => Result<unknown, unknown> | ResultAsync<unknown, unknown>): ResultAsync<unknown, unknown>', gave the following error.
+    Argument of type '(arrayBuffer: ArrayBuffer, encoding?: EncodingType) => () => Result<string, RangeError>' is not assignable to parameter of type '(t: ArrayBuffer) => Result<unknown, unknown> | ResultAsync<unknown, unknown>'.
+      Type '() => Result<string, RangeError>' is not assignable to type 'Result<unknown, unknown> | ResultAsync<unknown, unknown>'.
+*/
