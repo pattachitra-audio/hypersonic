@@ -12,6 +12,8 @@ const ElevenLabsFirebaseJWTSchema = z
         user_id: z.string(),
         email: z.string(),
         email_verified: z.boolean(),
+        iat: z.number().transform((value) => new Date(value * 1000)),
+        exp: z.number().transform((value) => new Date(value * 1000)),
     })
     .transform(
         ({
@@ -19,12 +21,16 @@ const ElevenLabsFirebaseJWTSchema = z
             workspace_user_id: workspaceUserID,
             user_id: userID,
             email_verified: emailVerified,
+            iat,
+            exp,
             ...rest
         }) => ({
             workspaceID,
             workspaceUserID,
             userID,
             emailVerified,
+            issuedAt: iat,
+            expiry: exp,
             ...rest,
         }),
     );
@@ -34,11 +40,14 @@ export function decodeElevenLabsFirebaseJWTPayload(jwt: string) {
 
     if (parts.length !== 3) {
         return err(
-            `Invalid jwt format; Expected '<header>.<payload>.<signature>', where 'header', 'payload', and 'signature' are base64 strings`,
+            new Error(
+                `Invalid jwt format; Expected '<header>.<payload>.<signature>', where 'header', 'payload', and 'signature' are base64 strings`,
+            ),
         );
     }
 
     const payloadBase64 = parts[1];
+
     return decodeBase64(payloadBase64)
         .andThen(parseStringFromBuffer)
         .andThen(parseJSON)
