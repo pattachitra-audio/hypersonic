@@ -1,8 +1,9 @@
+import { DataNotFoundError } from "@/errors/db/DataNotFound";
 import { dbClientPromise } from "@/lib/db";
 import { handleMongoError } from "@/lib/dbHelpers/handleMongoError";
 import { insertOne } from "@/lib/dbHelpers/insertOne";
 import { ObjectId } from "mongodb";
-import { ok, ResultAsync } from "neverthrow";
+import { ok, err, ResultAsync } from "neverthrow";
 
 export type PRAOSessionDocumentType = {
     userID: ObjectId;
@@ -21,6 +22,17 @@ export const PRAOSessionRepositoryPromise = (function () {
         return ok({
             findAllByUserID(userID: ObjectId) {
                 return ResultAsync.fromPromise(collection.find({ userID }).toArray(), handleMongoError);
+            },
+
+            findOneByID(id: ObjectId) {
+                const filter = { _id: id };
+                return ResultAsync.fromPromise(collection.findOne(filter), handleMongoError).andThen((value) => {
+                    if (value === null) {
+                        return err(new DataNotFoundError<PRAOSessionDocumentType>("core", "PRAOSession", filter));
+                    }
+
+                    return ok(value);
+                });
             },
             /* async findAllSummaries() {
             try {
