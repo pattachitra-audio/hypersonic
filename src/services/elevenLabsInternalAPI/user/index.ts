@@ -7,7 +7,7 @@ import { undiciFetch } from "@/utils/undiciFetch";
 import { parseResponseJSON } from "@/utils/parseResponseJSON";
 import { zodParse } from "@/utils/zodParse";
 
-export async function user(req: RequestType) {
+export function user(req: RequestType) {
     const url = `${ELEVEN_LABS_INTERNAL_API_BASE_URL}/user/internal`;
 
     return undiciFetch(url, {
