@@ -6,8 +6,9 @@ import { requestHeaders } from "@/requestHeaders";
 import { undiciFetch } from "@/utils/undiciFetch";
 import { parseResponseJSON } from "@/utils/parseResponseJSON";
 import { zodParse } from "@/utils/zodParse";
+import { validateStatus } from "@/utils/validateStatus";
 
-export async function signInWithPassword(input: RequestType) {
+export function signInWithPassword(input: RequestType) {
     const body = JSON.stringify({ returnSecureToken: true, ...input });
     const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${ELEVEN_LABS_FIREBASE_API_KEY}`;
 
@@ -22,6 +23,11 @@ export async function signInWithPassword(input: RequestType) {
         },
         dispatcher: proxyAgentPool.get(input.proxyURL),
     })
+        .andThen(validateStatus)
         .andThen(parseResponseJSON)
+        .map((obj) => {
+            console.log("obj:", obj);
+            return obj;
+        })
         .andThen((obj) => zodParse(ResponseSchema, obj));
 }
