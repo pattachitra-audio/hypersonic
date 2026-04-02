@@ -19,37 +19,35 @@ export type ElevenLabsAccountWithProxySummaryDocumentType = Prettify<
     Omit<ElevenLabsAccountWithProxyDocumentType, "_id" | "password" | "proxyURL" | "ownerID"> & { id: string }
 >;
 
-export const ElevenLabsAccountWithProxyRepositoryPromise = (function () {
-    return DBClientResultAsync.andThen((dbClient) => {
-        const db = dbClient.db("core");
-        const collection = db.collection<ElevenLabsAccountWithProxyDocumentType>("ElevenLabsAccountWithProxy");
+export const ElevenLabsAccountWithProxyRepositoryPromise = DBClientResultAsync.andThen((dbClient) => {
+    const db = dbClient.db("core");
+    const collection = db.collection<ElevenLabsAccountWithProxyDocumentType>("ElevenLabsAccountWithProxy");
 
-        return ok({
-            findAllSummariesByOwnerID(ownerID: ObjectId) {
-                return ResultAsync.fromPromise(
-                    collection
-                        .aggregate<ElevenLabsAccountWithProxySummaryDocumentType>([
-                            { $match: { ownerID } },
-                            {
-                                $project: {
-                                    id: "$_id",
-                                    _id: 0,
-                                    email: 1,
-                                },
+    return ok({
+        findAllSummariesByOwnerID(ownerID: ObjectId) {
+            return ResultAsync.fromPromise(
+                collection
+                    .aggregate<ElevenLabsAccountWithProxySummaryDocumentType>([
+                        { $match: { ownerID } },
+                        {
+                            $project: {
+                                id: "$_id",
+                                _id: 0,
+                                email: 1,
                             },
-                        ])
-                        .toArray(),
-                    handleMongoError,
-                );
-            },
+                        },
+                    ])
+                    .toArray(),
+                handleMongoError,
+            );
+        },
 
-            findAllByOwnerID(ownerID: ObjectId) {
-                return ResultAsync.fromPromise(collection.find({ ownerID }).toArray(), handleMongoError);
-            },
+        findAllByOwnerID(ownerID: ObjectId) {
+            return ResultAsync.fromPromise(collection.find({ ownerID }).toArray(), handleMongoError);
+        },
 
-            insertOne(document: ElevenLabsAccountWithProxyDocumentType) {
-                return insertOne(document, collection);
-            },
-        });
+        insertOne(document: ElevenLabsAccountWithProxyDocumentType) {
+            return insertOne(document, collection);
+        },
     });
-})();
+});
