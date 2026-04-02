@@ -1,5 +1,5 @@
 import { OWNER_ID } from "@/backendConstants";
-import { redisClientPromise } from "@/lib/redis";
+import { RedisClientResultAsync } from "@/lib/RedisClient";
 import {
     ElevenLabsAccountWithProxyDocumentType,
     ElevenLabsAccountWithProxyRepositoryResultAsync,
@@ -82,7 +82,7 @@ export function initPRAO() {
     return ResultAsync.combine([
         ElevenLabsAccountWithProxyRepositoryResultAsync,
         PRAOSessionRepositoryResultAsync,
-        redisClientPromise,
+        RedisClientResultAsync,
     ]).andThen(([ElevenLabsAccountWithProxyRepository, PRAOSessionRepository, redisClient]) =>
         ElevenLabsAccountWithProxyRepository.findAllByOwnerID(OWNER_ID).andThen((accounts) => {
             const accountIDs = accounts.map((account) => account._id);
