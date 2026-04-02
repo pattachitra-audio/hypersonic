@@ -1,4 +1,4 @@
-import { AudioBookRepositoryPromise } from "@/repository/AudioBookRepository";
+import { AudioBookRepositoryResultAsync } from "@/repository/AudioBookRepository";
 import { AudioBookSchema } from "@/schemas/AudioBook";
 import { tRPCRouter, tRPCProcedure } from "@/server/tRPC";
 import { TRPCError } from "@trpc/server";
@@ -8,7 +8,7 @@ import { omit } from "lodash";
 
 export const projectRouter = tRPCRouter({
     create: tRPCProcedure.input(AudioBookSchema).mutation(async ({ input }) => {
-        const AudioBookRepositoryResult = await AudioBookRepositoryPromise;
+        const AudioBookRepositoryResult = await AudioBookRepositoryResultAsync;
 
         if (AudioBookRepositoryResult.isErr()) {
             throw new TRPCError({
@@ -38,7 +38,7 @@ export const projectRouter = tRPCRouter({
         return insertOneResult.value.insertedId.toString("hex");
     }),
     get: tRPCProcedure.input(z.hex().length(24)).query(async ({ input }) => {
-        const AudioBookRepositoryResult = await AudioBookRepositoryPromise;
+        const AudioBookRepositoryResult = await AudioBookRepositoryResultAsync;
 
         if (AudioBookRepositoryResult.isErr()) {
             throw new TRPCError({
@@ -69,7 +69,7 @@ export const projectRouter = tRPCRouter({
         return findOneResult.value;
     }),
     update: tRPCProcedure.input(AudioBookSchema.extend({ id: z.hex().length(24) })).mutation(async ({ input }) => {
-        const AudioBookRepositoryResult = await AudioBookRepositoryPromise;
+        const AudioBookRepositoryResult = await AudioBookRepositoryResultAsync;
 
         if (AudioBookRepositoryResult.isErr()) {
             throw new TRPCError({
@@ -117,7 +117,7 @@ export const projectRouter = tRPCRouter({
         return;
     }),
     archive: tRPCProcedure.input(z.hex().length(24)).mutation(async ({ input }) => {
-        const AudioBookRepositoryResult = await AudioBookRepositoryPromise;
+        const AudioBookRepositoryResult = await AudioBookRepositoryResultAsync;
 
         if (AudioBookRepositoryResult.isErr()) {
             throw new TRPCError({
@@ -153,7 +153,7 @@ export const projectRouter = tRPCRouter({
         return;
     }),
     delete: tRPCProcedure.input(z.hex().length(24)).mutation(async ({ input }) => {
-        const AudioBookRepositoryResult = await AudioBookRepositoryPromise;
+        const AudioBookRepositoryResult = await AudioBookRepositoryResultAsync;
 
         if (AudioBookRepositoryResult.isErr()) {
             throw new TRPCError({

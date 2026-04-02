@@ -1,4 +1,4 @@
-import { AudioBookRepositoryPromise } from "@/repository/AudioBookRepository";
+import { AudioBookRepositoryResultAsync } from "@/repository/AudioBookRepository";
 import { tRPCProcedure, tRPCRouter } from "../../tRPC";
 import { TRPCError } from "@trpc/server";
 
@@ -21,7 +21,7 @@ export type AudioBookSummaryType = {
 
 export const projectsRouter = tRPCRouter({
     get: tRPCProcedure.query(async () => {
-        const AudioBookRepositoryResult = await AudioBookRepositoryPromise;
+        const AudioBookRepositoryResult = await AudioBookRepositoryResultAsync;
 
         if (AudioBookRepositoryResult.isErr()) {
             throw new TRPCError({

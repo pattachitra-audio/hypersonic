@@ -29,7 +29,7 @@ export type AudioBookSummaryDocumentType = {
     status: "ACTIVE" | "ARCHIVED" | "DELETED";
 };
 
-export const AudioBookRepositoryPromise = (function () {
+export const AudioBookRepositoryResultAsync = (function () {
     return DBClientResultAsync.andThen((dbClient) => {
         const db = dbClient.db("core");
         const collection = db.collection<AudioBookDocumentType>("AudioBook");
