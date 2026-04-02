@@ -1,8 +1,8 @@
-import { ResultAsync } from "neverthrow";
-import { envPromise } from "./env";
-import { createClient } from "redis";
+import { err, ok, Result, ResultAsync } from "neverthrow";
+import { EnvResultAsync } from "./Env";
+import { createClient, RedisArgument } from "redis";
 
-export const redisClientPromise = envPromise.andThen((env) => {
+export const redisClientPromise = EnvResultAsync.andThen((env) => {
     const redisClient = createClient({
         url: env.REDIS_URL,
     });
@@ -10,4 +10,31 @@ export const redisClientPromise = envPromise.andThen((env) => {
     return ResultAsync.fromPromise(redisClient.connect(), (error: unknown) => {
         return new Error("Redis connection error", { cause: error });
     });
+}).map((redisClient) => {
+    return {
+        set(key: RedisArgument, value: number | RedisArgument) {
+            return ResultAsync.fromPromise(
+                redisClient.set(key, value),
+                (error) => new Error("Redis error", { cause: error }),
+            ).map((result) => {
+                if (result === null) {
+                    return err(new Error(`Redis SET returned 'null'`));
+                }
+
+                return ok();
+            });
+        },
+        get(key: RedisArgument) {
+            return ResultAsync.fromPromise(
+                redisClient.get(key),
+                (error) => new Error("Redis error", { cause: error }),
+            ).map((result) => {
+                if (result === null) {
+                    return err(new Error(`Redis key ${key} not found`));
+                }
+
+                return ok(result);
+            });
+        },
+    };
 });

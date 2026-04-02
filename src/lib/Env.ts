@@ -9,7 +9,7 @@ const EnvSchema = z.object({
 
 export type EnvSchemaType = z.infer<typeof EnvSchema>;
 
-export const envPromise = (function () {
+export const EnvResultAsync = (function () {
     /* return zodParse(EnvSchema, process.env).match(
         (value) => okAsync(value),
         (error) => errAsync(error),
