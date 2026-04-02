@@ -1,4 +1,4 @@
-import { err, ok, Result, ResultAsync } from "neverthrow";
+import { err, ok, ResultAsync } from "neverthrow";
 import { EnvResultAsync } from "./Env";
 import { createClient, RedisArgument } from "redis";
 
