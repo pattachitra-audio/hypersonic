@@ -16,7 +16,7 @@ export const redisClientPromise = EnvResultAsync.andThen((env) => {
             return ResultAsync.fromPromise(
                 redisClient.set(key, value),
                 (error) => new Error("Redis error", { cause: error }),
-            ).map((result) => {
+            ).andThen((result) => {
                 if (result === null) {
                     return err(new Error(`Redis SET returned 'null'`));
                 }
@@ -28,7 +28,7 @@ export const redisClientPromise = EnvResultAsync.andThen((env) => {
             return ResultAsync.fromPromise(
                 redisClient.get(key),
                 (error) => new Error("Redis error", { cause: error }),
-            ).map((result) => {
+            ).andThen((result) => {
                 if (result === null) {
                     return err(new Error(`Redis key ${key} not found`));
                 }
