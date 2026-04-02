@@ -14,7 +14,7 @@ export type PRAOSessionDocumentType = {
     Omit<ElevenLabsAccountWithProxyDocumentType, "_id" | "password" | "apiKey" | "proxyURL"> & { id: string }
 >; */
 
-export const PRAOSessionRepositoryPromise = (function () {
+export const PRAOSessionRepositoryResultAsync = (function () {
     return DBClientResultAsync.andThen((dbClient) => {
         const db = dbClient.db("core");
         const collection = db.collection<PRAOSessionDocumentType>("PRAOSession");

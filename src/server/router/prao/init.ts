@@ -4,7 +4,7 @@ import {
     ElevenLabsAccountWithProxyDocumentType,
     ElevenLabsAccountWithProxyRepositoryResultAsync,
 } from "@/repository/ElevenLabsAccountWithProxyRepository";
-import { PRAOSessionRepositoryPromise } from "@/repository/PRAOSession";
+import { PRAOSessionRepositoryResultAsync } from "@/repository/PRAOSession";
 import { tRPCProcedure } from "@/server/tRPC";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { PRAOResource } from "@/utils/prao/resource";
@@ -81,7 +81,7 @@ export const initProcedure = tRPCProcedure.mutation(async () => {
 export function initPRAO() {
     return ResultAsync.combine([
         ElevenLabsAccountWithProxyRepositoryResultAsync,
-        PRAOSessionRepositoryPromise,
+        PRAOSessionRepositoryResultAsync,
         redisClientPromise,
     ]).andThen(([ElevenLabsAccountWithProxyRepository, PRAOSessionRepository, redisClient]) =>
         ElevenLabsAccountWithProxyRepository.findAllByOwnerID(OWNER_ID).andThen((accounts) => {
