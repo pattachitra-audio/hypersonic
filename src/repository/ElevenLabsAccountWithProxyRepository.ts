@@ -1,20 +1,19 @@
 import { dbClientPromise } from "@/lib/db";
 import { insertOne } from "@/lib/dbHelpers/insertOne";
-import { ElevenLabsAccountWithProxy } from "@/schemas/ElevenLabsAccountWithProxy";
 import { Prettify } from "@/utils/prettify";
 import { ObjectId } from "mongodb";
 import { ProxyURLBrand } from "@/brands/proxyURL";
 import { ok, ResultAsync } from "neverthrow";
 import { handleMongoError } from "@/lib/dbHelpers/handleMongoError";
 
-export type ElevenLabsAccountWithProxyDocumentType = Prettify<
-    Omit<ElevenLabsAccountWithProxy, "proxy"> & {
-        _id: string;
-        proxyURL: ProxyURLBrand;
-        ownerID: ObjectId;
-    },
-    ProxyURLBrand
->;
+export type ElevenLabsAccountWithProxyDocumentType = {
+    _id: string;
+    proxyURL: ProxyURLBrand;
+    ownerID: ObjectId;
+    firebaseAuthCreds: {
+        refreshToken: string;
+    };
+};
 
 export type ElevenLabsAccountWithProxySummaryDocumentType = Prettify<
     Omit<ElevenLabsAccountWithProxyDocumentType, "_id" | "password" | "proxyURL" | "ownerID"> & { id: string }
