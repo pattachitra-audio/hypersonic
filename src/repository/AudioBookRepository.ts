@@ -1,4 +1,4 @@
-import { dbClientPromise } from "@/lib/db";
+import { DBClientResultAsync } from "@/lib/DBClient";
 import { handleMongoError } from "@/lib/dbHelpers/handleMongoError";
 import { insertOne } from "@/lib/dbHelpers/insertOne";
 import { AudioBook } from "@/schemas/AudioBook";
@@ -30,7 +30,7 @@ export type AudioBookSummaryDocumentType = {
 };
 
 export const AudioBookRepositoryPromise = (function () {
-    return dbClientPromise.andThen((dbClient) => {
+    return DBClientResultAsync.andThen((dbClient) => {
         const db = dbClient.db("core");
         const collection = db.collection<AudioBookDocumentType>("AudioBook");
 

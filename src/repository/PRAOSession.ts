@@ -1,5 +1,5 @@
 import { DataNotFoundError } from "@/errors/db/DataNotFound";
-import { dbClientPromise } from "@/lib/db";
+import { DBClientResultAsync } from "@/lib/DBClient";
 import { handleMongoError } from "@/lib/dbHelpers/handleMongoError";
 import { insertOne } from "@/lib/dbHelpers/insertOne";
 import { ObjectId } from "mongodb";
@@ -15,7 +15,7 @@ export type PRAOSessionDocumentType = {
 >; */
 
 export const PRAOSessionRepositoryPromise = (function () {
-    return dbClientPromise.andThen((dbClient) => {
+    return DBClientResultAsync.andThen((dbClient) => {
         const db = dbClient.db("core");
         const collection = db.collection<PRAOSessionDocumentType>("PRAOSession");
 

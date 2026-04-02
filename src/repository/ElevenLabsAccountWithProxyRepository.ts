@@ -1,4 +1,4 @@
-import { dbClientPromise } from "@/lib/db";
+import { DBClientResultAsync } from "@/lib/DBClient";
 import { insertOne } from "@/lib/dbHelpers/insertOne";
 import { Prettify } from "@/utils/prettify";
 import { ObjectId } from "mongodb";
@@ -20,7 +20,7 @@ export type ElevenLabsAccountWithProxySummaryDocumentType = Prettify<
 >;
 
 export const ElevenLabsAccountWithProxyRepositoryPromise = (function () {
-    return dbClientPromise.andThen((dbClient) => {
+    return DBClientResultAsync.andThen((dbClient) => {
         const db = dbClient.db("core");
         const collection = db.collection<ElevenLabsAccountWithProxyDocumentType>("ElevenLabsAccountWithProxy");
 

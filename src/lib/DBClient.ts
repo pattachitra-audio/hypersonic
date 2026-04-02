@@ -3,7 +3,7 @@ import { packageJSON } from "./packageJSON";
 import { envPromise } from "./env";
 import { ResultAsync } from "neverthrow";
 
-export const dbClientPromise = (function () {
+export const DBClientResultAsync = (function () {
     return envPromise.andThen((env) => {
         const mongoClient = new MongoClient(env.MONGODB_URI, { appName: packageJSON.name });
 
