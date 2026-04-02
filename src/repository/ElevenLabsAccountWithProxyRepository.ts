@@ -19,7 +19,7 @@ export type ElevenLabsAccountWithProxySummaryDocumentType = Prettify<
     Omit<ElevenLabsAccountWithProxyDocumentType, "_id" | "password" | "proxyURL" | "ownerID"> & { id: string }
 >;
 
-export const ElevenLabsAccountWithProxyRepositoryPromise = DBClientResultAsync.andThen((dbClient) => {
+export const ElevenLabsAccountWithProxyRepositoryResultAsync = DBClientResultAsync.andThen((dbClient) => {
     const db = dbClient.db("core");
     const collection = db.collection<ElevenLabsAccountWithProxyDocumentType>("ElevenLabsAccountWithProxy");
 

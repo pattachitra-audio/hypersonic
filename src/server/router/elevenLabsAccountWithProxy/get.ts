@@ -1,10 +1,10 @@
 import { OWNER_ID } from "@/backendConstants";
-import { ElevenLabsAccountWithProxyRepositoryPromise } from "@/repository/ElevenLabsAccountWithProxyRepository";
+import { ElevenLabsAccountWithProxyRepositoryResultAsync } from "@/repository/ElevenLabsAccountWithProxyRepository";
 import { tRPCProcedure } from "@/server/tRPC";
 import { TRPCError } from "@trpc/server";
 
 export const getProcedure = tRPCProcedure.query(async () => {
-    const ElevenLabsAccountWithProxyRepositoryResult = await ElevenLabsAccountWithProxyRepositoryPromise;
+    const ElevenLabsAccountWithProxyRepositoryResult = await ElevenLabsAccountWithProxyRepositoryResultAsync;
 
     if (ElevenLabsAccountWithProxyRepositoryResult.isErr()) {
         throw new TRPCError({

@@ -5,7 +5,7 @@ import { omit } from "lodash";
 import { MongoError } from "mongodb";
 import { createProxyURL } from "@/brands/proxyURL";
 import { tRPCProcedure } from "@/server/tRPC";
-import { ElevenLabsAccountWithProxyRepositoryPromise } from "@/repository/ElevenLabsAccountWithProxyRepository";
+import { ElevenLabsAccountWithProxyRepositoryResultAsync } from "@/repository/ElevenLabsAccountWithProxyRepository";
 import { TRPCError } from "@trpc/server";
 import { OWNER_ID } from "@/backendConstants";
 
@@ -22,7 +22,7 @@ export const ElevenLabsAccountWithProxySchema = z.object({
 });
 
 export const addProcedure = tRPCProcedure.input(ElevenLabsAccountWithProxySchema).mutation(async ({ input }) => {
-    const ElevenLabsAccountWithProxyRepositoryResult = await ElevenLabsAccountWithProxyRepositoryPromise;
+    const ElevenLabsAccountWithProxyRepositoryResult = await ElevenLabsAccountWithProxyRepositoryResultAsync;
     console.log("input:", input);
 
     if (ElevenLabsAccountWithProxyRepositoryResult.isErr()) {
