@@ -1,4 +1,8 @@
-export function getErrorMessage(error: Error): string {
+export function getErrorMessage(error: unknown): string {
+    if (!(error instanceof Error)) {
+        return `Unknown error`;
+    }
+
     const messages: string[] = [];
     let currentError: unknown = error;
 
