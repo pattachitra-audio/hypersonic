@@ -7,7 +7,7 @@ import { ElevenLabsCreditsResource } from "./resource";
 export class ElevenLabsCreditsSession {
     constructor(public context: { resources: ElevenLabsCreditsResource[]; totalBalance: number }) {}
 
-    new(resources: ElevenLabsCreditsResource[]) {
+    static new(resources: ElevenLabsCreditsResource[]) {
         ResultAsync.combine(resources.map((value) => value.getBalance()))
             .andThen((balances) => ok(balances.reduce((a, b) => a + b, 0)))
             .map((totalBalance) => new ElevenLabsCreditsSession({ resources, totalBalance }));
