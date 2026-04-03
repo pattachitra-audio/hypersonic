@@ -1,16 +1,17 @@
 import z from "zod";
 
-import { ok, Result, ResultAsync } from "neverthrow";
+import { ok, Result } from "neverthrow";
 import { zodParse } from "@/utils/zodParse";
 import { ElevenLabsFreeResource } from "./resource";
 
 export class ElevenLabsFreeSession {
-    private constructor(public context: { resources: ElevenLabsFreeResource[]; totalBalance: number }) {}
+    private constructor(public context: { resources: ElevenLabsFreeResource[] }) {}
 
     static new(resources: ElevenLabsFreeResource[]) {
-        ResultAsync.combine(resources.map((value) => value.getBalance()))
-            .andThen((balances) => ok(balances.reduce((a, b) => a + b, 0)))
-            .map((totalBalance) => new ElevenLabsFreeSession({ resources, totalBalance }));
+        // ResultAsync.combine(resources.map((value) => value.getBalance()))
+        // .andThen((balances) => ok(balances.reduce((a, b) => a + b, 0)))
+        // .map((totalBalance) =>
+        return ok(new ElevenLabsFreeSession({ resources }));
     }
 
     static serializeToJSON(obj: ElevenLabsFreeSession) {

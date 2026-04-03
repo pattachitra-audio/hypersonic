@@ -4,7 +4,6 @@ import { decodeElevenLabsFirebaseJWTPayload } from "../../decodeElevenLabsFireba
 import { exchangeRefreshTokenForIDToken } from "@/services/elevenLabsFirebase/exchangeRefreshTokenForIDToken";
 import { ok, okAsync } from "neverthrow";
 import { zodParse } from "../../zodParse";
-import { user } from "@/services/elevenLabsInternalAPI/user";
 
 export class ElevenLabsFreeResource {
     static serializeToJSON(obj: ElevenLabsFreeResource) {
@@ -28,7 +27,7 @@ export class ElevenLabsFreeResource {
             balance: z.int(),
         });
 
-        return zodParse(schema, obj).map((parsed) => new ElevenLabsFreeResource({ ...parsed, balanceStale: false }));
+        return zodParse(schema, obj).map((parsed) => new ElevenLabsFreeResource({ ...parsed }));
     }
 
     private constructor(
@@ -39,7 +38,6 @@ export class ElevenLabsFreeResource {
             idToken: string;
             idTokenExpiryUnixMillis: number;
             balance: number;
-            balanceStale: boolean;
         },
     ) {}
 
@@ -52,41 +50,11 @@ export class ElevenLabsFreeResource {
                     idToken,
                 })),
             )
-            .andThen(({ idToken, ...rest }) =>
-                user({ bearerToken: idToken, proxyURL }).map(
-                    ({ subscription: { characterCount, characterLimit } }) =>
-                        new ElevenLabsFreeResource({
-                            id,
-                            proxyURL,
-                            idToken,
-                            balance: characterLimit - characterCount,
-                            balanceStale: false,
-                            ...rest,
-                        }),
-                ),
-            );
+            .map((value) => new ElevenLabsFreeResource({ id, proxyURL, balance: 0, ...value }));
     }
 
     public getBalance() {
-        if (this.context.balanceStale) {
-            return this.updateBalance().map(() => this.context.balance);
-        }
-
         return okAsync(this.context.balance);
-    }
-
-    public updateBalance() {
-        console.log(`updateBalance() for id ${this.context.id}`);
-
-        return this.validateIDToken().andThen(() =>
-            user({ bearerToken: this.context.idToken, proxyURL: this.context.proxyURL }).andThen(
-                ({ subscription: { characterCount, characterLimit } }) => {
-                    this.context.balance = characterLimit - characterCount;
-                    this.context.balanceStale = false;
-                    return okAsync();
-                },
-            ),
-        );
     }
 
     public validateIDToken() {

@@ -1,7 +1,6 @@
 import { err, errAsync, ok, ResultAsync } from "neverthrow";
 import { ElevenLabsFreeSession } from "./session";
 import { ElevenLabsFreeResource } from "./resource";
-import { ElevenLabsCreditsResource } from "../ElevenLabsCredits/resource";
 
 export class ElevenLabsFreeEngine {
     static spend(session: ElevenLabsFreeSession, amount: number): ResultAsync<ElevenLabsFreeResource, Error> {
@@ -15,7 +14,7 @@ export class ElevenLabsFreeEngine {
 
         return ResultAsync.combine(resources.map((r) => r.getBalance()))
             .map((balances) => {
-                const resourcesWithBalance: { resource: ElevenLabsCreditsResource; balance: number }[] = [];
+                const resourcesWithBalance: { resource: ElevenLabsFreeResource; balance: number }[] = [];
 
                 for (let i = 0; i < balances.length; i++) {
                     resourcesWithBalance.push({ resource: resources[i], balance: balances[i] });
