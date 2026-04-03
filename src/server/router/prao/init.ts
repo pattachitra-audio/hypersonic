@@ -135,7 +135,10 @@ export function initPRAO() {
                                 ),
                             ]);
 
-                            return okAsync(creditsResourcesJSON.map((o) => pick(o, "id", "balance")));
+                            return okAsync({
+                                sessionID,
+                                resources: creditsResourcesJSON.map((o) => pick(o, "id", "balance")),
+                            });
                         }),
             );
         }),
