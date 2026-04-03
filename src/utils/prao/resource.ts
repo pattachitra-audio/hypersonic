@@ -3,20 +3,22 @@ import { ProxyURLBrand, ProxyURLSchema } from "@/brands/proxyURL";
 import { decodeElevenLabsFirebaseJWTPayload } from "../decodeElevenLabsFirebaseJWTPayload";
 import { exchangeRefreshTokenForIDToken } from "@/services/elevenLabsFirebase/exchangeRefreshTokenForIDToken";
 import { ok, okAsync } from "neverthrow";
-import { parseJSON } from "../parseJSON";
 import { zodParse } from "../zodParse";
 import { user } from "@/services/elevenLabsInternalAPI/user";
 
 export class PRAOResource {
-    static serialize(obj: PRAOResource) {
-        return ok(
-            JSON.stringify({
-                ...obj.context,
-            }),
-        );
+    static serializeToJSON(obj: PRAOResource) {
+        return ok({
+            id: obj.context.id,
+            proxyURL: obj.context.proxyURL,
+            refreshToken: obj.context.refreshToken,
+            idToken: obj.context.idToken,
+            idTokenExpiryUnixMillis: obj.context.idTokenExpiryUnixMillis,
+            balance: obj.context.balance,
+        });
     }
 
-    static deserialize(str: string) {
+    static deserializeFromJSON(obj: unknown) {
         const schema = z.object({
             id: z.string(),
             proxyURL: ProxyURLSchema,
@@ -26,9 +28,7 @@ export class PRAOResource {
             balance: z.int(),
         });
 
-        return parseJSON(str)
-            .andThen((obj) => zodParse(schema, obj))
-            .map((obj) => new PRAOResource({ ...obj, balanceStale: false }));
+        return zodParse(schema, obj).map((parsed) => new PRAOResource({ ...parsed, balanceStale: false }));
     }
 
     public constructor(
