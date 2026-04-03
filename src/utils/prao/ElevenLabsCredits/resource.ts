@@ -31,7 +31,7 @@ export class ElevenLabsCreditsResource {
         return zodParse(schema, obj).map((parsed) => new ElevenLabsCreditsResource({ ...parsed, balanceStale: false }));
     }
 
-    public constructor(
+    private constructor(
         public context: {
             id: string;
             proxyURL: ProxyURLBrand;

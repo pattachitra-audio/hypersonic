@@ -5,7 +5,7 @@ import { zodParse } from "@/utils/zodParse";
 import { ElevenLabsCreditsResource } from "./resource";
 
 export class ElevenLabsCreditsSession {
-    constructor(public context: { resources: ElevenLabsCreditsResource[]; totalBalance: number }) {}
+    private constructor(public context: { resources: ElevenLabsCreditsResource[]; totalBalance: number }) {}
 
     static new(resources: ElevenLabsCreditsResource[]) {
         ResultAsync.combine(resources.map((value) => value.getBalance()))
