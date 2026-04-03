@@ -1,9 +1,9 @@
 import { err, errAsync, ok, ResultAsync } from "neverthrow";
-// import { PRAOResource } from "./resource";
-// import { PRAOSession } from "./session";
+import { ElevenLabsCreditsSession } from "./session";
+import { ElevenLabsCreditsResource } from "./resource";
 
-export class PRAOEngine {
-    static spend(session: , amount: number): ResultAsync<PRAOResource, Error> {
+export class ElevenLabsCreditsEngine {
+    static spend(session: ElevenLabsCreditsSession, amount: number): ResultAsync<ElevenLabsCreditsResource, Error> {
         const {
             context: { resources },
         } = session;
@@ -14,7 +14,7 @@ export class PRAOEngine {
 
         return ResultAsync.combine(resources.map((r) => r.getBalance()))
             .map((balances) => {
-                const resourcesWithBalance: { resource: PRAOResource; balance: number }[] = [];
+                const resourcesWithBalance: { resource: ElevenLabsCreditsResource; balance: number }[] = [];
 
                 for (let i = 0; i < balances.length; i++) {
                     resourcesWithBalance.push({ resource: resources[i], balance: balances[i] });
