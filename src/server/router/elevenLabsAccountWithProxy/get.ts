@@ -26,4 +26,6 @@ export const getProcedure = tRPCProcedure.query(async () => {
             message: "Error finding all 'elevenLabsAccountsWithProxy",
         });
     }
+
+    return findAllResult.value;
 });
