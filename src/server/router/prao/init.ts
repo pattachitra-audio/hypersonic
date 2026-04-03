@@ -12,15 +12,17 @@ import { TRPCError } from "@trpc/server";
 import { Result, ResultAsync } from "neverthrow";
 
 export const initProcedure = tRPCProcedure.mutation(async () => {
-    try {
-        const result = await initPRAO();
-    } catch (error) {
-        if (error instanceof TRPCError) {
-            return error;
-        }
+    const result = await initPRAO();
 
-        return new Error("Unknown error in tRPC procedure", { cause: error });
+    if (result.isErr()) {
+        throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            cause: result.error,
+            message: getErrorMessage(result.error),
+        });
     }
+
+    return result.value;
 });
 
 // const ElevenLabsAccountWithProxyRepositoryResult = await ElevenLabsAccountWithProxyRepositoryResultAsync;
