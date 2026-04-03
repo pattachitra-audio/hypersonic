@@ -76,7 +76,7 @@ export class PRAOResource {
     }
 
     public updateBalance() {
-        console.log(`__updateBalance for id ${this.context.id}`);
+        console.log(`updateBalance() for id ${this.context.id}`);
 
         return this.validateIDToken().andThen(() =>
             user({ bearerToken: this.context.idToken, proxyURL: this.context.proxyURL }).andThen(
@@ -91,7 +91,7 @@ export class PRAOResource {
 
     public validateIDToken() {
         const self = this;
-        console.log(`__validateIDToken for id ${this.context.id}`);
+        console.log(`validateIDToken() for id ${this.context.id}`);
 
         if (self.context.idTokenExpiryUnixMillis < new Date().getTime() + 10_000) {
             return exchangeRefreshTokenForIDToken({
