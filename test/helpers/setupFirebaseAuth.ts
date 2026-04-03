@@ -1,45 +1,30 @@
-import { NoThrow } from "@/utils/NoThrow";
 import { signInWithPassword } from "@/services/elevenLabsFirebase/signInWithPassword";
 import { parseProxyURL } from "@/brands/proxyURL";
+import { errAsync } from "neverthrow";
 
-export async function setupFirebaseAuth() {
+export function setupFirebaseAuth() {
     const email = process.env.TEST_EMAIL;
     const password = process.env.TEST_PASSWORD;
 
     const proxyURLString = process.env.TEST_PROXY_URL;
 
     if (!email) {
-        return NoThrow.error(new Error(`Env variable 'TEST_EMAIL' must be present`));
+        return errAsync(new Error(`Env variable 'TEST_EMAIL' must be present`));
     }
 
     if (!password) {
-        return NoThrow.error(new Error(`Env variable 'TEST_PASSWORD' must be present`));
+        return errAsync(new Error(`Env variable 'TEST_PASSWORD' must be present`));
     }
 
     if (!proxyURLString) {
-        return NoThrow.error(new Error(`Env variable 'TEST_PROXY_URL' must be present`));
+        return errAsync(new Error(`Env variable 'TEST_PROXY_URL' must be present`));
     }
 
-    const proxyURLResult = parseProxyURL(proxyURLString);
-
-    if (proxyURLResult.isErr()) {
-        return proxyURLResult;
-    }
-
-    const result = await signInWithPassword({
-        email,
-        password,
-        proxyURL: proxyURLResult.value,
-    });
-
-    if (result.isErr()) {
-        return result;
-    }
-
-    return NoThrow.success({
-        ...result.value,
-        email,
-        password,
-        proxyURL: proxyURLResult.value,
+    return parseProxyURL(proxyURLString).asyncAndThen((proxyURL) => {
+        return signInWithPassword({
+            email,
+            password,
+            proxyURL,
+        }).map((value) => ({ ...value, email, password, proxyURL }));
     });
 }
