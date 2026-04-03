@@ -69,16 +69,16 @@ export class PRAOResource {
 
     public getBalance() {
         if (this.context.balanceStale) {
-            return this.__updateBalance().map(() => this.context.balance);
+            return this.updateBalance().map(() => this.context.balance);
         }
 
         return okAsync(this.context.balance);
     }
 
-    private __updateBalance() {
+    public updateBalance() {
         console.log(`__updateBalance for id ${this.context.id}`);
 
-        return this.__validateIDToken().andThen(() =>
+        return this.validateIDToken().andThen(() =>
             user({ bearerToken: this.context.idToken, proxyURL: this.context.proxyURL }).andThen(
                 ({ subscription: { characterCount, characterLimit } }) => {
                     this.context.balance = characterLimit - characterCount;
@@ -89,7 +89,7 @@ export class PRAOResource {
         );
     }
 
-    private __validateIDToken() {
+    public validateIDToken() {
         const self = this;
         console.log(`__validateIDToken for id ${this.context.id}`);
 
