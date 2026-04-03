@@ -93,53 +93,55 @@ export function initPRAO() {
 
             return PRAOSessionRepository.insertOne({ userID: OWNER_ID, accountIDs }).andThen(
                 ({ insertedId: sessionID }) =>
-                    ResultAsync.combine(
-                        accounts.map((account: ElevenLabsAccountWithProxyDocumentType) =>
-                            ResultAsync.combine([
-                                ElevenLabsCreditsResource.new(
-                                    account._id,
-                                    account.proxyURL,
-                                    account.firebaseAuthCreds.refreshToken,
-                                ),
-                                ElevenLabsFreeResource.new(
-                                    account._id,
-                                    account.proxyURL,
-                                    account.firebaseAuthCreds.refreshToken,
-                                ),
-                            ] as const),
-                        ),
-                    )
-
-                        .map(
-                            (resources) =>
-                                [
-                                    resources.map(([creditsResource]) => creditsResource),
-                                    resources.map(([, freeResource]) => freeResource),
-                                ] as const,
+                    ElevenLabsAccountWithProxyRepository.lockMany(accountIDs, sessionID).andThen(() =>
+                        ResultAsync.combine(
+                            accounts.map((account: ElevenLabsAccountWithProxyDocumentType) =>
+                                ResultAsync.combine([
+                                    ElevenLabsCreditsResource.new(
+                                        account._id,
+                                        account.proxyURL,
+                                        account.firebaseAuthCreds.refreshToken,
+                                    ),
+                                    ElevenLabsFreeResource.new(
+                                        account._id,
+                                        account.proxyURL,
+                                        account.firebaseAuthCreds.refreshToken,
+                                    ),
+                                ] as const),
+                            ),
                         )
-                        .andThen(([creditsResources, freeResources]) =>
-                            Result.combine([
-                                Result.combine(creditsResources.map(ElevenLabsCreditsResource.serializeToJSON)),
-                                Result.combine(freeResources.map(ElevenLabsFreeResource.serializeToJSON)),
-                            ]),
-                        )
-                        .andThen(([creditsResourcesJSON, freeResourcesJSON]) => {
-                            ResultAsync.combine([
-                                RedisClient.set(
-                                    `ElevenLabsCreditsSession@${sessionID}`,
-                                    JSON.stringify(creditsResourcesJSON),
-                                ),
-                                RedisClient.set(
-                                    `ElevenLabsFreeSession@${sessionID}`,
-                                    JSON.stringify(freeResourcesJSON),
-                                ),
-                            ]);
 
-                            return okAsync({
-                                sessionID,
-                                resources: creditsResourcesJSON.map((o) => pick(o, "id", "balance")),
-                            });
-                        }),
+                            .map(
+                                (resources) =>
+                                    [
+                                        resources.map(([creditsResource]) => creditsResource),
+                                        resources.map(([, freeResource]) => freeResource),
+                                    ] as const,
+                            )
+                            .andThen(([creditsResources, freeResources]) =>
+                                Result.combine([
+                                    Result.combine(creditsResources.map(ElevenLabsCreditsResource.serializeToJSON)),
+                                    Result.combine(freeResources.map(ElevenLabsFreeResource.serializeToJSON)),
+                                ]),
+                            )
+                            .andThen(([creditsResourcesJSON, freeResourcesJSON]) => {
+                                ResultAsync.combine([
+                                    RedisClient.set(
+                                        `ElevenLabsCreditsSession@${sessionID}`,
+                                        JSON.stringify(creditsResourcesJSON),
+                                    ),
+                                    RedisClient.set(
+                                        `ElevenLabsFreeSession@${sessionID}`,
+                                        JSON.stringify(freeResourcesJSON),
+                                    ),
+                                ]);
+
+                                return okAsync({
+                                    sessionID,
+                                    resources: creditsResourcesJSON.map((o) => pick(o, "id", "balance")),
+                                });
+                            }),
+                    ),
             );
         }),
     );
