@@ -10,6 +10,7 @@ import { getErrorMessage } from "@/utils/getErrorMessage";
 import { ElevenLabsCreditsResource } from "@/utils/prao/ElevenLabsCredits/resource";
 import { ElevenLabsFreeResource } from "@/utils/prao/ElevenLabsFree/resource";
 import { TRPCError } from "@trpc/server";
+import { pick } from "lodash";
 import { okAsync, Result, ResultAsync } from "neverthrow";
 
 export const initProcedure = tRPCProcedure.mutation(async () => {
@@ -134,7 +135,7 @@ export function initPRAO() {
                                 ),
                             ]);
 
-                            return okAsync();
+                            return okAsync(creditsResourcesJSON.map((o) => pick(o, "id", "balance")));
                         }),
             );
         }),
