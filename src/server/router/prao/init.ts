@@ -7,9 +7,10 @@ import {
 import { PRAOSessionRepositoryResultAsync } from "@/repository/PRAOSession";
 import { tRPCProcedure } from "@/server/tRPC";
 import { getErrorMessage } from "@/utils/getErrorMessage";
-import { PRAOResource } from "@/utils/prao/resource";
+import { ElevenLabsCreditsResource } from "@/utils/prao/ElevenLabsCredits/resource";
+import { ElevenLabsFreeResource } from "@/utils/prao/ElevenLabsFree/resource";
 import { TRPCError } from "@trpc/server";
-import { Result, ResultAsync } from "neverthrow";
+import { okAsync, Result, ResultAsync } from "neverthrow";
 
 export const initProcedure = tRPCProcedure.mutation(async () => {
     const result = await initPRAO();
@@ -93,15 +94,48 @@ export function initPRAO() {
                 ({ insertedId: sessionID }) =>
                     ResultAsync.combine(
                         accounts.map((account: ElevenLabsAccountWithProxyDocumentType) =>
-                            PRAOResource.new(account._id, account.proxyURL, account.firebaseAuthCreds.refreshToken),
+                            ResultAsync.combine([
+                                ElevenLabsCreditsResource.new(
+                                    account._id,
+                                    account.proxyURL,
+                                    account.firebaseAuthCreds.refreshToken,
+                                ),
+                                ElevenLabsFreeResource.new(
+                                    account._id,
+                                    account.proxyURL,
+                                    account.firebaseAuthCreds.refreshToken,
+                                ),
+                            ] as const),
                         ),
                     )
 
-                        .andThen((resources) => Result.combine(resources.map(PRAOResource.serializeToJSON)))
+                        .map(
+                            (resources) =>
+                                [
+                                    resources.map(([creditsResource]) => creditsResource),
+                                    resources.map(([, freeResource]) => freeResource),
+                                ] as const,
+                        )
+                        .andThen(([creditsResources, freeResources]) =>
+                            Result.combine([
+                                Result.combine(creditsResources.map(ElevenLabsCreditsResource.serializeToJSON)),
+                                Result.combine(freeResources.map(ElevenLabsFreeResource.serializeToJSON)),
+                            ]),
+                        )
+                        .andThen(([creditsResourcesJSON, freeResourcesJSON]) => {
+                            ResultAsync.combine([
+                                redisClient.set(
+                                    `ElevenLabsCreditsSession@${sessionID}`,
+                                    JSON.stringify(creditsResourcesJSON),
+                                ),
+                                redisClient.set(
+                                    `ElevenLabsFreeSession@${sessionID}`,
+                                    JSON.stringify(freeResourcesJSON),
+                                ),
+                            ]);
 
-                        .andThen((resourcesSerialized) =>
-                            redisClient.set(`sessionID@${sessionID}`, JSON.stringify(resourcesSerialized)),
-                        ),
+                            return okAsync();
+                        }),
             );
         }),
     );
