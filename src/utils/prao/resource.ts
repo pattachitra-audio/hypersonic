@@ -93,7 +93,7 @@ export class PRAOResource {
         const self = this;
         console.log(`validateIDToken() for id ${this.context.id}`);
 
-        if (self.context.idTokenExpiryUnixMillis < new Date().getTime() + 10_000) {
+        if (self.context.idTokenExpiryUnixMillis < new Date().getTime() + 30_000) {
             return exchangeRefreshTokenForIDToken({
                 proxyURL: self.context.proxyURL,
                 refreshToken: self.context.refreshToken,
