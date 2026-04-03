@@ -87,7 +87,7 @@ export function initPRAO() {
         ElevenLabsAccountWithProxyRepositoryResultAsync,
         PRAOSessionRepositoryResultAsync,
         RedisClientResultAsync,
-    ]).andThen(([ElevenLabsAccountWithProxyRepository, PRAOSessionRepository, redisClient]) =>
+    ]).andThen(([ElevenLabsAccountWithProxyRepository, PRAOSessionRepository, RedisClient]) =>
         ElevenLabsAccountWithProxyRepository.findAllByOwnerID(OWNER_ID).andThen((accounts) => {
             const accountIDs = accounts.map((account) => account._id);
 
@@ -125,11 +125,11 @@ export function initPRAO() {
                         )
                         .andThen(([creditsResourcesJSON, freeResourcesJSON]) => {
                             ResultAsync.combine([
-                                redisClient.set(
+                                RedisClient.set(
                                     `ElevenLabsCreditsSession@${sessionID}`,
                                     JSON.stringify(creditsResourcesJSON),
                                 ),
-                                redisClient.set(
+                                RedisClient.set(
                                     `ElevenLabsFreeSession@${sessionID}`,
                                     JSON.stringify(freeResourcesJSON),
                                 ),
