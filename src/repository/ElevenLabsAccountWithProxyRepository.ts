@@ -50,5 +50,12 @@ export const ElevenLabsAccountWithProxyRepositoryResultAsync = DBClientResultAsy
         insertOne(document: ElevenLabsAccountWithProxyDocumentType) {
             return insertOne(document, collection);
         },
+
+        lockMany(ids: string[], sessionID: ObjectId) {
+            return ResultAsync.fromPromise(
+                collection.updateMany({ _id: { $in: ids } }, { $set: { sessionID } }),
+                handleMongoError,
+            );
+        },
     });
 });
