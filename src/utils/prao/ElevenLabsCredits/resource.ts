@@ -1,13 +1,13 @@
 import z from "zod";
 import { ProxyURLBrand, ProxyURLSchema } from "@/brands/proxyURL";
-import { decodeElevenLabsFirebaseJWTPayload } from "../decodeElevenLabsFirebaseJWTPayload";
+import { decodeElevenLabsFirebaseJWTPayload } from "../../decodeElevenLabsFirebaseJWTPayload";
 import { exchangeRefreshTokenForIDToken } from "@/services/elevenLabsFirebase/exchangeRefreshTokenForIDToken";
 import { ok, okAsync } from "neverthrow";
-import { zodParse } from "../zodParse";
+import { zodParse } from "../../zodParse";
 import { user } from "@/services/elevenLabsInternalAPI/user";
 
-export class PRAOResource {
-    static serializeToJSON(obj: PRAOResource) {
+export class ElevenLabsCreditsResource {
+    static serializeToJSON(obj: ElevenLabsCreditsResource) {
         return ok({
             id: obj.context.id,
             proxyURL: obj.context.proxyURL,
@@ -28,7 +28,7 @@ export class PRAOResource {
             balance: z.int(),
         });
 
-        return zodParse(schema, obj).map((parsed) => new PRAOResource({ ...parsed, balanceStale: false }));
+        return zodParse(schema, obj).map((parsed) => new ElevenLabsCreditsResource({ ...parsed, balanceStale: false }));
     }
 
     public constructor(
@@ -55,7 +55,7 @@ export class PRAOResource {
             .andThen(({ idToken, ...rest }) =>
                 user({ bearerToken: idToken, proxyURL }).map(
                     ({ subscription: { characterCount, characterLimit } }) =>
-                        new PRAOResource({
+                        new ElevenLabsCreditsResource({
                             id,
                             proxyURL,
                             idToken,
