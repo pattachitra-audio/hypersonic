@@ -34,6 +34,7 @@ export const ElevenLabsAccountWithProxyRepositoryResultAsync = DBClientResultAsy
                                 id: "$_id",
                                 _id: 0,
                                 email: 1,
+                                sessionID: 1,
                             },
                         },
                     ])
