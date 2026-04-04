@@ -45,13 +45,15 @@ export function destroy(sessionID: ObjectId) {
         PRAOSessionRepositoryResultAsync,
         ElevenLabsAccountWithProxyRepositoryResultAsync,
         RedisClientResultAsync,
-    ]).andThen(([PRAOSessionRepositoryResultAsync, ElevenLabsAccountWithProxyRepository, RedisClient]) =>
-        PRAOSessionRepositoryResultAsync.deleteOneByID(sessionID).andThen((session) =>
-            ResultAsync.combine([
-                ElevenLabsAccountWithProxyRepository.unlockMany(session.accountIDs),
-                RedisClient.del(`ElevenLabsCreditsSession@${sessionID}`),
-                RedisClient.del(`ElevenLabsFreeSession@${sessionID}`),
-            ]),
-        ),
-    );
+    ])
+        .andThen(([PRAOSessionRepositoryResultAsync, ElevenLabsAccountWithProxyRepository, RedisClient]) =>
+            PRAOSessionRepositoryResultAsync.deleteOneByID(sessionID).andThen((session) =>
+                ResultAsync.combine([
+                    ElevenLabsAccountWithProxyRepository.unlockMany(session.accountIDs),
+                    RedisClient.del(`ElevenLabsCreditsSession@${sessionID}`),
+                    RedisClient.del(`ElevenLabsFreeSession@${sessionID}`),
+                ]),
+            ),
+        )
+        .map(() => {});
 }
