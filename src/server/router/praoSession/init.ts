@@ -92,7 +92,9 @@ function filterUnlockedAccounts(accounts: WithId<ElevenLabsAccountWithProxyDocum
     for (const account of accounts) {
         if (account.sessionID) {
             return err(
-                new Error(`Account with id '${account._id}' is already tied to session ID '${account.sessionID}`),
+                new Error(
+                    `'ElevenLabsAccountWithProxy' id '${account._id}' is already tied to 'Session' id '${account.sessionID}`,
+                ),
             );
         }
     }
