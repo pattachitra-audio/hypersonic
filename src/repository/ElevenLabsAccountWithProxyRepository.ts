@@ -57,5 +57,12 @@ export const ElevenLabsAccountWithProxyRepositoryResultAsync = DBClientResultAsy
                 handleMongoError,
             );
         },
+
+        unlockMany(ids: string[]) {
+            return ResultAsync.fromPromise(
+                collection.updateMany({ _id: { $in: ids } }, { $unset: { sessionID: 1 } }),
+                handleMongoError,
+            );
+        },
     });
 });
