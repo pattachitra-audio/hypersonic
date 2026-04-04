@@ -14,7 +14,7 @@ import { pick } from "lodash";
 import { okAsync, Result, ResultAsync } from "neverthrow";
 
 export const initProcedure = tRPCProcedure.mutation(async () => {
-    const result = await initPRAO();
+    const result = await init();
 
     if (result.isErr()) {
         throw new TRPCError({
@@ -82,7 +82,7 @@ export const initProcedure = tRPCProcedure.mutation(async () => {
     const ElevenLabsAccountWithProxyRepository = ElevenLabsAccountWithProxyRepositoryResult.value;
     */
 
-export function initPRAO() {
+export function init() {
     return ResultAsync.combine([
         ElevenLabsAccountWithProxyRepositoryResultAsync,
         PRAOSessionRepositoryResultAsync,
