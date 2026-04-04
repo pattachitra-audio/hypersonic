@@ -2,7 +2,7 @@ import { DataNotFoundError } from "@/errors/db/DataNotFound";
 import { DBClientResultAsync } from "@/lib/DBClient";
 import { handleMongoError } from "@/lib/dbHelpers/handleMongoError";
 import { insertOne } from "@/lib/dbHelpers/insertOne";
-import { ObjectId } from "mongodb";
+import { Filter, ObjectId, WithId } from "mongodb";
 import { ok, err, ResultAsync } from "neverthrow";
 
 export type PRAOSessionDocumentType = {
@@ -13,6 +13,16 @@ export type PRAOSessionDocumentType = {
 /* export type ElevenLabsAccountWithProxySummaryDocumentType = Prettify<
     Omit<ElevenLabsAccountWithProxyDocumentType, "_id" | "password" | "apiKey" | "proxyURL"> & { id: string }
 >; */
+
+function filterDataNotFoundFactory(filter: Filter<PRAOSessionDocumentType>) {
+    return function filterDataNotFound(document: WithId<PRAOSessionDocumentType> | null) {
+        if (document === null) {
+            return err(new DataNotFoundError<PRAOSessionDocumentType>("core", "PRAOSession", filter));
+        }
+
+        return ok(document);
+    };
+}
 
 export const PRAOSessionRepositoryResultAsync = (function () {
     return DBClientResultAsync.andThen((dbClient) => {
@@ -26,13 +36,17 @@ export const PRAOSessionRepositoryResultAsync = (function () {
 
             findOneByID(id: ObjectId) {
                 const filter = { _id: id };
-                return ResultAsync.fromPromise(collection.findOne(filter), handleMongoError).andThen((value) => {
-                    if (value === null) {
-                        return err(new DataNotFoundError<PRAOSessionDocumentType>("core", "PRAOSession", filter));
-                    }
 
-                    return ok(value);
-                });
+                return ResultAsync.fromPromise(collection.findOne(filter), handleMongoError).andThen(
+                    filterDataNotFoundFactory(filter),
+                );
+            },
+            deleteOneByID(sessionID: ObjectId) {
+                const filter = { _id: sessionID };
+
+                return ResultAsync.fromPromise(collection.findOneAndDelete(filter), handleMongoError).andThen(
+                    filterDataNotFoundFactory(filter),
+                );
             },
             /* async findAllSummaries() {
             try {
