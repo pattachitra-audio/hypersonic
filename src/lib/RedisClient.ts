@@ -2,6 +2,20 @@ import { err, ok, ResultAsync } from "neverthrow";
 import { EnvResultAsync } from "./Env";
 import { createClient, RedisArgument } from "redis";
 
+function handleRedisError(error: unknown) {
+    return new Error("Redis error", { cause: error });
+}
+
+function filterNullResultFactory(message: string) {
+    return function (result: string | null) {
+        if (result === null) {
+            return err(new Error(message));
+        }
+
+        return ok(result);
+    };
+}
+
 export const RedisClientResultAsync = EnvResultAsync.andThen((env) => {
     const redisClient = createClient({
         url: env.REDIS_URL,
@@ -13,27 +27,23 @@ export const RedisClientResultAsync = EnvResultAsync.andThen((env) => {
 }).map((redisClient) => {
     return {
         set(key: RedisArgument, value: number | RedisArgument) {
-            return ResultAsync.fromPromise(
-                redisClient.set(key, value),
-                (error) => new Error("Redis error", { cause: error }),
-            ).andThen((result) => {
-                if (result === null) {
-                    return err(new Error(`Redis SET returned 'null'`));
+            return ResultAsync.fromPromise(redisClient.set(key, value), handleRedisError).andThen(
+                filterNullResultFactory(`[Redis] SET returned 'null'`),
+            );
+        },
+        get(key: RedisArgument) {
+            return ResultAsync.fromPromise(redisClient.get(key), handleRedisError).andThen(
+                filterNullResultFactory(`[Redis] Key '${key}' not found`),
+            );
+        },
+
+        del(key: RedisArgument) {
+            return ResultAsync.fromPromise(redisClient.del(key), handleRedisError).andThen((result) => {
+                if (result === 0) {
+                    return err(new Error(`[Redis] Failed to delete key '${key}'`));
                 }
 
                 return ok();
-            });
-        },
-        get(key: RedisArgument) {
-            return ResultAsync.fromPromise(
-                redisClient.get(key),
-                (error) => new Error("Redis error", { cause: error }),
-            ).andThen((result) => {
-                if (result === null) {
-                    return err(new Error(`Redis key ${key} not found`));
-                }
-
-                return ok(result);
             });
         },
     };
