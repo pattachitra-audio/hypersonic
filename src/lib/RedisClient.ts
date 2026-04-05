@@ -27,9 +27,9 @@ export const RedisClientResultAsync = EnvResultAsync.andThen((env) => {
 }).map((redisClient) => {
     return {
         set(key: RedisArgument, value: number | RedisArgument) {
-            return ResultAsync.fromPromise(redisClient.set(key, value), handleRedisError).andThen(
-                filterNullResultFactory(`[Redis] SET returned 'null'`),
-            );
+            return ResultAsync.fromPromise(redisClient.set(key, value), handleRedisError)
+                .andThen(filterNullResultFactory(`[Redis] SET returned 'null'`))
+                .map(() => {});
         },
         get(key: RedisArgument) {
             return ResultAsync.fromPromise(redisClient.get(key), handleRedisError).andThen(
