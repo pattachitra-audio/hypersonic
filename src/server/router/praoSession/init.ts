@@ -1,6 +1,5 @@
 import z from "zod";
 import { OWNER_ID } from "@/backendConstants";
-import { RedisClientResultAsync } from "@/lib/RedisClient";
 import {
     ElevenLabsAccountWithProxyDocumentType,
     ElevenLabsAccountWithProxyRepositoryResultAsync,
@@ -11,9 +10,10 @@ import { getErrorMessage } from "@/utils/getErrorMessage";
 import { ElevenLabsCreditsResource } from "@/utils/prao/ElevenLabsCredits/resource";
 import { ElevenLabsFreeResource } from "@/utils/prao/ElevenLabsFree/resource";
 import { TRPCError } from "@trpc/server";
-import { pick } from "lodash";
-import { err, ok, okAsync, Result, ResultAsync } from "neverthrow";
-import { WithId } from "mongodb";
+import { err, ok, okAsync, ResultAsync } from "neverthrow";
+import { ObjectId, WithId } from "mongodb";
+import { ElevenLabsFreeSessionRepositoryResultAsync } from "@/repository/ElevenLabsFreeSessionRepository";
+import { ElevenLabsCreditsSessionRepositoryResultAsync } from "@/repository/ElevenLabsCreditsSessionRepository";
 
 const InputSchema = z.object({
     accountIDs: z.array(z.string()),
@@ -102,12 +102,13 @@ function filterUnlockedAccounts(accounts: WithId<ElevenLabsAccountWithProxyDocum
     return ok(accounts as Omit<WithId<ElevenLabsAccountWithProxyDocumentType>, "sessionID">[]);
 }
 
-export function init(accountIDs: string[]) {
+function init(accountIDs: string[]) {
     return ResultAsync.combine([
         ElevenLabsAccountWithProxyRepositoryResultAsync,
         PRAOSessionRepositoryResultAsync,
-        RedisClientResultAsync,
-    ]).andThen(([ElevenLabsAccountWithProxyRepository, PRAOSessionRepository, RedisClient]) =>
+        ElevenLabsCreditsSessionRepositoryResultAsync,
+        ElevenLabsFreeSessionRepositoryResultAsync,
+    ]).andThen(([ElevenLabsAccountWithProxyRepository, PRAOSessionRepository]) =>
         ElevenLabsAccountWithProxyRepository.findManyByIDs(accountIDs)
             .andThen(filterUnlockedAccounts)
             .andThen((accounts) => {
@@ -115,31 +116,59 @@ export function init(accountIDs: string[]) {
 
                 return PRAOSessionRepository.insertOne({ userID: OWNER_ID, accountIDs }).andThen(
                     ({ insertedId: sessionID }) =>
-                        ElevenLabsAccountWithProxyRepository.lockMany(accountIDs, sessionID).andThen(() =>
-                            ResultAsync.combine(
-                                accounts.map((account: ElevenLabsAccountWithProxyDocumentType) =>
-                                    ResultAsync.combine([
-                                        ElevenLabsCreditsResource.new(
-                                            account._id,
-                                            account.proxyURL,
-                                            account.firebaseAuthCreds.refreshToken,
-                                        ),
-                                        ElevenLabsFreeResource.new(
-                                            account._id,
-                                            account.proxyURL,
-                                            account.firebaseAuthCreds.refreshToken,
-                                        ),
-                                    ] as const),
-                                ),
-                            )
+                        ElevenLabsAccountWithProxyRepository.lockMany(accountIDs, sessionID).andThen(
+                            initRedisSessionCurry(sessionID, accounts),
+                        ),
+                );
+            }),
+    );
+}
 
-                                .map(
-                                    (resources) =>
-                                        [
-                                            resources.map(([creditsResource]) => creditsResource),
-                                            resources.map(([, freeResource]) => freeResource),
-                                        ] as const,
-                                )
+function initRedisSessionCurry(sessionID: ObjectId, accounts: ElevenLabsAccountWithProxyDocumentType[]) {
+    return function () {
+        return ResultAsync.combine([
+            ElevenLabsCreditsSessionRepositoryResultAsync,
+            ElevenLabsFreeSessionRepositoryResultAsync,
+        ]).andThen(([ElevenLabsCreditsSessionRepository, ElevenLabsFreeSessionRepository]) =>
+            ResultAsync.combine(
+                accounts.map((account: ElevenLabsAccountWithProxyDocumentType) =>
+                    ResultAsync.combine([
+                        ElevenLabsCreditsResource.new(
+                            account._id,
+                            account.proxyURL,
+                            account.firebaseAuthCreds.refreshToken,
+                        ),
+                        ElevenLabsFreeResource.new(
+                            account._id,
+                            account.proxyURL,
+                            account.firebaseAuthCreds.refreshToken,
+                        ),
+                    ] as const),
+                ),
+            )
+
+                .map(
+                    (resources) =>
+                        [
+                            resources.map(([creditsResource]) => creditsResource),
+                            resources.map(([, freeResource]) => freeResource),
+                        ] as const,
+                )
+                .andThen(([creditsResources, freeResources]) => {
+                    ResultAsync.combine([
+                        ElevenLabsCreditsSessionRepository.set(sessionID, creditsResources),
+                        ElevenLabsFreeSessionRepository.set(sessionID, freeResources),
+                    ]);
+
+                    return okAsync({
+                        sessionID,
+                    });
+                }),
+        );
+    };
+}
+
+/* 
                                 .andThen(([creditsResources, freeResources]) =>
                                     Result.combine([
                                         Result.combine(creditsResources.map(ElevenLabsCreditsResource.serializeToJSON)),
@@ -162,9 +191,6 @@ export function init(accountIDs: string[]) {
                                         sessionID,
                                         resources: creditsResourcesJSON.map((o) => pick(o, "id", "balance")),
                                     });
-                                }),
-                        ),
-                );
-            }),
-    );
-}
+                                }), */
+
+// resources: creditsResourcesJSON.map((o) => pick(o, "id", "balance")),
