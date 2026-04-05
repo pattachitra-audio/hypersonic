@@ -13,6 +13,7 @@ export type ElevenLabsAccountWithProxyDocumentType = {
     firebaseAuthCreds: {
         refreshToken: string;
     };
+    sessionID?: ObjectId;
 };
 
 export type ElevenLabsAccountWithProxySummaryDocumentType = Prettify<
