@@ -6,7 +6,7 @@ function handleRedisError(error: unknown) {
     return new Error("Redis error", { cause: error });
 }
 
-function filterNullResultFactory(message: string) {
+function createFilterNullResult(message: string) {
     return function (result: string | null) {
         if (result === null) {
             return err(new Error(message));
@@ -28,12 +28,12 @@ export const RedisClientResultAsync = EnvResultAsync.andThen((env) => {
     return {
         set(key: RedisArgument, value: number | RedisArgument) {
             return ResultAsync.fromPromise(redisClient.set(key, value), handleRedisError)
-                .andThen(filterNullResultFactory(`[Redis] SET returned 'null'`))
+                .andThen(createFilterNullResult(`[Redis] SET returned 'null'`))
                 .map(() => {});
         },
         get(key: RedisArgument) {
             return ResultAsync.fromPromise(redisClient.get(key), handleRedisError).andThen(
-                filterNullResultFactory(`[Redis] Key '${key}' not found`),
+                createFilterNullResult(`[Redis] Key '${key}' not found`),
             );
         },
 
