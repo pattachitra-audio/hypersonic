@@ -29,19 +29,17 @@ export const VoiceSchema = z
             .transform((value) => (({ young: "YOUNG", middle_aged: "MIDDLE_AGED", old: "OLD" }) as const)[value]),
         descriptive: z.string(),
         use_case: z.string(),
-        category: z
-            .enum(["professional", "generated", "cloned", "premade"])
-            .transform(
-                (value) =>
-                    (
-                        ({
-                            professional: "PROFESSIONAL",
-                            generated: "GENERATED",
-                            cloned: "CLONED",
-                            premade: "PREMADE",
-                        }) as const
-                    )[value],
-            ),
+        category: z.enum(["professional", "generated", "cloned", "premade"]).transform(
+            (value) =>
+                (
+                    ({
+                        professional: "PROFESSIONAL",
+                        generated: "GENERATED",
+                        cloned: "CLONED",
+                        premade: "PREMADE",
+                    }) as const
+                )[value],
+        ),
         language: z.string(),
         locale: z.string(),
         description: z.string(),
