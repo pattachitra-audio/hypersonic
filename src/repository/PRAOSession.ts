@@ -24,31 +24,30 @@ function filterDataNotFoundFactory(filter: Filter<PRAOSessionDocumentType>) {
     };
 }
 
-export const PRAOSessionRepositoryResultAsync = (function () {
-    return DBClientResultAsync.andThen((dbClient) => {
-        const db = dbClient.db("core");
-        const collection = db.collection<PRAOSessionDocumentType>("PRAOSession");
+export const PRAOSessionRepositoryResultAsync = DBClientResultAsync.andThen((dbClient) => {
+    const db = dbClient.db("core");
+    const collection = db.collection<PRAOSessionDocumentType>("PRAOSession");
 
-        return ok({
-            findAllByUserID(userID: ObjectId) {
-                return ResultAsync.fromPromise(collection.find({ userID }).toArray(), handleMongoError);
-            },
+    return ok({
+        findAllByUserID(userID: ObjectId) {
+            return ResultAsync.fromPromise(collection.find({ userID }).toArray(), handleMongoError);
+        },
 
-            findOneByID(id: ObjectId) {
-                const filter = { _id: id };
+        findOneByID(id: ObjectId) {
+            const filter = { _id: id };
 
-                return ResultAsync.fromPromise(collection.findOne(filter), handleMongoError).andThen(
-                    filterDataNotFoundFactory(filter),
-                );
-            },
-            deleteOneByID(sessionID: ObjectId) {
-                const filter = { _id: sessionID };
+            return ResultAsync.fromPromise(collection.findOne(filter), handleMongoError).andThen(
+                filterDataNotFoundFactory(filter),
+            );
+        },
+        deleteOneByID(sessionID: ObjectId) {
+            const filter = { _id: sessionID };
 
-                return ResultAsync.fromPromise(collection.findOneAndDelete(filter), handleMongoError).andThen(
-                    filterDataNotFoundFactory(filter),
-                );
-            },
-            /* async findAllSummaries() {
+            return ResultAsync.fromPromise(collection.findOneAndDelete(filter), handleMongoError).andThen(
+                filterDataNotFoundFactory(filter),
+            );
+        },
+        /* async findAllSummaries() {
             try {
                 const result = await collection
                     .aggregate<ElevenLabsAccountWithProxySummaryDocumentType>([
@@ -75,10 +74,9 @@ export const PRAOSessionRepositoryResultAsync = (function () {
                 return NoThrow.error(new Error("Unknown error"));
             }
         }, */
-            insertOne(document: PRAOSessionDocumentType) {
-                return insertOne(document, collection);
-            },
-            /* async deleteOneByID(id: ObjectId) {}, */
-        });
+        insertOne(document: PRAOSessionDocumentType) {
+            return insertOne(document, collection);
+        },
+        /* async deleteOneByID(id: ObjectId) {}, */
     });
-})();
+});
