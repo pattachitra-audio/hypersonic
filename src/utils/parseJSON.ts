@@ -10,3 +10,12 @@ export function parseJSON(jsonString: string): Result<unknown, SyntaxError | Typ
         return err(new Error("Unknown error while parsing json", { cause: error }));
     }
 }
+
+export const parseJSONArray = (jsonString: string) =>
+    parseJSON(jsonString).andThen((o) => {
+        if (!Array.isArray(o)) {
+            return err(new Error("Not an array"));
+        }
+
+        return ok(o as unknown[]);
+    });
