@@ -57,6 +57,22 @@ export class ElevenLabsFreeResource {
         return okAsync(this.context.balance);
     }
 
+    /* public setBalance(fn: (balance: number) => number) {
+        this.context.balance = fn(this.context.balance);
+    } */
+
+    public setBalance(value: number) {
+        this.context.balance = value;
+    }
+
+    public decrementBalance(value: number) {
+        this.context.balance -= value;
+    }
+
+    public getIDToken() {
+        return this.validateIDToken().map(() => this.context.idToken);
+    }
+
     public validateIDToken() {
         const self = this;
         console.log(`validateIDToken() for id ${this.context.id}`);
