@@ -10,7 +10,7 @@ export const router = tRPCRouter({
     projects: projectsRouter,
     elevenLabsAccountWithProxy: elevenLabsAccountWithProxyRouter,
     praoSession: praoSessionRouter,
-    elevenLabsInternalRouter: elevenLabsInternalRouter,
+    elevenLabsInternal: elevenLabsInternalRouter,
 });
 
 export type Router = typeof router;
