@@ -108,7 +108,7 @@ export function init(accountIDs: string[]) {
         PRAOSessionRepositoryResultAsync,
         RedisClientResultAsync,
     ]).andThen(([ElevenLabsAccountWithProxyRepository, PRAOSessionRepository, RedisClient]) =>
-        ElevenLabsAccountWithProxyRepository.findManyByID(accountIDs)
+        ElevenLabsAccountWithProxyRepository.findManyByIDs(accountIDs)
             .andThen(filterUnlockedAccounts)
             .andThen((accounts) => {
                 const accountIDs = accounts.map((account) => account._id);
