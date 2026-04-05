@@ -1,9 +1,9 @@
-import { err, errAsync, ok, ResultAsync } from "neverthrow";
+import { errAsync, ok, ResultAsync } from "neverthrow";
 import { ElevenLabsFreeSession } from "./session";
 import { ElevenLabsFreeResource } from "./resource";
 
 export class ElevenLabsFreeEngine {
-    static spend(session: ElevenLabsFreeSession, amount: number): ResultAsync<ElevenLabsFreeResource, Error> {
+    static spend(session: ElevenLabsFreeSession): ResultAsync<ElevenLabsFreeResource, Error> {
         const {
             context: { resources },
         } = session;
@@ -23,10 +23,6 @@ export class ElevenLabsFreeEngine {
                 return resourcesWithBalance.sort((a, b) => a.balance - b.balance);
             })
             .andThen((ascendingSortedResources) => {
-                if (ascendingSortedResources.at(-1)!.balance < amount) {
-                    return err(new Error(`No resource with balance >= ${amount} exists`));
-                }
-
                 return ok(ascendingSortedResources.at(-1)!.resource);
             });
     }
