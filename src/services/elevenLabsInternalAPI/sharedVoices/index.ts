@@ -17,7 +17,7 @@ function buildQueryParams(validatedInput: z.output<typeof InputSchema>) {
         queryParams.append("search", validatedInput.searchQuery);
     }
 
-    queryParams.append("sort", validatedInput.sort);
+    queryParams.append("sort", validatedInput.sort.toLowerCase());
 
     queryParams.append("page_size", validatedInput.pageSize.toString());
     queryParams.append("page", validatedInput.pageNum.toString());
