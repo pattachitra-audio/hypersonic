@@ -44,6 +44,10 @@ export const ElevenLabsAccountWithProxyRepositoryResultAsync = DBClientResultAsy
             );
         },
 
+        findManyByIDs(accountIDs: string[]) {
+            return ResultAsync.fromPromise(collection.find({ _id: { $in: accountIDs } }).toArray(), handleMongoError);
+        },
+
         findAllByOwnerID(ownerID: ObjectId) {
             return ResultAsync.fromPromise(collection.find({ ownerID }).toArray(), handleMongoError);
         },
