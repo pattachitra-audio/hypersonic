@@ -19,9 +19,8 @@
             }
         ],
 
-        "baseUrl": ".",
         "paths": {
-            "@/*": ["src/*"]
+            "@/*": ["./src/*"]
         }
     },
     "include": ["test/**/*.ts", "vitestEnv.d.ts"]
