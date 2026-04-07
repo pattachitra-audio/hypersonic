@@ -10,7 +10,7 @@ import { zodParse } from "@/utils/zodParse";
 export async function enhanceDialogue(req: RequestType) {
     const url = `${ELEVEN_LABS_INTERNAL_API_BASE_URL}/enhance-dialogue`;
 
-    undiciFetch(url, {
+    return undiciFetch(url, {
         method: "POST",
         body: JSON.stringify({ dialogue_blocks: req.dialogueBlocks }),
         headers: {
