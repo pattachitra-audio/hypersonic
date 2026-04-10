@@ -5,6 +5,8 @@ import z from "zod";
 const EnvSchema = z.object({
     MONGODB_URI: z.string(),
     REDIS_URL: z.string(),
+
+    LOG_LEVEL: z.string().optional(),
 });
 
 export type EnvSchemaType = z.infer<typeof EnvSchema>;
