@@ -10,5 +10,3 @@ const EnvSchema = z.object({
 export type EnvSchemaType = z.infer<typeof EnvSchema>;
 
 export const EnvResultAsync = new ResultAsync(Promise.resolve(zodParse(EnvSchema, process.env)));
-
-// TODO: Learn about the .match function
