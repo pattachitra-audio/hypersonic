@@ -14,6 +14,7 @@ import { ResultAsync } from "neverthrow";
 import { parseStringFromArrayBuffer } from "@/utils/parseStringFromArrayBuffer";
 import { zodParse } from "@/utils/zodParse";
 import { parseJSON } from "@/utils/parseJSON";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 function readFileAsArrayBuffer(file: File) {
     const reader = new FileReader();
@@ -289,11 +290,32 @@ type FileValidationStatusType =
 
 // type SetFileValidationStatusFnType = Dispatch<SetStateAction<FileValidationStatusType>>;
 
+function AllocationSelection({ allocation, setAllocation }: { allocation: string; setAllocation: (val: string) => void }) {
+    return (
+        <div className="space-y-2">
+            <Label>Select an allocation</Label>
+            <Select value={allocation} onValueChange={setAllocation}>
+                <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select an allocation" />
+                </SelectTrigger>
+                <SelectContent>
+                    {["a", "b", "c", "d"].map((opt) => (
+                        <SelectItem key={opt} value={opt}>
+                            {opt.toUpperCase()}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+        </div>
+    );
+}
+
 export default function NewProjectModal({ open, updateOpen }: { open: boolean; updateOpen: (open: boolean) => void }) {
     const [name, setName] = useState("");
     const [creating, setCreating] = useState(false);
     const [file, setFile] = useState<File | null>(null);
     const [validation, setValidation] = useState<FileValidationStatusType>({ status: "IDLE" });
+    const [allocation, setAllocation] = useState("");
 
     const router = useRouter();
     const { toast } = useToast();
@@ -301,6 +323,7 @@ export default function NewProjectModal({ open, updateOpen }: { open: boolean; u
     function resetState() {
         setFile(null);
         setName("");
+        setAllocation("");
         setValidation({ status: "IDLE" });
         // setIsCreating(false);
         setCreating(false);
@@ -349,6 +372,7 @@ export default function NewProjectModal({ open, updateOpen }: { open: boolean; u
                 </DialogHeader>
                 <div className="space-y-6 py-4">
                     <ProjectName {...{ name }} updateName={setName} />
+                    <AllocationSelection allocation={allocation} setAllocation={setAllocation} />
                     <FileUpload
                         {...{ validation, file, setFile }}
                         updateProjectName={setName}
