@@ -6,7 +6,7 @@ import { ProxyURLBrand } from "@/brands/proxyURL";
 import { ok, ResultAsync } from "neverthrow";
 import { handleMongoError } from "@/lib/dbHelpers/handleMongoError";
 
-export type ElevenLabsAccountWithProxyDocumentType = {
+export type ElevenLabsPoolDocumentType = {
     _id: string;
     proxyURL: ProxyURLBrand;
     ownerID: ObjectId;
@@ -16,19 +16,19 @@ export type ElevenLabsAccountWithProxyDocumentType = {
     sessionID?: ObjectId;
 };
 
-export type ElevenLabsAccountWithProxySummaryDocumentType = Prettify<
-    Omit<ElevenLabsAccountWithProxyDocumentType, "_id" | "password" | "proxyURL" | "ownerID"> & { id: string }
+export type ElevenLabsPoolSummaryDocumentType = Prettify<
+    Omit<ElevenLabsPoolDocumentType, "_id" | "password" | "proxyURL" | "ownerID"> & { id: string }
 >;
 
-export const ElevenLabsAccountWithProxyRepositoryResultAsync = DBClientResultAsync.andThen((dbClient) => {
+export const ElevenLabsPoolRepositoryResultAsync = DBClientResultAsync.andThen((dbClient) => {
     const db = dbClient.db("core");
-    const collection = db.collection<ElevenLabsAccountWithProxyDocumentType>("ElevenLabsAccountWithProxy");
+    const collection = db.collection<ElevenLabsPoolDocumentType>("ElevenLabsAccountWithProxy");
 
     return ok({
         findAllSummariesByOwnerID(ownerID: ObjectId) {
             return ResultAsync.fromPromise(
                 collection
-                    .aggregate<ElevenLabsAccountWithProxySummaryDocumentType>([
+                    .aggregate<ElevenLabsPoolSummaryDocumentType>([
                         { $match: { ownerID } },
                         {
                             $project: {
@@ -52,7 +52,7 @@ export const ElevenLabsAccountWithProxyRepositoryResultAsync = DBClientResultAsy
             return ResultAsync.fromPromise(collection.find({ ownerID }).toArray(), handleMongoError);
         },
 
-        insertOne(document: ElevenLabsAccountWithProxyDocumentType) {
+        insertOne(document: ElevenLabsPoolDocumentType) {
             return insertOne(document, collection);
         },
 
