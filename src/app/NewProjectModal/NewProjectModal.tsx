@@ -290,7 +290,13 @@ type FileValidationStatusType =
 
 // type SetFileValidationStatusFnType = Dispatch<SetStateAction<FileValidationStatusType>>;
 
-function AllocationSelection({ allocation, setAllocation }: { allocation: string; setAllocation: (val: string) => void }) {
+function AllocationSelection({
+    allocation,
+    setAllocation,
+}: {
+    allocation: string;
+    setAllocation: (val: string) => void;
+}) {
     return (
         <div className="space-y-2">
             <Label>Select an allocation</Label>
