@@ -107,6 +107,7 @@ export class ElevenLabsCreditLaneEntry {
 
     public decrementBalance(amount: number) {
         this.context.balance -= amount;
+        return okAsync();
     }
 
     public get resource() {
@@ -115,6 +116,7 @@ export class ElevenLabsCreditLaneEntry {
 
     public invalidateBalance() {
         this.context.balanceStale = true;
+        return okAsync();
     }
 
     public validateBalance() {

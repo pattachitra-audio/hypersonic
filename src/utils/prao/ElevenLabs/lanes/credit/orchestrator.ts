@@ -23,17 +23,11 @@ export class ElevenLabsCreditLaneOrchestrator {
 
                 return okAsync(ascendingSortedEntries.at(-1)!.entry);
             })
-            .andThen((entry) => {
-                return execute(entry)
-                    .map((cost) => {
-                        if (cost == null) {
-                            return;
-                        }
-
-                        entry.decrementBalance(cost);
-                    })
-                    .mapErr(() => entry.invalidateBalance());
-            });
+            .andThen((entry) =>
+                execute(entry)
+                    .andThen((cost) => entry.decrementBalance(cost == null ? amount : cost))
+                    .orElse(() => entry.invalidateBalance()),
+            );
     }
 
     public static spendOn(
