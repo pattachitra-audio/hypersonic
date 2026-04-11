@@ -5,11 +5,11 @@ import { omit } from "lodash";
 import { MongoError } from "mongodb";
 import { createProxyURL } from "@/brands/proxyURL";
 import { tRPCProcedure } from "@/server/tRPC";
-import { ElevenLabsAccountWithProxyRepositoryResultAsync } from "@/repository/ElevenLabsPool";
+import { ElevenLabsPoolRepositoryResultAsync } from "@/repository/ElevenLabsPool";
 import { TRPCError } from "@trpc/server";
 import { OWNER_ID } from "@/backendConstants";
 
-export const ElevenLabsAccountWithProxySchema = z.object({
+export const ElevenLabsPoolSchema = z.object({
     email: z.email(),
     password: z.string(),
 
@@ -21,19 +21,19 @@ export const ElevenLabsAccountWithProxySchema = z.object({
     }),
 });
 
-export const addProcedure = tRPCProcedure.input(ElevenLabsAccountWithProxySchema).mutation(async ({ input }) => {
-    const ElevenLabsAccountWithProxyRepositoryResult = await ElevenLabsAccountWithProxyRepositoryResultAsync;
+export const addProcedure = tRPCProcedure.input(ElevenLabsPoolSchema).mutation(async ({ input }) => {
+    const ElevenLabsPoolRepositoryResult = await ElevenLabsPoolRepositoryResultAsync;
     console.log("input:", input);
 
-    if (ElevenLabsAccountWithProxyRepositoryResult.isErr()) {
+    if (ElevenLabsPoolRepositoryResult.isErr()) {
         throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to init 'ElevenLabsAccountWithProxyRepository'",
-            cause: ElevenLabsAccountWithProxyRepositoryResult.error,
+            message: "Failed to init 'ElevenLabsPoolRepositoryResult'",
+            cause: ElevenLabsPoolRepositoryResult.error,
         });
     }
 
-    const ElevenLabsAccountWithProxyRepository = ElevenLabsAccountWithProxyRepositoryResult.value;
+    const ElevenLabsPoolRepository = ElevenLabsPoolRepositoryResult.value;
     const proxyURLResult = createProxyURL(
         input.proxy.username,
         input.proxy.password,
@@ -69,7 +69,7 @@ export const addProcedure = tRPCProcedure.input(ElevenLabsAccountWithProxySchema
     const ownerID = OWNER_ID;
     const elevenLabsUserID = elevenLabsFirebaseSignInResult.value.localID;
 
-    const insertOneResult = await ElevenLabsAccountWithProxyRepository.insertOne({
+    const insertOneResult = await ElevenLabsPoolRepository.insertOne({
         ownerID,
         _id: elevenLabsUserID,
         ...omit(input, "proxy"),
@@ -93,7 +93,7 @@ export const addProcedure = tRPCProcedure.input(ElevenLabsAccountWithProxySchema
 
         throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to insert 'elevenLabsAccountWithProxy'",
+            message: "Failed to insert to 'elevenLabsPool'",
             cause: error.cause,
         });
     }

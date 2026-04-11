@@ -1,29 +1,29 @@
 import { OWNER_ID } from "@/backendConstants";
-import { ElevenLabsAccountWithProxyRepositoryResultAsync } from "@/repository/ElevenLabsPool";
+import { ElevenLabsPoolRepositoryResultAsync } from "@/repository/ElevenLabsPool";
 import { tRPCProcedure } from "@/server/tRPC";
 import { TRPCError } from "@trpc/server";
 
 export const getProcedure = tRPCProcedure.query(async () => {
-    const ElevenLabsAccountWithProxyRepositoryResult = await ElevenLabsAccountWithProxyRepositoryResultAsync;
+    const ElevenLabsPoolRepositoryResult = await ElevenLabsPoolRepositoryResultAsync;
 
-    if (ElevenLabsAccountWithProxyRepositoryResult.isErr()) {
+    if (ElevenLabsPoolRepositoryResult.isErr()) {
         throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to init 'ElevenLabsAccountWithProxyRepository'",
-            cause: ElevenLabsAccountWithProxyRepositoryResult.error,
+            message: "Failed to init 'ElevenLabsPoolRepositoryResult'",
+            cause: ElevenLabsPoolRepositoryResult.error,
         });
     }
 
-    const ElevenLabsAccountWithProxyRepository = ElevenLabsAccountWithProxyRepositoryResult.value;
+    const ElevenLabsPoolRepository = ElevenLabsPoolRepositoryResult.value;
 
     const ownerID = OWNER_ID;
 
-    const findAllResult = await ElevenLabsAccountWithProxyRepository.findAllSummariesByOwnerID(ownerID);
+    const findAllResult = await ElevenLabsPoolRepository.findAllSummariesByOwnerID(ownerID);
 
     if (findAllResult.isErr()) {
         throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
-            message: "Error finding all 'elevenLabsAccountsWithProxy",
+            message: "Error finding accounts in 'elevenLabsPool'",
         });
     }
 
