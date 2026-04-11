@@ -21,7 +21,7 @@ jobs:
         uses: ./.github/workflows/type_check.yml
 
     unit_test:
-        needs: lint
+        needs: type_check
         uses: ./.github/workflows/unit_test.yml
         secrets: inherit
         permissions:
