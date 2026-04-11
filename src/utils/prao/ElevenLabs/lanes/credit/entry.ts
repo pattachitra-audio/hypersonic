@@ -8,6 +8,8 @@ import { LoggerResultAsync } from "@/lib/Logger";
 import { Creator } from "@/interfaces/Creator";
 import { ElevenLabsResource } from "../../resource";
 import { zodParseAsync } from "@/utils/zodParse";
+import { JSONSerializable } from "@/interfaces/JSONSerializable";
+import { JSONDeserializable } from "@/interfaces/JSONDeserializable";
 
 type PinoLogger = Logger<string>;
 
@@ -116,4 +118,6 @@ export class ElevenLabsCreditLaneEntry {
     }
 }
 
-ElevenLabsCreditLaneEntry satisfies Creator<ElevenLabsCreditLaneEntry>;
+ElevenLabsCreditLaneEntry satisfies Creator<ElevenLabsCreditLaneEntry> &
+    JSONSerializable<ElevenLabsCreditLaneEntry> &
+    JSONDeserializable<ElevenLabsCreditLaneEntry>;
