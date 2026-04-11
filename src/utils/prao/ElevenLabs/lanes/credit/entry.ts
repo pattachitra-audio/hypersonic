@@ -105,6 +105,18 @@ export class ElevenLabsCreditLaneEntry {
         return okAsync(this.context.balance);
     }
 
+    public decrementBalance(amount: number) {
+        this.context.balance -= amount;
+    }
+
+    public get resource() {
+        return this.context.resource;
+    }
+
+    public invalidateBalance() {
+        this.context.balanceStale = true;
+    }
+
     public validateBalance() {
         return this.context.resource.idToken.andThen((idToken) =>
             user({ bearerToken: idToken, proxyURL: this.context.resource.context.proxyURL }).andThen(
