@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/useToast";
 import { ResultAsync } from "neverthrow";
 import { parseStringFromArrayBuffer } from "@/utils/parseStringFromArrayBuffer";
 import { zodParse } from "@/utils/zodParse";
+import { parseJSON } from "@/utils/parseJSON";
 
 function readFileAsArrayBuffer(file: File) {
     const reader = new FileReader();
@@ -40,7 +41,9 @@ function loadFile(file: File) {
 }
 
 function parseFile(file: File) {
-    return loadFile(file).andThen((obj) => zodParse(AudioBookSchema, obj));
+    return loadFile(file)
+        .andThen(parseJSON)
+        .andThen((obj) => zodParse(AudioBookSchema, obj));
 }
 
 function FileUpload({
