@@ -5,7 +5,7 @@ import { insertOne } from "@/lib/dbHelpers/insertOne";
 import { Filter, ObjectId, WithId } from "mongodb";
 import { ok, err, ResultAsync } from "neverthrow";
 
-export type PRAOSessionDocumentType = {
+export type PRAOAllocationDocumentType = {
     userID: ObjectId;
     accountIDs: string[];
 };
@@ -14,19 +14,19 @@ export type PRAOSessionDocumentType = {
     Omit<ElevenLabsAccountWithProxyDocumentType, "_id" | "password" | "apiKey" | "proxyURL"> & { id: string }
 >; */
 
-function filterDataNotFoundFactory(filter: Filter<PRAOSessionDocumentType>) {
-    return function filterDataNotFound(document: WithId<PRAOSessionDocumentType> | null) {
+function filterDataNotFoundFactory(filter: Filter<PRAOAllocationDocumentType>) {
+    return function filterDataNotFound(document: WithId<PRAOAllocationDocumentType> | null) {
         if (document === null) {
-            return err(new DataNotFoundError<PRAOSessionDocumentType>("core", "PRAOSession", filter));
+            return err(new DataNotFoundError<PRAOAllocationDocumentType>("core", "PRAOAllocation", filter));
         }
 
         return ok(document);
     };
 }
 
-export const PRAOSessionRepositoryResultAsync = DBClientResultAsync.andThen((dbClient) => {
+export const PRAOAllocationRepositoryResultAsync = DBClientResultAsync.andThen((dbClient) => {
     const db = dbClient.db("core");
-    const collection = db.collection<PRAOSessionDocumentType>("PRAOSession");
+    const collection = db.collection<PRAOAllocationDocumentType>("PRAOAllocation");
 
     return ok({
         findAllByUserID(userID: ObjectId) {
@@ -74,7 +74,7 @@ export const PRAOSessionRepositoryResultAsync = DBClientResultAsync.andThen((dbC
                 return NoThrow.error(new Error("Unknown error"));
             }
         }, */
-        insertOne(document: PRAOSessionDocumentType) {
+        insertOne(document: PRAOAllocationDocumentType) {
             return insertOne(document, collection);
         },
         /* async deleteOneByID(id: ObjectId) {}, */
