@@ -1,5 +1,5 @@
 import { OWNER_ID } from "@/backendConstants";
-import { ElevenLabsAccountWithProxyRepositoryResultAsync } from "@/repository/ElevenLabsAccountWithProxyRepository";
+import { ElevenLabsAccountWithProxyRepositoryResultAsync } from "@/repository/ElevenLabsPool";
 import { tRPCProcedure } from "@/server/tRPC";
 import { TRPCError } from "@trpc/server";
 

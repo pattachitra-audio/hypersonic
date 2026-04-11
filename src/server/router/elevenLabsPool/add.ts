@@ -5,7 +5,7 @@ import { omit } from "lodash";
 import { MongoError } from "mongodb";
 import { createProxyURL } from "@/brands/proxyURL";
 import { tRPCProcedure } from "@/server/tRPC";
-import { ElevenLabsAccountWithProxyRepositoryResultAsync } from "@/repository/ElevenLabsAccountWithProxyRepository";
+import { ElevenLabsAccountWithProxyRepositoryResultAsync } from "@/repository/ElevenLabsPool";
 import { TRPCError } from "@trpc/server";
 import { OWNER_ID } from "@/backendConstants";
 
