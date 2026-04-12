@@ -6,14 +6,14 @@ import { ok } from "neverthrow";
 
 export const ElevenLabsFreeRosterRepositoryResultAsync = RedisClientResultAsync.andThen((RedisClient) => {
     return ok({
-        set(sessionID: ObjectId, roster: ElevenLabsFreeLaneRoster) {
+        set(allocationID: ObjectId, roster: ElevenLabsFreeLaneRoster) {
             return ElevenLabsFreeLaneRoster.serializeToJSON(roster)
                 .map(JSON.stringify)
-                .andThen((s) => RedisClient.set(`ElevenLabsFreeLaneRoster@${sessionID}`, s));
+                .andThen((s) => RedisClient.set(`ElevenLabsFreeLaneRoster@${allocationID}`, s));
         },
 
-        get(sessionID: ObjectId) {
-            return RedisClient.get(`ElevenLabsFreeLaneRoster@${sessionID}`)
+        get(allocationID: ObjectId) {
+            return RedisClient.get(`ElevenLabsFreeLaneRoster@${allocationID}`)
                 .andThen(parseJSON)
                 .andThen(ElevenLabsFreeLaneRoster.deserializeFromJSON);
         },
