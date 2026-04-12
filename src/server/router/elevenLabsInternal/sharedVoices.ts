@@ -12,7 +12,7 @@ import { omit } from "lodash";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 
 const InputSchema = z.object({
-    praoSesssionID: z.hex().length(24).transform(ObjectId.createFromHexString),
+    praoAllocationID: z.hex().length(24).transform(ObjectId.createFromHexString),
     searchQuery: z.string().optional(),
     sort: z.enum(["TRENDING"]).optional(),
     pageSize: z.number().min(1).max(100).optional(),
