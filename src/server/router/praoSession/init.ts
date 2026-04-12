@@ -2,15 +2,18 @@ import z from "zod";
 import { OWNER_ID } from "@/backendConstants";
 import { tRPCProcedure } from "@/server/tRPC";
 import { getErrorMessage } from "@/utils/getErrorMessage";
-import { ElevenLabsCreditsResource } from "@/utils/prao/ElevenLabsCredits/resource";
-import { ElevenLabsFreeResource } from "@/utils/prao/ElevenLabsFree/resource";
 import { TRPCError } from "@trpc/server";
 import { err, ok, okAsync, ResultAsync } from "neverthrow";
 import { ObjectId, WithId } from "mongodb";
-import { ElevenLabsFreeSessionRepositoryResultAsync } from "@/repository/ElevenLabsFreeSessionRepository";
-import { ElevenLabsCreditsSessionRepositoryResultAsync } from "@/repository/ElevenLabsCreditsSessionRepository";
 import { ElevenLabsPoolDocumentType, ElevenLabsPoolRepositoryResultAsync } from "@/repository/ElevenLabsPool";
 import { PRAOAllocationRepositoryResultAsync } from "@/repository/PRAOAllocation";
+import { ElevenLabsCreditRosterRepositoryResultAsync } from "@/repository/ElevenLabsCreditRosterRepository";
+import { ElevenLabsFreeRosterRepositoryResultAsync } from "@/repository/ElevenLabsFreeRosterRepository";
+import { ElevenLabsCreditLaneEntry } from "@/utils/prao/ElevenLabs/lanes/credit/entry";
+import { ElevenLabsResource } from "@/utils/prao/ElevenLabs/resource";
+import { ElevenLabsFreeLaneEntry } from "@/utils/prao/ElevenLabs/lanes/free/entry";
+import { ElevenLabsCreditLaneRoster } from "@/utils/prao/ElevenLabs/lanes/credit/roster";
+import { ElevenLabsFreeLaneRoster } from "@/utils/prao/ElevenLabs/lanes/free/roster";
 
 const InputSchema = z.object({
     accountIDs: z.array(z.string()),
@@ -100,61 +103,51 @@ function filterUnlockedAccounts(accounts: WithId<ElevenLabsPoolDocumentType>[]) 
 }
 
 function init(accountIDs: string[]) {
-    return ResultAsync.combine([
-        ElevenLabsPoolRepositoryResultAsync,
-        PRAOAllocationRepositoryResultAsync,
-        ElevenLabsCreditsSessionRepositoryResultAsync,
-        ElevenLabsFreeSessionRepositoryResultAsync,
-    ]).andThen(([ElevenLabsAccountWithProxyRepository, PRAOSessionRepository]) =>
-        ElevenLabsAccountWithProxyRepository.findManyByIDs(accountIDs)
-            .andThen(filterUnlockedAccounts)
-            .andThen((accounts) => {
-                const accountIDs = accounts.map((account) => account._id);
+    return ResultAsync.combine([ElevenLabsPoolRepositoryResultAsync, PRAOAllocationRepositoryResultAsync]).andThen(
+        ([ElevenLabsPoolRepository, PRAOSessionRepository]) =>
+            ElevenLabsPoolRepository.findManyByIDs(accountIDs)
+                .andThen(filterUnlockedAccounts)
+                .andThen((accounts) => {
+                    const accountIDs = accounts.map((account) => account._id);
 
-                return PRAOSessionRepository.insertOne({ userID: OWNER_ID, accountIDs }).andThen(
-                    ({ insertedId: sessionID }) =>
-                        ElevenLabsAccountWithProxyRepository.lockMany(accountIDs, sessionID).andThen(
-                            initRedisSessionCurry(sessionID, accounts),
-                        ),
-                );
-            }),
+                    return PRAOSessionRepository.insertOne({ userID: OWNER_ID, accountIDs }).andThen(
+                        ({ insertedId: sessionID }) =>
+                            ElevenLabsPoolRepository.lockMany(accountIDs, sessionID).andThen(
+                                initRedisSessionCurry(sessionID, accounts),
+                            ),
+                    );
+                }),
     );
 }
 
 function initRedisSessionCurry(sessionID: ObjectId, accounts: ElevenLabsPoolDocumentType[]) {
     return function () {
         return ResultAsync.combine([
-            ElevenLabsCreditsSessionRepositoryResultAsync,
-            ElevenLabsFreeSessionRepositoryResultAsync,
-        ]).andThen(([ElevenLabsCreditsSessionRepository, ElevenLabsFreeSessionRepository]) =>
+            ElevenLabsCreditRosterRepositoryResultAsync,
+            ElevenLabsFreeRosterRepositoryResultAsync,
+        ]).andThen(([ElevenLabsCreditRosterRepository, ElevenLabsFreeRosterRepository]) =>
             ResultAsync.combine(
                 accounts.map((account: ElevenLabsPoolDocumentType) =>
-                    ResultAsync.combine([
-                        ElevenLabsCreditsResource.new(
-                            account._id,
-                            account.proxyURL,
-                            account.firebaseAuthCreds.refreshToken,
-                        ),
-                        ElevenLabsFreeResource.new(
-                            account._id,
-                            account.proxyURL,
-                            account.firebaseAuthCreds.refreshToken,
-                        ),
-                    ] as const),
+                    ElevenLabsResource.create(account._id, account.proxyURL, account.firebaseAuthCreds.refreshToken),
                 ),
             )
-
-                .map(
-                    (resources) =>
-                        [
-                            resources.map(([creditsResource]) => creditsResource),
-                            resources.map(([, freeResource]) => freeResource),
-                        ] as const,
-                )
-                .andThen(([creditsResources, freeResources]) => {
+                .andThen((resources) =>
                     ResultAsync.combine([
-                        ElevenLabsCreditsSessionRepository.set(sessionID, creditsResources),
-                        ElevenLabsFreeSessionRepository.set(sessionID, freeResources),
+                        ResultAsync.combine(resources.map(ElevenLabsCreditLaneEntry.create)),
+                        ResultAsync.combine(resources.map(ElevenLabsFreeLaneEntry.create)),
+                    ]),
+                )
+                .andThen(([creditLaneEntries, freeLaneEntries]) =>
+                    ResultAsync.combine([
+                        ElevenLabsCreditLaneRoster.create(creditLaneEntries),
+                        ElevenLabsFreeLaneRoster.create(freeLaneEntries),
+                    ]),
+                )
+
+                .andThen(([creditLaneRoster, freeLaneRoster]) => {
+                    ResultAsync.combine([
+                        ElevenLabsCreditRosterRepository.set(sessionID, creditLaneRoster),
+                        ElevenLabsFreeRosterRepository.set(sessionID, freeLaneRoster),
                     ]);
 
                     return okAsync({
