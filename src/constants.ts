@@ -1,1 +1,4 @@
 export const INVALID_INDEX = 1000000000;
+
+export const NEGATIVE_INFINITY = -2_000_000_000;
+export const INFINITY = 2_000_000_000;
