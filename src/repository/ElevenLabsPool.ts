@@ -22,7 +22,7 @@ export type ElevenLabsPoolSummaryDocumentType = Prettify<
 
 export const ElevenLabsPoolRepositoryResultAsync = DBClientResultAsync.andThen((dbClient) => {
     const db = dbClient.db("core");
-    const collection = db.collection<ElevenLabsPoolDocumentType>("ElevenLabsAccountWithProxy");
+    const collection = db.collection<ElevenLabsPoolDocumentType>("ElevenLabsPool");
 
     return ok({
         findAllSummariesByOwnerID(ownerID: ObjectId) {
