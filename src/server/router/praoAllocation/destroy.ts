@@ -40,16 +40,16 @@ export const destroyProcedure = tRPCProcedure.input(InputSchema).mutation(async 
     return result.value;
 });
 
-export function destroy(allocationID: ObjectId) {
+function destroy(allocationID: ObjectId) {
     return ResultAsync.combine([
         PRAOAllocationRepositoryResultAsync,
         ElevenLabsPoolRepositoryResultAsync,
         RedisClientResultAsync,
     ])
         .andThen(([PRAOAllocationRepository, ElevenLabsPoolRepository, RedisClient]) =>
-            PRAOAllocationRepository.deleteOneByID(allocationID).andThen((session) =>
+            PRAOAllocationRepository.deleteOneByID(allocationID).andThen((allocation) =>
                 ResultAsync.combine([
-                    ElevenLabsPoolRepository.unlockMany(session.accountIDs),
+                    ElevenLabsPoolRepository.unlockMany(allocation.accountIDs),
                     RedisClient.del(`ElevenLabsCreditsSession@${allocationID}`),
                     RedisClient.del(`ElevenLabsFreeSession@${allocationID}`),
                 ]),
