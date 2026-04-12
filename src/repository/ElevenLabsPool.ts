@@ -13,7 +13,7 @@ export type ElevenLabsPoolDocumentType = {
     firebaseAuthCreds: {
         refreshToken: string;
     };
-    sessionID?: ObjectId;
+    allocationID?: ObjectId;
 };
 
 export type ElevenLabsPoolSummaryDocumentType = Prettify<
@@ -35,7 +35,7 @@ export const ElevenLabsPoolRepositoryResultAsync = DBClientResultAsync.andThen((
                                 id: "$_id",
                                 _id: 0,
                                 email: 1,
-                                sessionID: 1,
+                                allocationID: 1,
                             },
                         },
                     ])
@@ -56,16 +56,16 @@ export const ElevenLabsPoolRepositoryResultAsync = DBClientResultAsync.andThen((
             return insertOne(document, collection);
         },
 
-        lockMany(ids: string[], sessionID: ObjectId) {
+        lockMany(ids: string[], allocationID: ObjectId) {
             return ResultAsync.fromPromise(
-                collection.updateMany({ _id: { $in: ids } }, { $set: { sessionID } }),
+                collection.updateMany({ _id: { $in: ids } }, { $set: { allocationID } }),
                 handleMongoError,
             );
         },
 
         unlockMany(ids: string[]) {
             return ResultAsync.fromPromise(
-                collection.updateMany({ _id: { $in: ids } }, { $unset: { sessionID: 1 } }),
+                collection.updateMany({ _id: { $in: ids } }, { $unset: { allocationID: 1 } }),
                 handleMongoError,
             );
         },
