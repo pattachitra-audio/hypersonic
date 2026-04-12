@@ -6,6 +6,7 @@ import { Filter, ObjectId, UpdateFilter } from "mongodb";
 import { ok, ResultAsync } from "neverthrow";
 
 export type AudioBookDocumentType = AudioBook & {
+    allocationID: ObjectId;
     createdAt: Date;
     updatedAt: Date;
     lastAccessedAt: Date;
