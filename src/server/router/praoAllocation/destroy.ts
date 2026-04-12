@@ -5,8 +5,9 @@ import { getErrorMessage } from "@/utils/getErrorMessage";
 import { PRAOAllocationRepositoryResultAsync } from "@/repository/PRAOAllocation";
 import { ElevenLabsPoolRepositoryResultAsync } from "@/repository/ElevenLabsPool";
 import { ResultAsync } from "neverthrow";
-import { RedisClientResultAsync } from "@/lib/RedisClient";
 import { TRPCError } from "@trpc/server";
+import { ElevenLabsCreditRosterRepositoryResultAsync } from "@/repository/ElevenLabsCreditRosterRepository";
+import { ElevenLabsFreeRosterRepositoryResultAsync } from "@/repository/ElevenLabsFreeRosterRepository";
 
 const InputSchema = z.object({
     allocationID: z
@@ -44,16 +45,23 @@ function destroy(allocationID: ObjectId) {
     return ResultAsync.combine([
         PRAOAllocationRepositoryResultAsync,
         ElevenLabsPoolRepositoryResultAsync,
-        RedisClientResultAsync,
+        ElevenLabsCreditRosterRepositoryResultAsync,
+        ElevenLabsFreeRosterRepositoryResultAsync,
     ])
-        .andThen(([PRAOAllocationRepository, ElevenLabsPoolRepository, RedisClient]) =>
-            PRAOAllocationRepository.deleteOneByID(allocationID).andThen((allocation) =>
-                ResultAsync.combine([
-                    ElevenLabsPoolRepository.unlockMany(allocation.accountIDs),
-                    RedisClient.del(`ElevenLabsCreditsSession@${allocationID}`),
-                    RedisClient.del(`ElevenLabsFreeSession@${allocationID}`),
-                ]),
-            ),
+        .andThen(
+            ([
+                PRAOAllocationRepository,
+                ElevenLabsPoolRepository,
+                ElevenLabsCreditRosterRepository,
+                ElevenLabsFreeRosterRepository,
+            ]) =>
+                PRAOAllocationRepository.deleteOneByID(allocationID).andThen((allocation) =>
+                    ResultAsync.combine([
+                        ElevenLabsPoolRepository.unlockMany(allocation.accountIDs),
+                        ElevenLabsCreditRosterRepository.del(allocationID),
+                        ElevenLabsFreeRosterRepository.del(allocationID),
+                    ]),
+                ),
         )
         .map(() => {});
 }
