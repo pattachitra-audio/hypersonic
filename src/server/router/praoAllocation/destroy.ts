@@ -9,7 +9,7 @@ import { RedisClientResultAsync } from "@/lib/RedisClient";
 import { TRPCError } from "@trpc/server";
 
 const InputSchema = z.object({
-    sessionID: z
+    allocationID: z
         .hex()
         .length(24)
         .transform((string, context) => {
@@ -27,7 +27,7 @@ const InputSchema = z.object({
 });
 
 export const destroyProcedure = tRPCProcedure.input(InputSchema).mutation(async ({ input }) => {
-    const result = await destroy(input.sessionID);
+    const result = await destroy(input.allocationID);
 
     if (result.isErr()) {
         throw new TRPCError({
@@ -40,18 +40,18 @@ export const destroyProcedure = tRPCProcedure.input(InputSchema).mutation(async 
     return result.value;
 });
 
-export function destroy(sessionID: ObjectId) {
+export function destroy(allocationID: ObjectId) {
     return ResultAsync.combine([
         PRAOAllocationRepositoryResultAsync,
         ElevenLabsPoolRepositoryResultAsync,
         RedisClientResultAsync,
     ])
         .andThen(([PRAOAllocationRepository, ElevenLabsPoolRepository, RedisClient]) =>
-            PRAOAllocationRepository.deleteOneByID(sessionID).andThen((session) =>
+            PRAOAllocationRepository.deleteOneByID(allocationID).andThen((session) =>
                 ResultAsync.combine([
                     ElevenLabsPoolRepository.unlockMany(session.accountIDs),
-                    RedisClient.del(`ElevenLabsCreditsSession@${sessionID}`),
-                    RedisClient.del(`ElevenLabsFreeSession@${sessionID}`),
+                    RedisClient.del(`ElevenLabsCreditsSession@${allocationID}`),
+                    RedisClient.del(`ElevenLabsFreeSession@${allocationID}`),
                 ]),
             ),
         )
