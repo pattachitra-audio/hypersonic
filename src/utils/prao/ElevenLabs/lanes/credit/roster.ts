@@ -10,14 +10,13 @@ export class ElevenLabsCreditLaneRoster {
     public static Schema = z.object({
         entries: z.array(z.unknown()),
         totalBalance: z.number(),
-        totalBalanceStale: z.boolean(),
     });
 
     private constructor(
         public context: {
             entries: ElevenLabsCreditLaneEntry[];
             totalBalance: number;
-            totalBalanceStale: boolean;
+            isTotalBalanceStale: boolean;
         },
     ) {}
 
@@ -39,12 +38,12 @@ export class ElevenLabsCreditLaneRoster {
                     totalBalance,
                 })),
             )
-            .map((context) => new ElevenLabsCreditLaneRoster({ ...context, totalBalanceStale: false }));
+            .map((context) => new ElevenLabsCreditLaneRoster({ ...context, isTotalBalanceStale: false }));
     }
 
     public static create(entries: ElevenLabsCreditLaneEntry[]) {
         return ElevenLabsCreditLaneRoster.computeTotalBalance(entries).map(
-            (totalBalance) => new ElevenLabsCreditLaneRoster({ entries, totalBalance, totalBalanceStale: false }),
+            (totalBalance) => new ElevenLabsCreditLaneRoster({ entries, totalBalance, isTotalBalanceStale: false }),
         );
     }
 
@@ -61,7 +60,7 @@ export class ElevenLabsCreditLaneRoster {
     public get totalBalance() {
         const self = this;
 
-        if (!self.context.totalBalanceStale) {
+        if (!self.context.isTotalBalanceStale) {
             return okAsync(self.context.totalBalance);
         }
 
