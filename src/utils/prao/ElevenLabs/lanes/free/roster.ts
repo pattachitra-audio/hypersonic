@@ -1,7 +1,10 @@
 import z from "zod";
-import { ResultAsync } from "neverthrow";
+import { okAsync, ResultAsync } from "neverthrow";
 import { zodParseAsync } from "@/utils/zodParse";
 import { ElevenLabsFreeLaneEntry } from "./entry";
+import { JSONSerializable } from "@/interfaces/JSONSerializable";
+import { JSONDeserializable } from "@/interfaces/JSONDeserializable";
+import { Creator } from "@/interfaces/Creator";
 
 export class ElevenLabsFreeLaneRoster {
     public static Schema = z.object({
@@ -13,6 +16,7 @@ export class ElevenLabsFreeLaneRoster {
         public context: {
             entries: ElevenLabsFreeLaneEntry[];
             totalBalance: number;
+            isTotalBalanceStale: boolean;
         },
     ) {}
 
@@ -34,20 +38,44 @@ export class ElevenLabsFreeLaneRoster {
                     totalBalance,
                 })),
             )
-            .map((context) => new ElevenLabsFreeLaneRoster(context));
+            .map((context) => new ElevenLabsFreeLaneRoster({ ...context, isTotalBalanceStale: false }));
+    }
+
+    public static create(entries: ElevenLabsFreeLaneEntry[]) {
+        return ElevenLabsFreeLaneRoster.computeTotalBalance(entries).map(
+            (totalBalance) =>
+                new ElevenLabsFreeLaneRoster({
+                    entries,
+                    totalBalance,
+                    isTotalBalanceStale: false,
+                }),
+        );
     }
 
     public get entries() {
         return this.context.entries;
     }
 
-    public computeTotalBalance() {
-        return ResultAsync.combine(this.context.entries.map((entry) => entry.balance)).map((balances) =>
+    public static computeTotalBalance(entries: ElevenLabsFreeLaneEntry[]) {
+        return ResultAsync.combine(entries.map((entry) => entry.balance)).map((balances) =>
             balances.reduce((a, b) => a + b, 0),
         );
     }
 
     public get totalBalance() {
-        return this.computeTotalBalance();
+        const self = this;
+
+        if (!self.context.isTotalBalanceStale) {
+            return okAsync(self.context.totalBalance);
+        }
+
+        return ElevenLabsFreeLaneRoster.computeTotalBalance(self.context.entries).map((totalBalance) => {
+            self.context.totalBalance = totalBalance;
+            return totalBalance;
+        });
     }
 }
+
+ElevenLabsFreeLaneRoster satisfies JSONSerializable<ElevenLabsFreeLaneRoster> &
+    JSONDeserializable<ElevenLabsFreeLaneRoster> &
+    Creator<ElevenLabsFreeLaneRoster>;
