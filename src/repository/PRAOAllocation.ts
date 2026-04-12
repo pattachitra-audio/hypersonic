@@ -36,8 +36,8 @@ export const PRAOAllocationRepositoryResultAsync = DBClientResultAsync.andThen((
                 filterDataNotFoundFactory(filter),
             );
         },
-        deleteOneByID(sessionID: ObjectId) {
-            const filter = { _id: sessionID };
+        deleteOneByID(allocationID: ObjectId) {
+            const filter = { _id: allocationID };
 
             return ResultAsync.fromPromise(collection.findOneAndDelete(filter), handleMongoError).andThen(
                 filterDataNotFoundFactory(filter),
