@@ -2,14 +2,14 @@ import { tRPCRouter } from "@/server/tRPC";
 import { projectRouter } from "./project";
 import { projectsRouter } from "./projects";
 import { elevenLabsPoolRouter } from "./elevenLabsPool";
-import { praoSessionRouter } from "./praoSession";
 import { elevenLabsInternalRouter } from "./elevenLabsInternal";
+import { praoAllocationRouter } from "./praoAllocation";
 
 export const router = tRPCRouter({
     project: projectRouter,
     projects: projectsRouter,
     elevenLabsPool: elevenLabsPoolRouter,
-    praoSession: praoSessionRouter,
+    praoAllocation: praoAllocationRouter,
     elevenLabsInternal: elevenLabsInternalRouter,
 });
 
