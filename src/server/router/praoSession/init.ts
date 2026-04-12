@@ -1,10 +1,5 @@
 import z from "zod";
 import { OWNER_ID } from "@/backendConstants";
-import {
-    ElevenLabsAccountWithProxyDocumentType,
-    ElevenLabsAccountWithProxyRepositoryResultAsync,
-} from "@/repository/ElevenLabsAccountWithProxyRepository";
-import { PRAOSessionRepositoryResultAsync } from "@/repository/PRAOSession";
 import { tRPCProcedure } from "@/server/tRPC";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { ElevenLabsCreditsResource } from "@/utils/prao/ElevenLabsCredits/resource";
@@ -14,6 +9,8 @@ import { err, ok, okAsync, ResultAsync } from "neverthrow";
 import { ObjectId, WithId } from "mongodb";
 import { ElevenLabsFreeSessionRepositoryResultAsync } from "@/repository/ElevenLabsFreeSessionRepository";
 import { ElevenLabsCreditsSessionRepositoryResultAsync } from "@/repository/ElevenLabsCreditsSessionRepository";
+import { ElevenLabsPoolDocumentType, ElevenLabsPoolRepositoryResultAsync } from "@/repository/ElevenLabsPool";
+import { PRAOAllocationRepositoryResultAsync } from "@/repository/PRAOAllocation";
 
 const InputSchema = z.object({
     accountIDs: z.array(z.string()),
@@ -88,7 +85,7 @@ export const initProcedure = tRPCProcedure.input(InputSchema).mutation(async ({ 
     const ElevenLabsAccountWithProxyRepository = ElevenLabsAccountWithProxyRepositoryResult.value;
     */
 
-function filterUnlockedAccounts(accounts: WithId<ElevenLabsAccountWithProxyDocumentType>[]) {
+function filterUnlockedAccounts(accounts: WithId<ElevenLabsPoolDocumentType>[]) {
     for (const account of accounts) {
         if (account.sessionID) {
             return err(
@@ -99,13 +96,13 @@ function filterUnlockedAccounts(accounts: WithId<ElevenLabsAccountWithProxyDocum
         }
     }
 
-    return ok(accounts as Omit<WithId<ElevenLabsAccountWithProxyDocumentType>, "sessionID">[]);
+    return ok(accounts as Omit<WithId<ElevenLabsPoolDocumentType>, "sessionID">[]);
 }
 
 function init(accountIDs: string[]) {
     return ResultAsync.combine([
-        ElevenLabsAccountWithProxyRepositoryResultAsync,
-        PRAOSessionRepositoryResultAsync,
+        ElevenLabsPoolRepositoryResultAsync,
+        PRAOAllocationRepositoryResultAsync,
         ElevenLabsCreditsSessionRepositoryResultAsync,
         ElevenLabsFreeSessionRepositoryResultAsync,
     ]).andThen(([ElevenLabsAccountWithProxyRepository, PRAOSessionRepository]) =>
@@ -124,14 +121,14 @@ function init(accountIDs: string[]) {
     );
 }
 
-function initRedisSessionCurry(sessionID: ObjectId, accounts: ElevenLabsAccountWithProxyDocumentType[]) {
+function initRedisSessionCurry(sessionID: ObjectId, accounts: ElevenLabsPoolDocumentType[]) {
     return function () {
         return ResultAsync.combine([
             ElevenLabsCreditsSessionRepositoryResultAsync,
             ElevenLabsFreeSessionRepositoryResultAsync,
         ]).andThen(([ElevenLabsCreditsSessionRepository, ElevenLabsFreeSessionRepository]) =>
             ResultAsync.combine(
-                accounts.map((account: ElevenLabsAccountWithProxyDocumentType) =>
+                accounts.map((account: ElevenLabsPoolDocumentType) =>
                     ResultAsync.combine([
                         ElevenLabsCreditsResource.new(
                             account._id,

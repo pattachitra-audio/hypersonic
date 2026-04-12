@@ -2,8 +2,8 @@ import z from "zod";
 import { tRPCProcedure } from "@/server/tRPC";
 import { ObjectId } from "mongodb";
 import { getErrorMessage } from "@/utils/getErrorMessage";
-import { PRAOSessionRepositoryResultAsync } from "@/repository/PRAOSession";
-import { ElevenLabsAccountWithProxyRepositoryResultAsync } from "@/repository/ElevenLabsAccountWithProxyRepository";
+import { PRAOAllocationRepositoryResultAsync } from "@/repository/PRAOAllocation";
+import { ElevenLabsPoolRepositoryResultAsync } from "@/repository/ElevenLabsPool";
 import { ResultAsync } from "neverthrow";
 import { RedisClientResultAsync } from "@/lib/RedisClient";
 import { TRPCError } from "@trpc/server";
@@ -42,14 +42,14 @@ export const destroyProcedure = tRPCProcedure.input(InputSchema).mutation(async 
 
 export function destroy(sessionID: ObjectId) {
     return ResultAsync.combine([
-        PRAOSessionRepositoryResultAsync,
-        ElevenLabsAccountWithProxyRepositoryResultAsync,
+        PRAOAllocationRepositoryResultAsync,
+        ElevenLabsPoolRepositoryResultAsync,
         RedisClientResultAsync,
     ])
-        .andThen(([PRAOSessionRepositoryResultAsync, ElevenLabsAccountWithProxyRepository, RedisClient]) =>
-            PRAOSessionRepositoryResultAsync.deleteOneByID(sessionID).andThen((session) =>
+        .andThen(([PRAOAllocationRepository, ElevenLabsPoolRepository, RedisClient]) =>
+            PRAOAllocationRepository.deleteOneByID(sessionID).andThen((session) =>
                 ResultAsync.combine([
-                    ElevenLabsAccountWithProxyRepository.unlockMany(session.accountIDs),
+                    ElevenLabsPoolRepository.unlockMany(session.accountIDs),
                     RedisClient.del(`ElevenLabsCreditsSession@${sessionID}`),
                     RedisClient.del(`ElevenLabsFreeSession@${sessionID}`),
                 ]),
