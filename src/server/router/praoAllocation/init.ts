@@ -74,7 +74,7 @@ export const initProcedure = tRPCProcedure.input(InputSchema).mutation(async ({ 
         });
     } */
 
-// const sessionID = insertOneResult.value.insertedId;
+// const allocationID = insertOneResult.value.insertedId;
 
 /*
     if (ElevenLabsAccountWithProxyRepositoryResult.isErr()) {
@@ -90,37 +90,37 @@ export const initProcedure = tRPCProcedure.input(InputSchema).mutation(async ({ 
 
 function filterUnlockedAccounts(accounts: WithId<ElevenLabsPoolDocumentType>[]) {
     for (const account of accounts) {
-        if (account.sessionID) {
+        if (account.allocationID) {
             return err(
                 new Error(
-                    `'ElevenLabsAccountWithProxy' id '${account._id}' is already tied to 'Session' id '${account.sessionID}`,
+                    `ElevenLabs account with id '${account._id}' is already tied to allocation id '${account.allocationID}`,
                 ),
             );
         }
     }
 
-    return ok(accounts as Omit<WithId<ElevenLabsPoolDocumentType>, "sessionID">[]);
+    return ok(accounts as Omit<WithId<ElevenLabsPoolDocumentType>, "allocationID">[]);
 }
 
 function init(accountIDs: string[]) {
     return ResultAsync.combine([ElevenLabsPoolRepositoryResultAsync, PRAOAllocationRepositoryResultAsync]).andThen(
-        ([ElevenLabsPoolRepository, PRAOSessionRepository]) =>
+        ([ElevenLabsPoolRepository, PRAOAllocationRepository]) =>
             ElevenLabsPoolRepository.findManyByIDs(accountIDs)
                 .andThen(filterUnlockedAccounts)
                 .andThen((accounts) => {
                     const accountIDs = accounts.map((account) => account._id);
 
-                    return PRAOSessionRepository.insertOne({ userID: OWNER_ID, accountIDs }).andThen(
-                        ({ insertedId: sessionID }) =>
-                            ElevenLabsPoolRepository.lockMany(accountIDs, sessionID).andThen(
-                                initRedisSessionCurry(sessionID, accounts),
+                    return PRAOAllocationRepository.insertOne({ userID: OWNER_ID, accountIDs }).andThen(
+                        ({ insertedId: allocationID }) =>
+                            ElevenLabsPoolRepository.lockMany(accountIDs, allocationID).andThen(
+                                initRedisAllocationCurry(allocationID, accounts),
                             ),
                     );
                 }),
     );
 }
 
-function initRedisSessionCurry(sessionID: ObjectId, accounts: ElevenLabsPoolDocumentType[]) {
+function initRedisAllocationCurry(allocationID: ObjectId, accounts: ElevenLabsPoolDocumentType[]) {
     return function () {
         return ResultAsync.combine([
             ElevenLabsCreditRosterRepositoryResultAsync,
@@ -146,12 +146,12 @@ function initRedisSessionCurry(sessionID: ObjectId, accounts: ElevenLabsPoolDocu
 
                 .andThen(([creditLaneRoster, freeLaneRoster]) => {
                     ResultAsync.combine([
-                        ElevenLabsCreditRosterRepository.set(sessionID, creditLaneRoster),
-                        ElevenLabsFreeRosterRepository.set(sessionID, freeLaneRoster),
+                        ElevenLabsCreditRosterRepository.set(allocationID, creditLaneRoster),
+                        ElevenLabsFreeRosterRepository.set(allocationID, freeLaneRoster),
                     ]);
 
                     return okAsync({
-                        sessionID,
+                        allocationID,
                     });
                 }),
         );
@@ -168,17 +168,17 @@ function initRedisSessionCurry(sessionID: ObjectId, accounts: ElevenLabsPoolDocu
                                 .andThen(([creditsResourcesJSON, freeResourcesJSON]) => {
                                     ResultAsync.combine([
                                         RedisClient.set(
-                                            `ElevenLabsCreditsSession@${sessionID}`,
+                                            `ElevenLabsCreditsSession@${allocationID}`,
                                             JSON.stringify(creditsResourcesJSON),
                                         ),
                                         RedisClient.set(
-                                            `ElevenLabsFreeSession@${sessionID}`,
+                                            `ElevenLabsFreeSession@${allocationID}`,
                                             JSON.stringify(freeResourcesJSON),
                                         ),
                                     ]);
 
                                     return okAsync({
-                                        sessionID,
+                                        allocationID,
                                         resources: creditsResourcesJSON.map((o) => pick(o, "id", "balance")),
                                     });
                                 }), */
