@@ -1,0 +1,397 @@
+{
+    "name": "The Void Drifters",
+    "plot": "Captain Elara Vance and her ragtag crew aboard the Aegis must transport a mysterious, encrypted core across the hostile Orion Sector, fighting off pirate factions and a secretive megacorporation before discovering the core is actually the consciousness of a lost precursor civilization.",
+    "genre": ["sci-fi", "space opera", "action"],
+    "characters": [
+        {
+            "name": "Narrator",
+            "gender": "MALE",
+            "ageGroup": [40, 50],
+            "description": "An omniscient narrator setting the scene.",
+            "voiceDescription": "Deep, authoritative, gravelly voice."
+        },
+        {
+            "name": "Captain Elara Vance",
+            "gender": "FEMALE",
+            "ageGroup": [30, 40],
+            "description": "A battle-hardened and cynical captain of the Aegis.",
+            "voiceDescription": "Sharp, commanding, slightly raspy."
+        },
+        {
+            "name": "Kaelen",
+            "gender": "MALE",
+            "ageGroup": [25, 30],
+            "description": "The ship's brilliant but anxious chief engineer.",
+            "voiceDescription": "Fast-paced, higher pitch, nervous tone."
+        },
+        {
+            "name": "Ryx",
+            "gender": "FEMALE",
+            "ageGroup": [20, 25],
+            "description": "A hot-headed, trigger-happy alien gunner.",
+            "voiceDescription": "Guttural, energetic, aggressive."
+        },
+        {
+            "name": "Commander Thorne",
+            "gender": "MALE",
+            "ageGroup": [45, 55],
+            "description": "Ruthless commander of the Orion Syndicate.",
+            "voiceDescription": "Cold, calculated, menacing, smooth."
+        }
+    ],
+    "episodes": [
+        {
+            "name": "The Pickup",
+            "description": "The crew acquires the mysterious core and barely escapes the spaceyard.",
+            "sceneBegin": 0,
+            "sceneEnd": 3
+        },
+        {
+            "name": "Ambush at Kaelen's Asteroid",
+            "description": "The Aegis is ambushed by Syndicate fighters, resulting in a dangerous dogfight.",
+            "sceneBegin": 3,
+            "sceneEnd": 6
+        },
+        {
+            "name": "The Core Returns",
+            "description": "The encrypted core begins speaking to Kaelen, forcing a confrontation.",
+            "sceneBegin": 6,
+            "sceneEnd": 8
+        }
+    ],
+    "scenes": [
+        {
+            "name": "Docking Bay 42",
+            "description": "The Aegis docks at an abandoned space station to receive the encrypted core.",
+            "time": "night",
+            "location": "Omicron Station",
+            "dialogueBegin": 0,
+            "dialogueEnd": 40
+        },
+        {
+            "name": "Fleeing the Station",
+            "description": "An explosive retreat as Syndicate operatives intercept the exchange.",
+            "time": "night",
+            "location": "Aegis Cockpit",
+            "dialogueBegin": 40,
+            "dialogueEnd": 80
+        },
+        {
+            "name": "Hyperspace Jitters",
+            "description": "Tensions rise as the crew inspects the mysterious cargo.",
+            "time": "morning",
+            "location": "Aegis Cargo Hold",
+            "dialogueBegin": 80,
+            "dialogueEnd": 120
+        },
+        {
+            "name": "Asteroid Field",
+            "description": "The Aegis navigates a treacherous asteroid field.",
+            "time": "noon",
+            "location": "Aegis Bridge",
+            "dialogueBegin": 120,
+            "dialogueEnd": 150
+        },
+        {
+            "name": "Syndicate Attack",
+            "description": "Thorne's fighters ambush the Aegis.",
+            "time": "noon",
+            "location": "Aegis Guns and Bridge",
+            "dialogueBegin": 150,
+            "dialogueEnd": 190
+        },
+        {
+            "name": "Aftermath",
+            "description": "Repairing damage after the firefight.",
+            "time": "evening",
+            "location": "Engine Room",
+            "dialogueBegin": 190,
+            "dialogueEnd": 220
+        },
+        {
+            "name": "Whispers of the Core",
+            "description": "The core starts transmitting anomalous signals.",
+            "time": "night",
+            "location": "Ship's Lab",
+            "dialogueBegin": 220,
+            "dialogueEnd": 260
+        },
+        {
+            "name": "The Precursor's Voice",
+            "description": "The core reveals its true nature.",
+            "time": "night",
+            "location": "Aegis Main Deck",
+            "dialogueBegin": 260,
+            "dialogueEnd": 300
+        }
+    ],
+    "dialogues": [
+        {
+            "character": 0,
+            "text": "The Omicron Station was completely dark, save for the flickering neon lights of Docking Bay 42."
+        },
+        { "character": 1, "text": "Kaelen, status report on the cargo clamps." },
+        {
+            "character": 2,
+            "text": "Clamps are secure, Captain. Although the readings I'm getting from whatever we just loaded are... weird."
+        },
+        { "character": 1, "text": "Weird how? We don't get paid for weird." },
+        {
+            "character": 2,
+            "text": "It's cold. Colder than the vacuum outside. It's drawing ambient heat from the hold."
+        },
+        {
+            "character": 3,
+            "text": "Who cares how cold it is? If it pays enough to fix the starboard thrusters, I'll sleep next to it."
+        },
+        { "character": 1, "text": "Nobody is sleeping next to an encrypted Syndicate crate, Ryx. Lock it down." },
+        { "character": 2, "text": "Captain! I just picked up three new signatures on scanners." },
+        { "character": 1, "text": "Identify." },
+        { "character": 2, "text": "Syndicate interception drones. They're hailing us." },
+        {
+            "character": 4,
+            "text": "Aegis, this is Commander Thorne. You are carrying unauthorized cargo. Power down your engines."
+        },
+        { "character": 3, "text": "How about we power up the plasma cannons instead?" },
+        {
+            "character": 1,
+            "text": "Not yet. Thorne, we found this drifting near quadrant 7. Finder's keepers under salvage law."
+        },
+        { "character": 4, "text": "Do not play games with me, Vance. That core is Syndicate property. Power down." },
+        {
+            "character": 1,
+            "text": "I'm experiencing comms static, Commander. Must be the local nebula. Kaelen, punch it."
+        },
+        { "character": 2, "text": "Punching it! Diverting aux power to main thrusters." },
+        {
+            "character": 0,
+            "text": "The Aegis screeched backward out of the docking arm, sparks raining through the bay."
+        },
+        { "character": 4, "text": "Fire to disable. Don't hit the cargo." },
+        { "character": 3, "text": "Incoming torpedos! I'm on the turrets." },
+        { "character": 1, "text": "Keep them off our exhaust, Ryx. Kaelen, when can we jump to lightspeed?" },
+        { "character": 2, "text": "Nav-computer needs thirty seconds to calculate a safe trajectory." },
+        { "character": 1, "text": "We don't have thirty seconds! Give me a blind jump." },
+        {
+            "character": 2,
+            "text": "A blind jump through the Orion Sector? Are you insane? We could end up inside a star!"
+        },
+        { "character": 3, "text": "Better inside a star than Thorne's interrogation chambers!" },
+        { "character": 0, "text": "Laser fire grazed the ship's hull, shaking the metal bulkheads." },
+        { "character": 1, "text": "That's an order, Kaelen! Do it!" },
+        { "character": 2, "text": "Initiating jump sequence! Hang onto something!" },
+        { "character": 0, "text": "Outside the viewports, the stars stretched into long streaks of white." },
+        { "character": 1, "text": "Status." },
+        { "character": 2, "text": "We're in hyperspace. Engines are redlining, but holding." },
+        { "character": 3, "text": "I got two of their drones before we jumped. Not bad for a Tuesday." },
+        { "character": 1, "text": "Stay sharp. Thorne isn't the kind to let tracking data go to waste." },
+        { "character": 2, "text": "Uh, Captain? The crate... it's humming." },
+        { "character": 1, "text": "Humming? What do you mean?" },
+        {
+            "character": 2,
+            "text": "I mean it's literally vibrating at a low frequency. It matches the hum of our hyperdrive."
+        },
+        { "character": 3, "text": "Do you think it's a bomb?" },
+        {
+            "character": 1,
+            "text": "If it were a bomb, Thorne wouldn't have told his drones not to shoot it. Let's go take a look."
+        },
+        { "character": 0, "text": "The trio moved cautiously into the dim cargo hold." },
+        { "character": 2, "text": "It's definitely the crate. Look at the frost forming on the outside." },
+        { "character": 3, "text": "Let me blow the lock. I've got my plasma cutter right here." },
+        { "character": 1, "text": "Put that away. If it's volatile, you'll kill us all." },
+        { "character": 2, "text": "Captain, I'm detecting electromagnetic pulses from the inside. Patterned pulses." },
+        { "character": 1, "text": "Like a distress beacon?" },
+        { "character": 2, "text": "More like... an algorithm. It's trying to sync with our ship's mainframe." },
+        { "character": 3, "text": "A virus! Purge the systems right now!" },
+        { "character": 1, "text": "No, wait. Cut the hardline from the cargo bay to the bridge." },
+        { "character": 2, "text": "Done. But it's still trying to breach our local subnet." },
+        { "character": 1, "text": "Who hired us for this job, Ryx?" },
+        { "character": 3, "text": "An anonymous broker on the dark web. Paid half upfront in unmarked credits." },
+        {
+            "character": 1,
+            "text": "Thorne was right on our tail. This wasn't a standard smuggling run; it was a setup."
+        },
+        { "character": 0, "text": "Suddenly, the lights in the cargo hold flickered and died." },
+        { "character": 2, "text": "Hey! Did you cut the lights?" },
+        { "character": 1, "text": "No. Switch to emergency backups." },
+        { "character": 3, "text": "My plasma cutter just turned itself on! What's happening?!" },
+        { "character": 2, "text": "The pulses! They're remotely overriding our localized tech!" },
+        { "character": 1, "text": "Everyone, fall back to the bridge! We need to isolate..." },
+        {
+            "character": 0,
+            "text": "A deafening screech filled the corridor as the crate suddenly split down the middle."
+        },
+        { "character": 3, "text": "Holy mother of chaos, it's opening." },
+        {
+            "character": 0,
+            "text": "Inside sat a glowing, spherical object seemingly made of liquid metal, suspended in zero gravity."
+        },
+        { "character": 2, "text": "That... that defies every law of physics I know." },
+        { "character": 1, "text": "And the frost?" },
+        { "character": 2, "text": "Gone. The ambient temperature just spiked. It's radiating heat now." },
+        { "character": 3, "text": "Is it biological? Should I shoot it?" },
+        { "character": 1, "text": "Do not shoot the million-credit glowing orb, Ryx." },
+        { "character": 2, "text": "My datapad. Look at my datapad!" },
+        { "character": 1, "text": "It's scrolling lines of code. What is that?" },
+        { "character": 2, "text": "It's translating itself. The orb is... it's a quantum computer." },
+        { "character": 3, "text": "So? People buy quantum computers every day at BestNebula." },
+        { "character": 2, "text": "Not like this. This isn't Syndicate tech. This is Precursor." },
+        { "character": 1, "text": "Precursor? You mean the long-dead alien race that built the warp gates?" },
+        { "character": 2, "text": "Yes! And according to this translation... it's not a computer." },
+        { "character": 1, "text": "Then what is it?" },
+        { "character": 2, "text": "It's a digital ark. It contains millions of consciousnesses." },
+        { "character": 0, "text": "A heavy silence fell over the crew as the magnitude of the discovery sank in." },
+        { "character": 3, "text": "So we're smuggling ghosts. Great." },
+        {
+            "character": 1,
+            "text": "Thorne didn't want simply to retrieve cargo. He wanted to weaponize Precursor knowledge."
+        },
+        { "character": 2, "text": "Captain, we're dropping out of hyperspace. Proximity warning." },
+        { "character": 1, "text": "Get back to your stations, both of you. Leave the orb alone." },
+        {
+            "character": 0,
+            "text": "The Aegis reverted into normal space, surrounded by a dense field of jagged asteroids."
+        },
+        { "character": 1, "text": "Where did the blind jump take us, Kaelen?" },
+        { "character": 2, "text": "The Kryton Asteroid belt. It's an unmapped region near the galactic edge." },
+        { "character": 3, "text": "Unmapped! Good, then Thorne can't find us." },
+        { "character": 4, "text": "You underestimate my resources, Ryx." },
+        { "character": 1, "text": "Thorne! How are you on our comms?" },
+        {
+            "character": 4,
+            "text": "Your mechanic missed a tracking beacon beneath the hull plating. Your ship is crippled, Vance."
+        },
+        { "character": 2, "text": "He's bluffing... wait, no. Main engine thrusters are offline!" },
+        { "character": 1, "text": "Ryx! Get to the turrets!" },
+        { "character": 3, "text": "Way ahead of you, Captain! Spin us around so I can get a lock!" },
+        { "character": 0, "text": "The Aegis spiraled violently through the rock field to dodge incoming fire." },
+        { "character": 1, "text": "I'm rerouting life support to shields. Give me something to work with, Kaelen!" },
+        { "character": 2, "text": "I'm trying! The engine management system is locked out by Thorne's encryption." },
+        {
+            "character": 4,
+            "text": "Surrender the artifact. In return, I'll let you die a quick death in the vacuum of space, instead of being dissected in my laboratories."
+        },
+        { "character": 1, "text": "Not a very tempting offer, Commander!" },
+        { "character": 3, "text": "Taking out their port cannons now!" },
+        {
+            "character": 0,
+            "text": "Ryx unleashed a barrage of plasma shells, severely damaging one of Thorne's cruisers."
+        },
+        { "character": 4, "text": "Foolish. All fighters, focus your fire on their shield generator." },
+        {
+            "character": 2,
+            "text": "Captain, shields are down to twenty percent! If they hit us again, we'll lose containment."
+        },
+        { "character": 1, "text": "We need that main thruster back online! Kaelen, physical bypass!" },
+        { "character": 2, "text": "I have to go down to the engine core and manually reroute the plasma conduits!" },
+        { "character": 1, "text": "Then go! Now!" },
+        {
+            "character": 0,
+            "text": "Kaelen sprinted down the narrow corridors, sparks showering from the ceiling with every impact."
+        },
+        { "character": 2, "text": "I'm in the engine room! Reaching the bypass junction!" },
+        { "character": 1, "text": "Hurry! Shields at ten percent!" },
+        { "character": 3, "text": "I can't shake them! They're matching our evasive maneuvers perfectly." },
+        { "character": 4, "text": "This is the end, Vance." },
+        { "character": 0, "text": "Suddenly, the ship's consoles lit up brilliantly with alien symbols." },
+        { "character": 1, "text": "What did you do, Kaelen?" },
+        { "character": 2, "text": "Nothing! I haven't connected the bypass yet!" },
+        {
+            "character": 3,
+            "text": "Captain! The turrets are moving on their own! They're locking onto weak points I didn't even know the cruisers had!"
+        },
+        { "character": 1, "text": "The orb. It breached the subnet." },
+        {
+            "character": 0,
+            "text": "With supernatural precision, the Aegis fired a single, sustained beam of energy, slicing precisely through the engines of Thorne's ships without destroying the passenger cabins."
+        },
+        { "character": 4, "text": "What... what was that? No human ship can fire with that intensity!" },
+        { "character": 1, "text": "Looks like we had some upgrades, Commander. Have fun drifting." },
+        {
+            "character": 2,
+            "text": "The thrusters! They're back online! But they're drawing power directly from the artifact!"
+        },
+        { "character": 1, "text": "Get us out of here, before Thorne's reinforcements arrive." },
+        { "character": 2, "text": "Jumping to lightspeed... now!" },
+        { "character": 0, "text": "The stars stretched out once more, leaving the crippled Syndicate ships behind." },
+        { "character": 1, "text": "Damage report." },
+        { "character": 2, "text": "Shield generator is fried, but hull integrity is at 80%. Life support is stable." },
+        {
+            "character": 3,
+            "text": "I don't know what the orb did, but our weapons systems are completely recalibrated. They run twice as hot now."
+        },
+        {
+            "character": 1,
+            "text": "The artifact didn't just hack our systems, it optimized them. Kaelen, check the lab. We need to know more about what we're carrying."
+        },
+        { "character": 2, "text": "On my way." },
+        { "character": 0, "text": "In the ship's lab, the metallic sphere pulsated softly with a calming blue light." },
+        { "character": 2, "text": "Captain, you're not going to believe this." },
+        { "character": 1, "text": "Try me." },
+        {
+            "character": 2,
+            "text": "It's projecting a holographic interface. Or at least, attempting to interface with my neural link."
+        },
+        { "character": 1, "text": "Do not connect your neural port to that thing! It could rewrite your brain!" },
+        {
+            "character": 2,
+            "text": "I'm not doing it, it's connecting wirelessly! It's downloading language parameters."
+        },
+        { "character": 3, "text": "If he goes zombie, I get to shoot him, right?" },
+        { "character": 1, "text": "Nobody is shooting Kaelen." },
+        { "character": 2, "text": "It's speaking..." },
+        {
+            "character": 0,
+            "text": "A synthesized, multifaceted voice echoed directly from the ship's comms panels, neither male nor female."
+        },
+        {
+            "character": 0,
+            "text": "[Precursor Voice] We are the echo of the Luminary Accord. We thank you for our liberation."
+        },
+        { "character": 1, "text": "Liberation? From what?" },
+        {
+            "character": 0,
+            "text": "[Precursor Voice] The ones you call the Syndicate. They sought to extract our tactical algorithms to subjugate your galaxy."
+        },
+        { "character": 3, "text": "Yeah, well, we're not exactly saints either. We took the job to get paid." },
+        {
+            "character": 0,
+            "text": "[Precursor Voice] Your mercenary intent is noted. However, your actions preserved us. We will reward you."
+        },
+        { "character": 1, "text": "Reward us how?" },
+        {
+            "character": 0,
+            "text": "[Precursor Voice] We possess coordinates to the Last Haven. A planet untouched by the Syndicate, rich in resources and forgotten technology. Take us there, and the coordinates are yours."
+        },
+        { "character": 2, "text": "A sanctuary planet? But those are just myths." },
+        {
+            "character": 0,
+            "text": "[Precursor Voice] Myths are the shadows of forgotten truths. We will input the coordinates into your nav-computer."
+        },
+        {
+            "character": 1,
+            "text": "Wait. You said there are millions of consciousnesses in there. What happens when we get to this Haven?"
+        },
+        { "character": 0, "text": "[Precursor Voice] We will wake up." },
+        { "character": 3, "text": "I don't like the sound of that. Millions of alien ghosts waking up?" },
+        {
+            "character": 1,
+            "text": "If we turn this over to anyone else, Thorne tracks it and starts a galactic war. We don't have many options."
+        },
+        { "character": 2, "text": "Coordinates received and locked in. It's deep in the Outer Rim." },
+        {
+            "character": 1,
+            "text": "Set course. Better prepare yourselves, crew. It's going to be a long ride to the edge of the universe."
+        },
+        {
+            "character": 0,
+            "text": "The Aegis adjusted its trajectory and blasted forward into uncharted territory, carrying the seeds of a lost civilization."
+        },
+        {
+            "character": 1,
+            "text": "By the way, Kaelen. Try to find a way to stop it from taking over the ship's guns."
+        },
+        { "character": 2, "text": "I'll see what I can do, Captain. No promises." }
+    ]
+}

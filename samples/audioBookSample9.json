@@ -1,0 +1,274 @@
+{
+    "name": "Ghost Town of Deadwood",
+    "plot": "A weary bounty hunter trails a dangerous outlaw to an abandoned mining town, only to discover that the town is not empty, and the outlaws have awakened an ancient Navajo skinwalker that hunts them all.",
+    "genre": ["western", "horror", "supernatural"],
+    "characters": [
+        {
+            "name": "Narrator",
+            "gender": "MALE",
+            "ageGroup": [50, 70],
+            "description": "A seasoned storyteller with a heavy drawl, telling a campfire story.",
+            "voiceDescription": "Slow, gruff, southern drawl, atmospheric."
+        },
+        {
+            "name": "Silas Vance",
+            "gender": "MALE",
+            "ageGroup": [40, 50],
+            "description": "A quiet, calculating bounty hunter with a tragic past.",
+            "voiceDescription": "Low, tense, speaking only when necessary."
+        },
+        {
+            "name": "Elias Thorne",
+            "gender": "MALE",
+            "ageGroup": [30, 40],
+            "description": "A vicious outlaw gang leader who fears nothing.",
+            "voiceDescription": "Rough, arrogant, with a manic edge."
+        },
+        {
+            "name": "Nita",
+            "gender": "FEMALE",
+            "ageGroup": [20, 30],
+            "description": "A local Navajo guide who knows the legends of the canyon.",
+            "voiceDescription": "Calm, spiritual, warning."
+        },
+        {
+            "name": "The Skinwalker",
+            "gender": "MALE",
+            "ageGroup": [0, 1000],
+            "description": "A shape-shifting entity mimicking sounds and voices.",
+            "voiceDescription": "Distorted, unnatural mimicry, horrifying."
+        }
+    ],
+    "episodes": [
+        {
+            "name": "The Trail to Deadwood",
+            "description": "Silas tracks the Thorne gang to an abandoned silver mining town.",
+            "sceneBegin": 0,
+            "sceneEnd": 3
+        },
+        {
+            "name": "Night of the Howling",
+            "description": "The true nature of the town reveals itself as gang members go missing.",
+            "sceneBegin": 3,
+            "sceneEnd": 6
+        },
+        {
+            "name": "The Silver Bullet",
+            "description": "Silas and Thorne must team up to survive the beast.",
+            "sceneBegin": 6,
+            "sceneEnd": 9
+        }
+    ],
+    "scenes": [
+        {
+            "name": "The Desert Camp",
+            "description": "Silas recruits Nita to guide him through the red canyons.",
+            "time": "dusk",
+            "location": "A canyon camp",
+            "dialogueBegin": 0,
+            "dialogueEnd": 25
+        },
+        {
+            "name": "Entering Deadwood",
+            "description": "They arrive at the eerie, deserted town of Deadwood.",
+            "time": "afternoon",
+            "location": "Main Street, Deadwood",
+            "dialogueBegin": 25,
+            "dialogueEnd": 50
+        },
+        {
+            "name": "The Saloon Ambush",
+            "description": "Silas confronts Thorne's gang in the saloon.",
+            "time": "evening",
+            "location": "The Broken Spoke Saloon",
+            "dialogueBegin": 50,
+            "dialogueEnd": 75
+        },
+        {
+            "name": "The First Victim",
+            "description": "A scream interrupts the standoff.",
+            "time": "night",
+            "location": "Outside the Saloon",
+            "dialogueBegin": 75,
+            "dialogueEnd": 100
+        },
+        {
+            "name": "Nita's Warning",
+            "description": "Nita explains the legend of the Yeenaldlooshii.",
+            "time": "night",
+            "location": "Inside the Saloon",
+            "dialogueBegin": 100,
+            "dialogueEnd": 125
+        },
+        {
+            "name": "The Imitator",
+            "description": "The beast uses a dead man's voice to lure them out.",
+            "time": "midnight",
+            "location": "The Sheriff's Office",
+            "dialogueBegin": 125,
+            "dialogueEnd": 150
+        },
+        {
+            "name": "The Mine Shaft",
+            "description": "Silas and Thorne descend into the silver mine to hunt the beast.",
+            "time": "early morning",
+            "location": "The Silver Mine",
+            "dialogueBegin": 150,
+            "dialogueEnd": 175
+        },
+        {
+            "name": "The Confrontation",
+            "description": "A brutal fight in the dark against a shapeshifting horror.",
+            "time": "early morning",
+            "location": "Deep in the Mine",
+            "dialogueBegin": 175,
+            "dialogueEnd": 200
+        },
+        {
+            "name": "Dawn Rider",
+            "description": "Silas emerges victorious, but changed.",
+            "time": "dawn",
+            "location": "Edge of town",
+            "dialogueBegin": 200,
+            "dialogueEnd": 220
+        }
+    ],
+    "dialogues": [
+        {
+            "character": 0,
+            "text": "The wind howled through the red rock canyon, carrying the biting chill of a desert night."
+        },
+        {
+            "character": 0,
+            "text": "Silas Vance sat by a meager fire, cleaning his Winchester rifle. Across the flames sat Nita, watching the shadows dance."
+        },
+        { "character": 1, "text": "You sure the tracks lead to Deadwood?" },
+        {
+            "character": 4,
+            "text": "Thorne's horses went up the ridge. Deadwood is the only thing up there. But you shouldn't follow them, bounty hunter."
+        },
+        {
+            "character": 1,
+            "text": "There's a five hundred dollar bounty on Thorne's head. Dead or alive. I prefer dead. Less arguing on the ride back."
+        },
+        {
+            "character": 4,
+            "text": "Deadwood is cursed ground. My people do not go there. The miners dug too deep and woke something that was sleeping."
+        },
+        {
+            "character": 1,
+            "text": "I've faced gunmen, rustlers, and snake-oil salesmen. I'm not afraid of old ghost stories."
+        },
+        {
+            "character": 4,
+            "text": "It is not a ghost. It wears the skin of beasts, and the voices of men. Turn back, Silas."
+        },
+        { "character": 1, "text": "I need that bounty. First light, we ride." },
+        {
+            "character": 0,
+            "text": "The town of Deadwood appeared over the ridge at high noon. It was a rotting collection of wooden shacks, long abandoned to the desert."
+        },
+        { "character": 1, "text": "Quiet. The horses are tied near the saloon." },
+        { "character": 4, "text": "The air smells wrong. Like copper and rot." },
+        { "character": 1, "text": "Stay here with the horses. If I'm not back in an hour, ride out." },
+        {
+            "character": 0,
+            "text": "Silas quietly unholstered his Colt revolver and kicked open the swinging doors of the Broken Spoke Saloon."
+        },
+        { "character": 3, "text": "Well, well. Look what the buzzards dragged in." },
+        {
+            "character": 0,
+            "text": "Elias Thorne sat at a dusty poker table, surrounded by four of his rough-looking men, guns aimed squarely at Silas."
+        },
+        { "character": 1, "text": "Party's over, Thorne. You're coming to the Marshall in Blackwater." },
+        { "character": 3, "text": "Are you blind, Vance? It's five against one." },
+        { "character": 1, "text": "I like those odds. Means I don't have to aim carefully." },
+        { "character": 3, "text": "Shoot him down, boys." },
+        {
+            "character": 0,
+            "text": "Before anyone could pull a trigger, a horrifying, piercing shriek echoed from outside—a sound halfway between a mountain lion and a screaming woman."
+        },
+        { "character": 3, "text": "What in tarnation was that?" },
+        {
+            "character": 0,
+            "text": "One of Thorne's men, Billy, stumbled through the saloon doors, bleeding profusely from his neck."
+        },
+        { "character": 3, "text": "Billy! Who did this? Was it the law?" },
+        { "character": 0, "text": "Billy collapsed onto the wooden floorboards, dead before he could answer." },
+        { "character": 1, "text": "That wasn't a bullet wound. Something tore his throat out." },
+        { "character": 0, "text": "Nita ran into the saloon, her face pale as a ghost." },
+        { "character": 4, "text": "It's here! The Yeenaldlooshii! The Skinwalker!" },
+        { "character": 3, "text": "Crazy Indian talk. Someone's out there snipering my boys! Barricade the doors!" },
+        { "character": 1, "text": "For once, Thorne, I think you should listen to her." },
+        { "character": 0, "text": "Outside, the wind died down. From the darkness, a voice called out." },
+        { "character": 5, "text": "Help me... Elias... it's Billy! I'm hurt bad..." },
+        { "character": 3, "text": "Billy? But... Billy's dead right here on the floor!" },
+        { "character": 4, "text": "Do not answer it! It mimics the dead to draw out the living." },
+        { "character": 1, "text": "Look at the window." },
+        {
+            "character": 0,
+            "text": "A monstrous silhouette leaped past the moonlight, moving incredibly fast on all fours."
+        },
+        { "character": 3, "text": "Fire! Shoot it!" },
+        {
+            "character": 0,
+            "text": "Thorne's men unleashed a barrage of bullets through the windows and walls, deafening everyone in the small room."
+        },
+        { "character": 1, "text": "Cease fire! You're just wasting lead!" },
+        { "character": 4, "text": "Lead won't kill it. Only silver or fire." },
+        {
+            "character": 1,
+            "text": "Silver? This is a silver mining town. The assayer's office might have unsmelted ore."
+        },
+        { "character": 3, "text": "We ain't going out there! We're sitting tight till dawn!" },
+        {
+            "character": 0,
+            "text": "Suddenly, the roof above them splintered, and a massive, fur-covered claw ripped one of the outlaws straight through the ceiling."
+        },
+        { "character": 3, "text": "Good god!" },
+        { "character": 1, "text": "Still want to sit tight, Thorne? Run for the mine entrance!" },
+        {
+            "character": 0,
+            "text": "The survivors bolted from the saloon, sprinting across the dusty street toward the dark mouth of the silver mine."
+        },
+        { "character": 3, "text": "It got another one! We're down to just me and you, Vance!" },
+        { "character": 1, "text": "Keep moving!" },
+        { "character": 0, "text": "They descended into the cold, damp tunnels of the mine, lighting a lantern." },
+        { "character": 1, "text": "Hold up. Here. A mining cart full of silver ore." },
+        { "character": 3, "text": "How does a rock help us against a monster?" },
+        {
+            "character": 1,
+            "text": "Nita, hand me that dynamite stick from the crate. I'll pack the silver rock dust around the explosive."
+        },
+        { "character": 4, "text": "A silver bomb. It might work." },
+        {
+            "character": 0,
+            "text": "From the tunnel behind them, the sound of heavy footsteps approached, followed by a twisted, gurgling voice."
+        },
+        { "character": 5, "text": "Silas... Silas, come out..." },
+        { "character": 1, "text": "It knows my name." },
+        { "character": 3, "text": "I ain't dying in a hole in the ground!" },
+        {
+            "character": 0,
+            "text": "Thorne panicked, firing his revolver wildly into the dark tunnel. The beast lunged from the shadows, pinning Thorne to the wall."
+        },
+        { "character": 3, "text": "Get it off me! Shoot it, Vance!" },
+        { "character": 1, "text": "If I throw this, it'll kill you too!" },
+        { "character": 3, "text": "Do it! Send me to hell, but take this thing with me!" },
+        { "character": 0, "text": "Silas lit the fuse and threw the makeshift silver bomb directly at the beast." },
+        { "character": 1, "text": "Nita, get down!" },
+        {
+            "character": 0,
+            "text": "The explosion rocked the mine, collapsing the tunnel entrance. A blinding flash of silver dust filled the air, followed by an unearthly, agonized scream."
+        },
+        { "character": 0, "text": "When the dust settled, Thorne and the beast were gone, buried under tons of rock." },
+        { "character": 4, "text": "You killed it. It's truly over." },
+        { "character": 1, "text": "Yeah. But there goes my five hundred dollar bounty." },
+        {
+            "character": 0,
+            "text": "Silas and Nita walked out of the collapsed mine just as the sun rose, painting the desert in hues of gold."
+        },
+        { "character": 4, "text": "What will you do now, Silas?" },
+        { "character": 1, "text": "Find another bounty. Preferable one that doesn't howl at the moon." }
+    ]
+}

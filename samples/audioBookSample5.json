@@ -1,0 +1,331 @@
+{
+    "name": "The Obsidian Crown",
+    "plot": "A disgraced knight and a novice druid embark on a perilous journey to destroy an ancient cursed crown before a dark sorcerer can use it to resurrect an army of the dead.",
+    "genre": ["fantasy", "magic", "adventure"],
+    "characters": [
+        {
+            "name": "Narrator",
+            "gender": "MALE",
+            "ageGroup": [50, 70],
+            "description": "An ancient chronicler of legends recounting the tale.",
+            "voiceDescription": "Rich, poetic, and deliberate."
+        },
+        {
+            "name": "Sir Alaric",
+            "gender": "MALE",
+            "ageGroup": [35, 45],
+            "description": "A disgraced knight seeking redemption.",
+            "voiceDescription": "Gruff, weary, yet holding a quiet nobility."
+        },
+        {
+            "name": "Elara",
+            "gender": "FEMALE",
+            "ageGroup": [20, 25],
+            "description": "A headstrong young druid connected to the earth.",
+            "voiceDescription": "Light, youthful, fierce when threatened."
+        },
+        {
+            "name": "Malakor the Dark",
+            "gender": "MALE",
+            "ageGroup": [40, 60],
+            "description": "A sinister sorcerer seeking to conquer the realm.",
+            "voiceDescription": "Sibilant, cold, and echoing with dark magic."
+        },
+        {
+            "name": "Gromm",
+            "gender": "MALE",
+            "ageGroup": [30, 50],
+            "description": "A gruff but loyal tavern keeper who aids the heroes.",
+            "voiceDescription": "Deep, booming, with a regional rolling accent."
+        }
+    ],
+    "episodes": [
+        {
+            "name": "The Unlikely Pair",
+            "description": "Alaric and Elara meet under dire circumstances and agree to travel together.",
+            "sceneBegin": 0,
+            "sceneEnd": 3
+        },
+        {
+            "name": "Through the Whispering Woods",
+            "description": "The duo faces the perils of a magic forest.",
+            "sceneBegin": 3,
+            "sceneEnd": 5
+        },
+        {
+            "name": "The Obsidian Keep",
+            "description": "The final confrontation with Malakor to destroy the crown.",
+            "sceneBegin": 5,
+            "sceneEnd": 8
+        }
+    ],
+    "scenes": [
+        {
+            "name": "The Prancing Boar Tavern",
+            "description": "Alaric is drinking away his sorrows when Elara bursts in.",
+            "time": "night",
+            "location": "The Prancing Boar Tavern",
+            "dialogueBegin": 0,
+            "dialogueEnd": 35
+        },
+        {
+            "name": "Fleeing the Village",
+            "description": "Malakor's shadow beasts attack the village.",
+            "time": "night",
+            "location": "Village outskirts",
+            "dialogueBegin": 35,
+            "dialogueEnd": 60
+        },
+        {
+            "name": "Campfire Truths",
+            "description": "Alaric and Elara share their pasts.",
+            "time": "night",
+            "location": "A small clearing in the woods",
+            "dialogueBegin": 60,
+            "dialogueEnd": 85
+        },
+        {
+            "name": "The Whispering Woods",
+            "description": "The forest tries to trick them with illusions.",
+            "time": "day",
+            "location": "The Whispering Woods",
+            "dialogueBegin": 85,
+            "dialogueEnd": 120
+        },
+        {
+            "name": "Approaching the Keep",
+            "description": "They reach the edge of the dark lands.",
+            "time": "dusk",
+            "location": "Cliffs of Despair",
+            "dialogueBegin": 120,
+            "dialogueEnd": 140
+        },
+        {
+            "name": "Infiltrating the Keep",
+            "description": "Sneaking past guards and dark wards.",
+            "time": "night",
+            "location": "The Obsidian Keep",
+            "dialogueBegin": 140,
+            "dialogueEnd": 165
+        },
+        {
+            "name": "Confronting Malakor",
+            "description": "The final battle in the throne room.",
+            "time": "night",
+            "location": "Malakor's Throne Room",
+            "dialogueBegin": 165,
+            "dialogueEnd": 200
+        },
+        {
+            "name": "The Crown Destroyed",
+            "description": "The aftermath of the battle.",
+            "time": "dawn",
+            "location": "Ruins of the Keep",
+            "dialogueBegin": 200,
+            "dialogueEnd": 220
+        }
+    ],
+    "dialogues": [
+        { "character": 0, "text": "The rain fell in sheets, turning the dirt roads of Oakhaven into a sea of mud." },
+        {
+            "character": 4,
+            "text": "Another ale, Sir Alaric? You've been staring at the bottom of that tankard for an hour."
+        },
+        { "character": 1, "text": "I lost my knighthood, Gromm. Don't call me 'Sir'. And yes, another ale." },
+        {
+            "character": 4,
+            "text": "As you wish. But drinking yourself to death won't change what happened at the capital."
+        },
+        { "character": 1, "text": "It blunts the memory, which is good enough." },
+        {
+            "character": 0,
+            "text": "Suddenly, the heavy oak doors of the tavern burst open, revealing a young woman cloaked in green, gasping for breath."
+        },
+        { "character": 2, "text": "Is there anyone here who can hold a sword? The shadow beasts are coming!" },
+        {
+            "character": 4,
+            "text": "Shadow beasts? Girl, you've spent too much time in the woods. Those are fairy tales."
+        },
+        { "character": 2, "text": "I saw them with my own eyes! They tore through the northern blockade!" },
+        { "character": 1, "text": "Quiet down, girl. Some of us are trying to drown our miseries in peace." },
+        { "character": 2, "text": "You! You have a sword at your hip! Stand up and help defend this town!" },
+        { "character": 1, "text": "I am no longer a defender of towns. Go find the local militia." },
+        { "character": 2, "text": "The militia is dead. Malakor's forces have already slaughtered them." },
+        { "character": 1, "text": "Malakor? The dark sorcerer? He's been sealed away for a century." },
+        { "character": 2, "text": "Not anymore. Someone broke the seal. And they stole the Obsidian Crown." },
+        { "character": 0, "text": "The mention of the crown brought a sudden, chilling silence to the tavern." },
+        { "character": 4, "text": "The Crown of the Dead... by the gods." },
+        { "character": 1, "text": "If Malakor has the crown, we're all already dead. Running just means dying tired." },
+        {
+            "character": 2,
+            "text": "I won't just sit here and wait for death! I am Elara of the Elder Grove, and I will fight."
+        },
+        {
+            "character": 0,
+            "text": "A terrifying howl shattered the peace of the night. The wooden walls of the tavern shuddered."
+        },
+        { "character": 4, "text": "Grab your weapons! Bar the doors!" },
+        { "character": 1, "text": "A bar won't hold against shadow beasts. Gromm, is there a cellar exit?" },
+        { "character": 4, "text": "Yes, out by the stables." },
+        { "character": 1, "text": "Everyone, into the cellar. Move!" },
+        { "character": 2, "text": "Wait, we can't just run!" },
+        {
+            "character": 1,
+            "text": "We can, and we will. Unless you want your soul ripped from your body to fuel Malakor's magic."
+        },
+        {
+            "character": 0,
+            "text": "The tavern door splintered inwardly, and creatures made of smoke and glowing red eyes poured into the room."
+        },
+        { "character": 1, "text": "Go! I'll hold them off!" },
+        { "character": 2, "text": "I thought you didn't care!" },
+        { "character": 1, "text": "I care about Gromm's ale! Now move!" },
+        { "character": 0, "text": "Alaric drew his broadsword, the steel catching the dim light of the hearth." },
+        { "character": 1, "text": "Come on, you ugly bastards. Show me what dark magic bleeds!" },
+        { "character": 2, "text": "Spirits of the earth, bind them! Vine and root, heed my call!" },
+        {
+            "character": 0,
+            "text": "Thick vines erupted through the floorboards, entangling the shadow beasts and giving the patrons time to escape."
+        },
+        { "character": 1, "text": "Druid magic. Didn't think there were any of you left." },
+        { "character": 2, "text": "There are a few. Come on, the vines won't hold them forever!" },
+        { "character": 0, "text": "Alaric and Elara plunged into the rainy night, rushing out of the village." },
+        { "character": 1, "text": "The village is lost. We head for the mountains." },
+        { "character": 2, "text": "No, we head north. To the Obsidian Keep. We have to destroy the crown." },
+        { "character": 1, "text": "You're mad. Two people can't assault a fortress." },
+        {
+            "character": 2,
+            "text": "It's the only way to stop the dead from rising. Don't you have any honor left, knight?"
+        },
+        {
+            "character": 1,
+            "text": "My honor was stripped from me when I refused to execute innocent villagers for the King."
+        },
+        { "character": 2, "text": "Then you're a good man. The realm needs good men right now." },
+        { "character": 1, "text": "The realm needs an army. We have a sword and some weeds." },
+        { "character": 2, "text": "Have faith, Alaric. The earth is with us." },
+        {
+            "character": 0,
+            "text": "They traveled through the night, the howls of the shadow beasts fading behind them."
+        },
+        { "character": 1, "text": "We need to rest. Even shadow beasts lose the scent in heavy rain." },
+        { "character": 2, "text": "I'll make a fire. It needs to be smokeless." },
+        {
+            "character": 0,
+            "text": "Elara spoke softly to the dampened wood, and soon a small, clean flame flickered to life."
+        },
+        { "character": 1, "text": "Handy trick. Who taught you that?" },
+        { "character": 2, "text": "The Arch-Druid. Before Malakor murdered him." },
+        { "character": 1, "text": "I'm sorry. I didn't know." },
+        {
+            "character": 2,
+            "text": "Malakor wants the crown to conquer the realm, but to me... this is revenge for my master."
+        },
+        {
+            "character": 1,
+            "text": "Revenge is a poisoned chalice, Elara. Drink it, and you'll find it consumes you from the inside."
+        },
+        { "character": 2, "text": "And what drives you, Alaric? Why did you come with me?" },
+        { "character": 1, "text": "To die, I suppose. Seemed like a better way to go than choking on cheap ale." },
+        {
+            "character": 2,
+            "text": "I don't believe you. Beneath that gruff exterior is a man who still wants to save the world."
+        },
+        { "character": 1, "text": "Get some sleep. We have to cross the Whispering Woods tomorrow." },
+        { "character": 0, "text": "The next morning, a thick fog blanketed the ancient forest." },
+        { "character": 1, "text": "Stay close. This forest plays tricks on the mind." },
+        { "character": 2, "text": "I can hear voices... they sound familiar." },
+        { "character": 3, "text": "Elara... you failed me, Elara..." },
+        { "character": 2, "text": "Master? Is that you?" },
+        {
+            "character": 1,
+            "text": "Don't listen! Put your hands over your ears! It's the woods mimicking your deepest regrets!"
+        },
+        { "character": 2, "text": "But it sounds just like him!" },
+        { "character": 1, "text": "Elara, snap out of it! If you step off the path, you'll be lost forever." },
+        { "character": 0, "text": "Elara stumbled, drawn toward the ethereal voice drifting through the fog." },
+        { "character": 1, "text": "By the gods, hold still!" },
+        {
+            "character": 0,
+            "text": "Alaric grabbed her arm, pulling her back to the stony trail just as the fog parted, revealing a sheer drop into a chasm."
+        },
+        { "character": 2, "text": "I... I almost stepped right off." },
+        { "character": 1, "text": "Told you. The woods don't like visitors." },
+        { "character": 2, "text": "Thank you, Alaric. You saved me." },
+        { "character": 1, "text": "Just don't do it again. My heart's too old for this kind of stress." },
+        {
+            "character": 0,
+            "text": "Days turned into weeks, until finally, the imposing shadow of the Obsidian Keep loomed before them."
+        },
+        { "character": 1, "text": "Look at the size of that thing. The walls are solid black stone." },
+        { "character": 2, "text": "And guarded by the undead. We can't fight our way through the main gate." },
+        {
+            "character": 1,
+            "text": "There's a drainage pipe on the eastern wall. It's how the old kings supplied the fortress during sieges."
+        },
+        { "character": 2, "text": "How do you know that?" },
+        { "character": 1, "text": "I used to guard this place, back when it was a royal outpost." },
+        { "character": 2, "text": "Lead the way." },
+        {
+            "character": 0,
+            "text": "They slipped silently through the muck of the tunnels, avoiding the shambling corpses that patrolled the courtyards."
+        },
+        { "character": 1, "text": "We need to head to the central spire. That's where the ritual chamber is." },
+        { "character": 2, "text": "I sense an immense darkness above us. The crown is near." },
+        {
+            "character": 0,
+            "text": "Throwing open the massive iron doors, they stepped into a chamber lit by sickly green fire."
+        },
+        {
+            "character": 3,
+            "text": "Ah, the disgraced knight and the little weed. I was wondering when you would arrive."
+        },
+        { "character": 1, "text": "Malakor. Hand over the crown." },
+        {
+            "character": 3,
+            "text": "Or what? You'll strike me down with your rusted blade? I have conquered death itself!"
+        },
+        { "character": 2, "text": "You pervert the natural order! The earth rejects you!" },
+        { "character": 3, "text": "The earth will be my footstool! Rise, my servants, and dispose of these insects." },
+        { "character": 0, "text": "Skeletons burst from the stone floor, armed with ancient weapons." },
+        { "character": 1, "text": "I'll handle the bones! You deal with the sorcerer!" },
+        {
+            "character": 0,
+            "text": "Alaric charged into the fray, his broadsword shattering the undead with mighty swings."
+        },
+        { "character": 2, "text": "Winds of the storm, hear my plea! Strike down this abomination!" },
+        { "character": 0, "text": "Lightning crackled from Elara's fingertips, striking Malakor's magical shield." },
+        { "character": 3, "text": "Pathetic! You lack the power of a true Arch-Druid!" },
+        { "character": 1, "text": "Hey, ugly! Catch!" },
+        {
+            "character": 0,
+            "text": "Alaric hurled a shield he wrenched from a skeleton, striking Malakor in the face and breaking his concentration."
+        },
+        { "character": 3, "text": "Insolent fool! I will flay the skin from your bones!" },
+        { "character": 2, "text": "Now's my chance! The crown is exposed on the pedestal!" },
+        { "character": 1, "text": "Run for it, Elara! I'll hold him back!" },
+        { "character": 0, "text": "Alaric tackled the sorcerer, pinning his arms to prevent him from casting spells." },
+        { "character": 3, "text": "Get off me, you brute!" },
+        { "character": 2, "text": "Goddess of the earth, shatter this dark artifact!" },
+        {
+            "character": 0,
+            "text": "Elara slammed her wooden staff onto the Obsidian Crown. With a blinding flash of green light, the crown shattered into a thousand pieces."
+        },
+        { "character": 3, "text": "No! My power! My glorious power!" },
+        {
+            "character": 0,
+            "text": "Without the crown's magic, Malakor rapidly aged, crumbling into dust beneath Alaric's hands."
+        },
+        { "character": 1, "text": "Well, that was thoroughly unpleasant." },
+        { "character": 2, "text": "It's over. The dead are returning to their rest." },
+        { "character": 1, "text": "You did it, kid. You avenged your master and saved the realm." },
+        { "character": 2, "text": "We did it, Alaric. You're a hero." },
+        { "character": 1, "text": "Don't go spreading that rumor around. It ruins my image." },
+        { "character": 2, "text": "What will you do now?" },
+        { "character": 1, "text": "I think I might go back to the Prancing Boar. Gromm owes me an ale." },
+        {
+            "character": 0,
+            "text": "As dawn broke over the mountains, casting a golden light on the ruins, a new era of peace began."
+        }
+    ]
+}

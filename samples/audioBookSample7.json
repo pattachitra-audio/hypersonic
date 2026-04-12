@@ -1,0 +1,347 @@
+{
+    "name": "The Crimson Corsair",
+    "plot": "In the golden age of piracy, an exiled naval officer teams up with a notorious pirate crew to hunt down a legendary Spanish treasure galleon, only to realize the real prize is a map to an ancient, forgotten island that holds secrets beyond gold.",
+    "genre": ["historical", "action", "adventure"],
+    "characters": [
+        {
+            "name": "Narrator",
+            "gender": "MALE",
+            "ageGroup": [50, 60],
+            "description": "An old sailor recounting the tale at a dimly lit tavern.",
+            "voiceDescription": "Rough, weathered, and rhythmic, like ocean waves."
+        },
+        {
+            "name": "Captain James 'Crimson' Vance",
+            "gender": "MALE",
+            "ageGroup": [35, 45],
+            "description": "A charismatic and reckless pirate captain with a flair for the dramatic.",
+            "voiceDescription": "Booming, confident, with a West Country accent."
+        },
+        {
+            "name": "Lieutenant Eleanor Shaw",
+            "gender": "FEMALE",
+            "ageGroup": [28, 35],
+            "description": "A brilliant navigator framed for mutiny and forced into piracy.",
+            "voiceDescription": "Crisp, disciplined, and sharp as a cutlass."
+        },
+        {
+            "name": "Quartermaster 'One-Eyed' Pete",
+            "gender": "MALE",
+            "ageGroup": [60, 70],
+            "description": "The superstitious and loyal heart of the pirate crew.",
+            "voiceDescription": "Gravelly, mumbling, constantly chewing something."
+        },
+        {
+            "name": "Commodore Blackwood",
+            "gender": "MALE",
+            "ageGroup": [45, 55],
+            "description": "A ruthless royal navy officer obsessed with hanging Vance.",
+            "voiceDescription": "Cold, aristocratic, perfectly enunciated."
+        }
+    ],
+    "episodes": [
+        {
+            "name": "The Escape from Port Royal",
+            "description": "Eleanor escapes execution by fleeing onto Vance's ship, the Sea Devil.",
+            "sceneBegin": 0,
+            "sceneEnd": 3
+        },
+        {
+            "name": "The Ghost of the San Miguel",
+            "description": "The crew tracks down the fabled Spanish galleon in the treacherous fog.",
+            "sceneBegin": 3,
+            "sceneEnd": 6
+        },
+        {
+            "name": "Isla de las Sombras",
+            "description": "A battle against Blackwood's fleet at the edge of the world.",
+            "sceneBegin": 6,
+            "sceneEnd": 9
+        }
+    ],
+    "scenes": [
+        {
+            "name": "The Gallows",
+            "description": "Eleanor stands before the hangman as Vance makes a daring rescue.",
+            "time": "noon",
+            "location": "Port Royal Town Square",
+            "dialogueBegin": 0,
+            "dialogueEnd": 30
+        },
+        {
+            "name": "Weighing Anchor",
+            "description": "The Sea Devil escapes the harbor under heavy fire.",
+            "time": "afternoon",
+            "location": "The Sea Devil Deck",
+            "dialogueBegin": 30,
+            "dialogueEnd": 55
+        },
+        {
+            "name": "A Deal Struck",
+            "description": "Eleanor convinces Vance to seek the San Miguel instead of random merchant ships.",
+            "time": "evening",
+            "location": "Captain's Quarters",
+            "dialogueBegin": 55,
+            "dialogueEnd": 80
+        },
+        {
+            "name": "The Shrouded Waters",
+            "description": "Navigating through a deadly reef hidden in thick fog.",
+            "time": "morning",
+            "location": "The Helm",
+            "dialogueBegin": 80,
+            "dialogueEnd": 110
+        },
+        {
+            "name": "Boarding the Wreck",
+            "description": "The crew boards the abandoned Spanish galleon.",
+            "time": "noon",
+            "location": "Deck of the San Miguel",
+            "dialogueBegin": 110,
+            "dialogueEnd": 135
+        },
+        {
+            "name": "Ambush",
+            "description": "Commodore Blackwood's ship, the Intrepid, emerges from the fog.",
+            "time": "noon",
+            "location": "The Sea Devil Deck",
+            "dialogueBegin": 135,
+            "dialogueEnd": 165
+        },
+        {
+            "name": "Broadside to Broadside",
+            "description": "A massive naval battle between the pirates and the navy.",
+            "time": "afternoon",
+            "location": "The Open Sea",
+            "dialogueBegin": 165,
+            "dialogueEnd": 195
+        },
+        {
+            "name": "Decoding the Map",
+            "description": "Eleanor analyzes the artifact retrieved from the galleon.",
+            "time": "night",
+            "location": "Below Decks",
+            "dialogueBegin": 195,
+            "dialogueEnd": 220
+        },
+        {
+            "name": "The Hidden Cove",
+            "description": "Vance and Eleanor realize the true value of their discovery.",
+            "time": "dawn",
+            "location": "Uncharted Isle",
+            "dialogueBegin": 220,
+            "dialogueEnd": 250
+        }
+    ],
+    "dialogues": [
+        {
+            "character": 0,
+            "text": "The midday sun beat down mercilessly on Port Royal. The gallows had been freshly strung for a naval officer turned traitor."
+        },
+        {
+            "character": 4,
+            "text": "Lieutenant Eleanor Shaw. You stand condemned for the crime of mutiny and conspiring against the Crown. Have you any last words?"
+        },
+        {
+            "character": 2,
+            "text": "Yes, Commodore Blackwood. My last words are that you are a conniving, lying coward who framed me to cover your own embezzlement!"
+        },
+        {
+            "character": 4,
+            "text": "Such spirit, right to the end. It is a pity it will be extinguished. Hangman, proceed."
+        },
+        { "character": 0, "text": "Before the lever could be pulled, a massive explosion rocked the harbor." },
+        { "character": 1, "text": "Hold the execution, gentlemen! That rope looks frightfully uncomfortable!" },
+        { "character": 4, "text": "Vance! By god, guards, shoot him down!" },
+        {
+            "character": 0,
+            "text": "Captain James 'Crimson' Vance swung from a rigging line off a nearby rooftop, kicking the executioner squarely in the chest."
+        },
+        { "character": 1, "text": "Afternoon, Lieutenant. Need a lift, or are you enjoying the view from up here?" },
+        { "character": 2, "text": "You're late, Vance. Cut the ropes!" },
+        { "character": 1, "text": "Not even a 'thank you, dashing pirate'? Honestly, chivalry is dead." },
+        { "character": 4, "text": "Blockade the harbor! The Sea Devil must not escape!" },
+        { "character": 1, "text": "Too late for that, Commodore! Pete, light the distraction!" },
+        {
+            "character": 0,
+            "text": "A second series of explosions tore through the naval armory, sending plumes of black smoke into the sky."
+        },
+        { "character": 3, "text": "Armory's gone, Cap'n! We gotta move 'fore the garrison gets here!" },
+        { "character": 1, "text": "You heard the man, Shaw. Jump!" },
+        {
+            "character": 0,
+            "text": "Eleanor leaped from the platform into a waiting cart of hay, Vance fast behind her. They scrambled to the docks where a longboat waited."
+        },
+        { "character": 2, "text": "You took your sweet time. If you had been a minute later, I'd be dead." },
+        { "character": 1, "text": "Ah, but I wasn't. Timing is everything in my line of work." },
+        {
+            "character": 0,
+            "text": "They rowed furiously to the Sea Devil, a sleek, black-hulled brigantine that was already raising its sails."
+        },
+        { "character": 3, "text": "Get 'em aboard! The fort cannons are tracking us!" },
+        { "character": 1, "text": "Hard to port! Get us out of their firing arc!" },
+        { "character": 2, "text": "You're turning too soon! The wind will push us into the sandbar!" },
+        { "character": 1, "text": "I know my ship, Lieutenant!" },
+        { "character": 0, "text": "A cannonball splashed violently just meters from the hull." },
+        {
+            "character": 2,
+            "text": "If you don't adjust the mainsail to catch the starboard draft, we'll be sitting ducks for the next volley!"
+        },
+        { "character": 1, "text": "Pete, do as she says! Angle the mainsail!" },
+        { "character": 3, "text": "Aye, Cap'n!" },
+        {
+            "character": 0,
+            "text": "The ship surged forward, narrowly avoiding the treacherous shoals and slipping out of the harbor just as the heavy cannons fired again."
+        },
+        { "character": 1, "text": "Well, color me impressed. You actually know how to sail." },
+        {
+            "character": 2,
+            "text": "I was the best navigator in the Royal Navy until Blackwood ruined my life. Now, about our arrangement."
+        },
+        {
+            "character": 1,
+            "text": "Ah yes. My end of the bargain is complete. You have your neck. Now, where is this fabled treasure of yours?"
+        },
+        {
+            "character": 0,
+            "text": "Later that evening, in the dim light of the Captain's quarters, Eleanor spread out a hastily drawn chart."
+        },
+        {
+            "character": 2,
+            "text": "The San Miguel didn't sink in the Caribbean. That was a lie concocted by the Spanish Crown."
+        },
+        { "character": 1, "text": "Then where is a galleon loaded with three tons of Inca gold?" },
+        {
+            "character": 2,
+            "text": "It was blown off course near the Sargasso Sea. It's trapped in a perpetual fog bank known as the Shrouded Waters."
+        },
+        {
+            "character": 3,
+            "text": "The Shrouded Waters? Cap'n, that place is cursed! Ships go in, but they don't come out. Eaten by sea monsters, they say."
+        },
+        {
+            "character": 1,
+            "text": "Sea monsters are just bedtime stories for cowardly sailors, Pete. There's gold to be had."
+        },
+        {
+            "character": 2,
+            "text": "Once we have the gold, we split it fifty-fifty. And I use my share to buy an army to take down Blackwood."
+        },
+        { "character": 1, "text": "Revenge. I like it. Very well, we sail for the Sargasso." },
+        {
+            "character": 0,
+            "text": "For three weeks, the Sea Devil sailed eastward, until the blue waters turned a murky, unnatural green, and thick fog rolled over the bows."
+        },
+        {
+            "character": 3,
+            "text": "I don't like this, Cap'n. The compass is spinning like a top. The spirits of the deep are confused."
+        },
+        {
+            "character": 2,
+            "text": "It's magnetic interference from the underwater lodestone deposits. Keep the helm steady, fifteen degrees north by northeast."
+        },
+        { "character": 1, "text": "Listen to the lady, Pete. Though I must admit, it's remarkably quiet." },
+        { "character": 0, "text": "Through the dense, grey soup, a massive silhouette began to form." },
+        { "character": 2, "text": "There she is. The San Miguel." },
+        { "character": 1, "text": "By god... she's perfectly intact. Caught in the seaweed like a fly in a web." },
+        { "character": 3, "text": "It's a ghost ship, Cap'n! We shouldn't board her!" },
+        { "character": 1, "text": "Nonsense. Throw the grappling hooks. Shaw, you're with me." },
+        {
+            "character": 0,
+            "text": "Vance and Eleanor swung across to the rotting deck of the Spanish galleon. The air smelled of decay and ancient wood."
+        },
+        { "character": 1, "text": "Where is the cargo hold?" },
+        { "character": 2, "text": "Below the main deck. But be careful, the rotting timbers won't hold much weight." },
+        {
+            "character": 0,
+            "text": "They descended into the pitch-black belly of the ship. Vance held up a lantern, revealing rows upons rows of wooden chests."
+        },
+        { "character": 1, "text": "We've done it. The greatest naval heist in history!" },
+        {
+            "character": 0,
+            "text": "Vance smashed the lock off one of the chests with the hilt of his sword and threw it open."
+        },
+        { "character": 1, "text": "What in the devil's name is this?" },
+        { "character": 2, "text": "It's... rocks? They're filled with rocks." },
+        { "character": 1, "text": "Every single chest! There's no gold! You lied to me, Shaw!" },
+        {
+            "character": 2,
+            "text": "I didn't lie! The manifest clearly stated three tons of gold! Unless... the Spanish never loaded the gold. It was a decoy."
+        },
+        { "character": 1, "text": "A decoy for what?" },
+        { "character": 2, "text": "Wait. Look at this." },
+        {
+            "character": 0,
+            "text": "Eleanor reached into the chest and pulled out an ornate, golden cylinder covered in Aztec carvings."
+        },
+        {
+            "character": 2,
+            "text": "This isn't a treasure galleon. It's an exploration vessel. This is a map cylinder."
+        },
+        { "character": 3, "text": "Cap'n! Cap'n!" },
+        { "character": 1, "text": "What is it, Pete?" },
+        { "character": 3, "text": "Sails off the port bow! A Man-of-War! It's the Royal Navy!" },
+        { "character": 2, "text": "Blackwood. He must have followed us." },
+        { "character": 1, "text": "Grab the cylinder and run!" },
+        {
+            "character": 0,
+            "text": "They scrambled back onto the Sea Devil just as the fog parted, revealing the massive bulk of the HMS Intrepid."
+        },
+        { "character": 4, "text": "Fire a warning shot across their bow!" },
+        { "character": 0, "text": "A canon roared, sending water splashing violently over the pirate crew." },
+        { "character": 4, "text": "Surrender, Vance! You are trapped!" },
+        { "character": 1, "text": "I'd rather drink seawater, Commodore! Pete, run out the guns! Full broadside!" },
+        { "character": 2, "text": "We can't win a firefight against a Man-of-War! They have three times the cannons!" },
+        { "character": 1, "text": "Then we outmaneuver them! Steer for the dense seaweed banks!" },
+        {
+            "character": 0,
+            "text": "The Sea Devil fired a devastating volley, splintering the Intrepid's railing, but the naval ship fired back, tearing a hole through the pirate's sails."
+        },
+        { "character": 3, "text": "We're taking water below decks!" },
+        { "character": 1, "text": "Keep firing! Shaw, if you have a brilliant navigational trick, now is the time!" },
+        {
+            "character": 2,
+            "text": "The wind is dying down! If we drop the anchors on the port side while maintaining speed, we can swing the ship around in a tight arc!"
+        },
+        { "character": 1, "text": "A bootlegger turn in a brigantine? It'll tear the hull apart!" },
+        { "character": 2, "text": "It's that or we swing from the gallows! Do it!" },
+        { "character": 1, "text": "Drop the port anchors! Brace for impact!" },
+        {
+            "character": 0,
+            "text": "The massive ship groaned in agony as the anchors caught the reef. The Sea Devil violently spun 180 degrees, bringing her untouched starboard cannons directly in line with the Intrepid's exposed stern."
+        },
+        { "character": 1, "text": "Fire!" },
+        {
+            "character": 0,
+            "text": "A massive broadside shattered the rear windows of the Commodore's cabin, tearing through the naval ship's rudder."
+        },
+        { "character": 4, "text": "We've lost steering! Returning fire!" },
+        { "character": 2, "text": "Cut the anchors! The wind is catching! Let's get out of here!" },
+        {
+            "character": 0,
+            "text": "The Sea Devil surged into the thickest part of the fog bank, leaving the crippled navy ship roaring in frustration behind them."
+        },
+        { "character": 1, "text": "Ha! We did it! They'll be stuck making repairs for a week!" },
+        { "character": 2, "text": "Don't celebrate yet. We have a hull to patch." },
+        {
+            "character": 0,
+            "text": "That night, below decks, Eleanor twisted the golden rings of the Aztec cylinder until a latch clicked open."
+        },
+        { "character": 2, "text": "I thought so. It's a star chart." },
+        { "character": 1, "text": "Reading the stars? Any sailor can do that." },
+        {
+            "character": 2,
+            "text": "Not these stars. This chart doesn't point to a location on Earth. It points to an island that only reveals itself during a specific lunar alignment."
+        },
+        { "character": 1, "text": "Isla de las Sombras. The Island of Shadows. I always thought it was a myth." },
+        {
+            "character": 2,
+            "text": "The Spanish found it. And whatever is hidden there is worth more than three tons of gold."
+        },
+        { "character": 1, "text": "Well then, Lieutenant Shaw. It seems our partnership is just beginning." },
+        {
+            "character": 2,
+            "text": "Set course for the coordinates, Captain Vance. Let's see what secrets the sea is hiding from us."
+        }
+    ]
+}

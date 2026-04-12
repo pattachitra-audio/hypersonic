@@ -1,0 +1,363 @@
+{
+    "name": "Murder at Blackwood Manor",
+    "plot": "Private Investigator Arthur Pendelton is invited to an isolated mansion for a reading of a will, only to find himself trapped in a deadly game of cat-and-mouse when the relatives start dying one by one.",
+    "genre": ["mystery", "thriller", "crime"],
+    "characters": [
+        {
+            "name": "Narrator",
+            "gender": "FEMALE",
+            "ageGroup": [30, 45],
+            "description": "An objective, slightly cynical narrator observing the events.",
+            "voiceDescription": "Smooth, professional, and suspenseful."
+        },
+        {
+            "name": "Arthur Pendelton",
+            "gender": "MALE",
+            "ageGroup": [45, 55],
+            "description": "A seasoned, observant private investigator with a sharp mind.",
+            "voiceDescription": "Calm, analytical, British accent."
+        },
+        {
+            "name": "Lady Beatrice",
+            "gender": "FEMALE",
+            "ageGroup": [60, 70],
+            "description": "The wealthy, eccentric matriarch of the Blackwood family.",
+            "voiceDescription": "Haughty, commanding, elderly."
+        },
+        {
+            "name": "Charles Blackwood",
+            "gender": "MALE",
+            "ageGroup": [35, 45],
+            "description": "The estranged, debt-ridden nephew eager for his inheritance.",
+            "voiceDescription": "Anxious, fast-paced, slightly nasally."
+        },
+        {
+            "name": "Evelyn",
+            "gender": "FEMALE",
+            "ageGroup": [25, 30],
+            "description": "The quiet, observant housemaid with a hidden past.",
+            "voiceDescription": "Soft-spoken, cautious, melodic."
+        }
+    ],
+    "episodes": [
+        {
+            "name": "The Arrival",
+            "description": "Arthur arrives at the storm-battered mansion just as the victims begin to fall.",
+            "sceneBegin": 0,
+            "sceneEnd": 3
+        },
+        {
+            "name": "The Locked Room",
+            "description": "A body is discovered in a room locked from the inside.",
+            "sceneBegin": 3,
+            "sceneEnd": 6
+        },
+        {
+            "name": "The Killer Revealed",
+            "description": "Arthur pieces together the clues to unmask the true culprit.",
+            "sceneBegin": 6,
+            "sceneEnd": 9
+        }
+    ],
+    "scenes": [
+        {
+            "name": "The Looming Storm",
+            "description": "Arthur drives up to Blackwood Manor as a tempest brews.",
+            "time": "evening",
+            "location": "The road to Blackwood Manor",
+            "dialogueBegin": 0,
+            "dialogueEnd": 15
+        },
+        {
+            "name": "Dinner with the Suspects",
+            "description": "The family gathers for a tense dinner before the reading.",
+            "time": "night",
+            "location": "The Dining Hall",
+            "dialogueBegin": 15,
+            "dialogueEnd": 45
+        },
+        {
+            "name": "The First Victim",
+            "description": "A scream interrupts the night.",
+            "time": "midnight",
+            "location": "The Library",
+            "dialogueBegin": 45,
+            "dialogueEnd": 70
+        },
+        {
+            "name": "Investigating the Scene",
+            "description": "Arthur examines the body and finds his first clue.",
+            "time": "midnight",
+            "location": "The Library",
+            "dialogueBegin": 70,
+            "dialogueEnd": 95
+        },
+        {
+            "name": "Interrogating Charles",
+            "description": "Arthur confronts the nervous nephew in the study.",
+            "time": "late night",
+            "location": "The Study",
+            "dialogueBegin": 95,
+            "dialogueEnd": 125
+        },
+        {
+            "name": "Evelyn's Secret",
+            "description": "The housemaid reveals crucial information about the family's past.",
+            "time": "early morning",
+            "location": "The Kitchen",
+            "dialogueBegin": 125,
+            "dialogueEnd": 150
+        },
+        {
+            "name": "The Second Murder",
+            "description": "Another body is discovered, complicating the case.",
+            "time": "morning",
+            "location": "The Conservatory",
+            "dialogueBegin": 150,
+            "dialogueEnd": 180
+        },
+        {
+            "name": "Gathering the Clues",
+            "description": "Arthur presents his grand theory to the surviving members.",
+            "time": "noon",
+            "location": "The Drawing Room",
+            "dialogueBegin": 180,
+            "dialogueEnd": 215
+        },
+        {
+            "name": "The Confession",
+            "description": "The killer attacks Arthur, leading to a final struggle.",
+            "time": "afternoon",
+            "location": "The Foyer",
+            "dialogueBegin": 215,
+            "dialogueEnd": 240
+        }
+    ],
+    "dialogues": [
+        {
+            "character": 0,
+            "text": "Thunder split the sky over Blackwood Manor, a vast estate perched upon the jagged cliffs of Cornwall."
+        },
+        { "character": 1, "text": "A perfect night for a reading of a will. Or a murder." },
+        {
+            "character": 0,
+            "text": "Arthur Pendelton parked his vintage sedan and hurried through the pouring rain to the massive oak doors."
+        },
+        { "character": 4, "text": "Mr. Pendelton? Come in, come in out of the storm. I am Evelyn, the housemaid." },
+        { "character": 1, "text": "Thank you, Evelyn. Rather dreadful weather for a family gathering, isn't it?" },
+        {
+            "character": 4,
+            "text": "Lady Beatrice insisted the reading take place tonight, sir. Regardless of the storm."
+        },
+        {
+            "character": 1,
+            "text": "I am curious, Evelyn. Why was a private investigator invited to the reading of Lord Reginald's will?"
+        },
+        { "character": 4, "text": "I... I do not know, sir. Lady Beatrice handles all affairs." },
+        {
+            "character": 0,
+            "text": "Inside the grand dining hall, the atmosphere was as chilly as the weather outside."
+        },
+        {
+            "character": 2,
+            "text": "Ah, Mr. Pendelton. You finally arrived. I was beginning to think the storm had washed you out to sea."
+        },
+        {
+            "character": 1,
+            "text": "It takes more than a bit of rain to wash me away, Lady Beatrice. My condolences on your husband's passing."
+        },
+        {
+            "character": 2,
+            "text": "Save your platitudes, detective. We all know my husband was a loathsome man. I only invited you because someone has been sending me threatening letters."
+        },
+        {
+            "character": 3,
+            "text": "Threatening letters? Oh, come now, Aunt Beatrice. You're just being paranoid in your old age."
+        },
+        {
+            "character": 2,
+            "text": "Mind your tongue, Charles. The ink on your uncle's death certificate isn't even dry, and you're already sizing up the silverware."
+        },
+        {
+            "character": 3,
+            "text": "I have significant debts, Aunt! The market has been unkind. I have a right to my inheritance!"
+        },
+        {
+            "character": 1,
+            "text": "Gentlemen, ladies, please. A threat is a serious matter. Do you have the letters, Lady Beatrice?"
+        },
+        {
+            "character": 2,
+            "text": "Locked in my safe. I will show them to you after dinner. Then, we will read the will."
+        },
+        {
+            "character": 0,
+            "text": "The dinner passed in strained silence, punctuated only by the clinking of silver on china and the roaring thunder outside."
+        },
+        { "character": 1, "text": "The soup was excellent, Evelyn." },
+        { "character": 4, "text": "Thank you, sir. Will there be anything else?" },
+        {
+            "character": 2,
+            "text": "No, Evelyn. We will retire to the study. Except you, Charles. You smell of cheap gin."
+        },
+        { "character": 3, "text": "You horrible old shrew! I hope Uncle left you nothing!" },
+        {
+            "character": 0,
+            "text": "Charles stormed out of the dining room, slamming the door so hard the crystal chandeliers trembled."
+        },
+        { "character": 2, "text": "Families. Such a disappointment. Come, Mr. Pendelton." },
+        {
+            "character": 0,
+            "text": "Just past midnight, Arthur was reviewing his notes in the guest bedroom when a piercing scream echoed through the corridors."
+        },
+        { "character": 1, "text": "That came from the library!" },
+        {
+            "character": 0,
+            "text": "Arthur grabbed his flashlight and his revolver, rushing down the dark, twisting hallways."
+        },
+        { "character": 4, "text": "Mr. Pendelton! Mr. Pendelton!" },
+        { "character": 1, "text": "Evelyn, what is it? Are you hurt?" },
+        { "character": 4, "text": "It's... it's Lady Beatrice! I went to bring her a cup of tea, and..." },
+        {
+            "character": 0,
+            "text": "Arthur pushed past the terrified maid and stepped into the library. The room was perfectly intact, except for the body of Lady Beatrice slumped over the mahogany desk."
+        },
+        { "character": 1, "text": "Don't touch anything, Evelyn. Go wake Charles." },
+        {
+            "character": 0,
+            "text": "Arthur approached the body. A single silver letter opener protruded from the back of her neck."
+        },
+        {
+            "character": 1,
+            "text": "Instantaneous. Professionally done. Whoever did this knew exactly where to strike."
+        },
+        {
+            "character": 0,
+            "text": "He noticed a piece of ash on the desk near the fireplace. The threatening letters Lady Beatrice had mentioned were nowhere to be seen."
+        },
+        { "character": 3, "text": "What is going on? Why is Evelyn crying hysterically in the hall?" },
+        { "character": 1, "text": "Stay back, Charles. Your aunt is dead." },
+        {
+            "character": 3,
+            "text": "Dead? Oh, good god... I didn't mean it when I said those things at dinner! I swear!"
+        },
+        { "character": 1, "text": "Where were you for the past hour, Charles?" },
+        { "character": 3, "text": "In my room! Drinking! I haven't left since dinner!" },
+        { "character": 1, "text": "Can anyone corroborate that?" },
+        { "character": 3, "text": "No! I was alone! Are you accusing me, Pendelton?" },
+        {
+            "character": 1,
+            "text": "I am gathering facts. Fact one: You desperately need money. Fact two: Your aunt controlled the inheritance. Fact three: She was just murdered."
+        },
+        {
+            "character": 3,
+            "text": "I didn't do it! I wouldn't even know how to stab someone like that! I'm a stockbroker, not an assassin!"
+        },
+        {
+            "character": 1,
+            "text": "Someone burned papers in the fireplace recently. The threatening letters she told me about."
+        },
+        { "character": 3, "text": "Letters? I don't know anything about any letters." },
+        { "character": 0, "text": "Arthur thoroughly searched Lady Beatrice's room but found the safe empty." },
+        { "character": 1, "text": "Evelyn, a word, if you please." },
+        { "character": 4, "text": "Yes, sir?" },
+        { "character": 1, "text": "You found the body. Was the door to the library locked when you arrived?" },
+        {
+            "character": 4,
+            "text": "Yes. It's an old lock. It can only be turned from the inside, or with the master key. I have one, Lady Beatrice had the other."
+        },
+        { "character": 1, "text": "And where is Lady Beatrice's key?" },
+        { "character": 4, "text": "It... it usually hangs on her belt. But it isn't there now." },
+        {
+            "character": 1,
+            "text": "So the killer killed her, took her key, locked the door from the outside, and vanished."
+        },
+        { "character": 4, "text": "It must be Charles. Everyone knows he hated her." },
+        {
+            "character": 1,
+            "text": "Too obvious, Evelyn. It's never the most obvious suspect. Tell me about Lord Reginald's previous staff."
+        },
+        {
+            "character": 4,
+            "text": "They were all dismissed last month, abruptly. I was hired only two weeks ago from an agency in London."
+        },
+        { "character": 1, "text": "Interesting. And did Lady Beatrice seem frightened of anything specific?" },
+        { "character": 4, "text": "She mentioned a man from her past. Someone she thought was dead in the war." },
+        {
+            "character": 0,
+            "text": "The next morning, the storm had finally broken, but the telephone lines were dead."
+        },
+        {
+            "character": 1,
+            "text": "The bridge is washed out. We are completely isolated until the authorities can arrive."
+        },
+        {
+            "character": 3,
+            "text": "We're trapped in here with a murderer! I want to leave! I'll swim across the river!"
+        },
+        { "character": 1, "text": "Calm down, Charles. Panicking will only get you killed." },
+        { "character": 4, "text": "Mr. Pendelton! Come quickly! It's Charles!" },
+        { "character": 1, "text": "What? Charles is right here with me." },
+        { "character": 4, "text": "No, I mean in the conservatory! There's another body!" },
+        {
+            "character": 0,
+            "text": "They ran to the glass conservatory. Amidst the rare orchids lay the body of a man."
+        },
+        { "character": 3, "text": "Wait... that's not me. But he's wearing my grandfather's signet ring!" },
+        { "character": 1, "text": "Who is this man?" },
+        { "character": 3, "text": "That's... that's Uncle Marcus. But he died in the war!" },
+        { "character": 1, "text": "Apparently not. Does Lord Reginald have any other brothers?" },
+        { "character": 3, "text": "Just Marcus. If he's alive... he inherits everything. Not me. Not Beatrice." },
+        { "character": 1, "text": "Lady Beatrice must have known he was alive. He was the one blackmailing her." },
+        { "character": 4, "text": "But who killed him? And who killed Lady Beatrice?" },
+        { "character": 1, "text": "A very good question, Evelyn. Or should I say... Agatha?" },
+        { "character": 4, "text": "I'm sorry, I don't follow." },
+        {
+            "character": 1,
+            "text": "Agatha Sterling. The illegitimate daughter of Marcus Blackwood. The agency in London doesn't employ an 'Evelyn'."
+        },
+        { "character": 3, "text": "You? You're my cousin?" },
+        { "character": 4, "text": "You're absurd, Mr. Pendelton." },
+        {
+            "character": 1,
+            "text": "Am I? You have a military tattoo on your wrist, poorly concealed by your maid's uniform. You strike with deadly precision. And you had the master key."
+        },
+        {
+            "character": 4,
+            "text": "...They stole everything from my mother. Beatrice and Reginald. They left her in the slums to rot while they lived in this mansion."
+        },
+        { "character": 3, "text": "So you killed my Aunt? And your own father?!" },
+        {
+            "character": 4,
+            "text": "My father returned demanding his share, threatening to expose my existence. I couldn't let him take what was rightfully mine."
+        },
+        { "character": 1, "text": "It's over, Agatha. Confess, and perhaps the courts will show mercy." },
+        { "character": 4, "text": "I don't need mercy, detective. I need you out of the way!" },
+        { "character": 0, "text": "Agatha pulled a suppressed pistol from her apron and fired." },
+        { "character": 1, "text": "Get down, Charles!" },
+        {
+            "character": 0,
+            "text": "Arthur dove behind a marble pillar as bullets shattered the glass windows behind him."
+        },
+        {
+            "character": 4,
+            "text": "I've locked the mansion. I have enough fuel to burn this entire place to the ground with both of you inside!"
+        },
+        {
+            "character": 1,
+            "text": "You'll never escape the police. The river will strand you just as it has stranded us!"
+        },
+        { "character": 4, "text": "I have a boat hidden in the cove. Goodbye, Mr. Pendelton." },
+        { "character": 0, "text": "Arthur fired a blind warning shot, the loud crack echoing off the stone walls." },
+        { "character": 1, "text": "Drop the weapon! I won't ask again!" },
+        {
+            "character": 0,
+            "text": "He stepped out from cover, his aim steady. Agatha hesitated, the hatred in her eyes conflicting with her instinct to survive."
+        },
+        { "character": 4, "text": "Fine. Take me. But my mother is avenged." },
+        { "character": 0, "text": "She dropped the pistol, which clattered loudly against the floor." },
+        { "character": 3, "text": "Is it... is it over?" },
+        { "character": 1, "text": "Yes, Charles. You can come out now. It seems you're the sole heir after all." },
+        { "character": 1, "text": "Let's find some rope. It's going to be a long wait for the police." }
+    ]
+}
