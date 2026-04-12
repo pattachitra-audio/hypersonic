@@ -10,10 +10,6 @@ export type PRAOAllocationDocumentType = {
     accountIDs: string[];
 };
 
-/* export type ElevenLabsAccountWithProxySummaryDocumentType = Prettify<
-    Omit<ElevenLabsAccountWithProxyDocumentType, "_id" | "password" | "apiKey" | "proxyURL"> & { id: string }
->; */
-
 function filterDataNotFoundFactory(filter: Filter<PRAOAllocationDocumentType>) {
     return function filterDataNotFound(document: WithId<PRAOAllocationDocumentType> | null) {
         if (document === null) {
@@ -47,36 +43,8 @@ export const PRAOAllocationRepositoryResultAsync = DBClientResultAsync.andThen((
                 filterDataNotFoundFactory(filter),
             );
         },
-        /* async findAllSummaries() {
-            try {
-                const result = await collection
-                    .aggregate<ElevenLabsAccountWithProxySummaryDocumentType>([
-                        {
-                            $project: {
-                                id: "$_id",
-                                _id: 0,
-                                email: 1,
-                            },
-                        },
-                    ])
-                    .toArray();
-
-                return NoThrow.success(result);
-            } catch (error) {
-                if (error instanceof MongoError) {
-                    return NoThrow.error(error);
-                }
-
-                if (error instanceof Error) {
-                    return NoThrow.error(error);
-                }
-
-                return NoThrow.error(new Error("Unknown error"));
-            }
-        }, */
         insertOne(document: PRAOAllocationDocumentType) {
             return insertOne(document, collection);
         },
-        /* async deleteOneByID(id: ObjectId) {}, */
     });
 });
