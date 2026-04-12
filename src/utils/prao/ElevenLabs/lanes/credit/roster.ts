@@ -18,10 +18,11 @@ export class ElevenLabsCreditLaneRoster {
 
     public static serializeToJSON(obj: ElevenLabsCreditLaneRoster) {
         return ResultAsync.combine(obj.context.entries.map(ElevenLabsCreditLaneEntry.serializeToJSON)).map(
-            (entries) => ({
-                entries,
-                totalBalance: obj.context.totalBalance,
-            }),
+            (entries) =>
+                ({
+                    entries,
+                    totalBalance: obj.context.totalBalance,
+                }) as unknown,
         );
     }
 
