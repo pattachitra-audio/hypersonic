@@ -1,15 +1,13 @@
 import z from "zod";
 import { tRPCProcedure } from "@/server/tRPC";
-import { PRAOSessionRepositoryResultAsync } from "@/repository/PRAOSession";
 import { ObjectId } from "mongodb";
 import { TRPCError } from "@trpc/server";
-import { ResultAsync } from "neverthrow";
-import { ElevenLabsFreeSessionRepositoryResultAsync } from "@/repository/ElevenLabsFreeSessionRepository";
-import { ElevenLabsFreeSession } from "@/utils/prao/ElevenLabsFree/session";
-import { ElevenLabsFreeEngine } from "@/utils/prao/ElevenLabsFree/engine";
 import { sharedVoices } from "@/services/elevenLabsInternalAPI/sharedVoices";
-import { omit } from "lodash";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import { ElevenLabsFreeRosterRepositoryResultAsync } from "@/repository/ElevenLabsFreeRosterRepository";
+import { ElevenLabsFreeLaneOrchestrator } from "@/utils/prao/ElevenLabs/lanes/free/orchestrator";
+import { NEGATIVE_INFINITY } from "@/constants";
+import { ElevenLabsFreeLaneEntry } from "@/utils/prao/ElevenLabs/lanes/free/entry";
 
 const InputSchema = z.object({
     praoAllocationID: z.hex().length(24).transform(ObjectId.createFromHexString),
@@ -87,24 +85,24 @@ function fn(input: z.output<typeof InputSchema>) {
     if (redisSessionResult === null) {
     }
     */
-    return ResultAsync.combine([PRAOSessionRepositoryResultAsync, ElevenLabsFreeSessionRepositoryResultAsync]).andThen(
-        ([PRAOSessionRepository, ElevenLabsFreeSessionRepository]) =>
-            ElevenLabsFreeSessionRepository.get(input.praoSesssionID)
-                .andThen(ElevenLabsFreeSession.new)
-                .andThen((session) =>
-                    ElevenLabsFreeEngine.spend(session)
-                        .andThen((resource) => resource.getIDToken().map((idToken) => ({ resource, idToken })))
-                        .andThen(({ idToken, resource }) =>
-                            sharedVoices({
-                                bearerToken: idToken,
-                                proxyURL: resource.context.proxyURL,
-                                ...omit(input, "praoSession"),
-                            }).map((sharedVoices) => ({ sharedVoices, resource })),
-                        )
-                        .map(({ sharedVoices, resource }) => {
-                            resource.decrementBalance(1);
-                            return sharedVoices;
-                        }),
-                ),
+    function spendFn(entry: ElevenLabsFreeLaneEntry) {
+        return entry.resource.idToken
+            .andThen((idToken) =>
+                sharedVoices({
+                    bearerToken: idToken,
+                    searchQuery: input.searchQuery,
+                    sort: input.sort,
+                    pageNum: input.pageNum,
+                    pageSize: input.pageSize,
+                    proxyURL: entry.resource.context.proxyURL,
+                }),
+            )
+            .map((result) => ({ result, cost: 1 }));
+    }
+
+    return ElevenLabsFreeRosterRepositoryResultAsync.andThen((ElevenLabsFreeRosterRepository) =>
+        ElevenLabsFreeRosterRepository.get(input.praoAllocationID).andThen((roster) =>
+            ElevenLabsFreeLaneOrchestrator.spend(roster, NEGATIVE_INFINITY, spendFn),
+        ),
     );
 }
