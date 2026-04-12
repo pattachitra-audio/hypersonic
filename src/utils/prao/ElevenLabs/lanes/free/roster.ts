@@ -17,10 +17,13 @@ export class ElevenLabsFreeLaneRoster {
     ) {}
 
     public static serializeToJSON(obj: ElevenLabsFreeLaneRoster) {
-        return ResultAsync.combine(obj.context.entries.map(ElevenLabsFreeLaneEntry.serializeToJSON)).map((entries) => ({
-            entries,
-            totalBalance: obj.context.totalBalance,
-        }));
+        return ResultAsync.combine(obj.context.entries.map(ElevenLabsFreeLaneEntry.serializeToJSON)).map(
+            (entries) =>
+                ({
+                    entries,
+                    totalBalance: obj.context.totalBalance,
+                }) as unknown,
+        );
     }
 
     public static deserializeFromJSON(obj: unknown) {
