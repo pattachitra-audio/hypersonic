@@ -5,38 +5,10 @@ import { TRPCError } from "@trpc/server";
 import { ObjectId } from "mongodb";
 import z from "zod";
 import { omit } from "lodash";
+import { createProcedure } from "./create";
 
 export const projectRouter = tRPCRouter({
-    create: tRPCProcedure.input(AudioBookSchema).mutation(async ({ input }) => {
-        const AudioBookRepositoryResult = await AudioBookRepositoryResultAsync;
-
-        if (AudioBookRepositoryResult.isErr()) {
-            throw new TRPCError({
-                code: "INTERNAL_SERVER_ERROR",
-                message: "Failed to init 'AudioBookRepository'",
-                // cause: AudioBookRepositoryResult.error.cause,
-            });
-        }
-
-        const AudioBookRepository = AudioBookRepositoryResult.value;
-        const insertOneResult = await AudioBookRepository.insertOne({
-            ...input,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            lastAccessedAt: new Date(),
-            status: "ACTIVE",
-        });
-
-        if (insertOneResult.isErr()) {
-            throw new TRPCError({
-                code: "INTERNAL_SERVER_ERROR",
-                message: "Failed to insert 'audioBook'",
-                cause: insertOneResult.error.cause,
-            });
-        }
-
-        return insertOneResult.value.insertedId.toString("hex");
-    }),
+    create: createProcedure,
     get: tRPCProcedure.input(z.hex().length(24)).query(async ({ input }) => {
         const AudioBookRepositoryResult = await AudioBookRepositoryResultAsync;
 
