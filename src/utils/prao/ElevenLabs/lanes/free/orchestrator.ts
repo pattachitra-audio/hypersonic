@@ -2,19 +2,19 @@ import { errAsync, okAsync, ResultAsync } from "neverthrow";
 import { ElevenLabsFreeLaneEntry } from "./entry";
 import { ElevenLabsFreeLaneRoster } from "./roster";
 
-export type ExecuteFunctionType = (
+export type ExecuteFunctionType<T, E> = (
     entry: ElevenLabsFreeLaneEntry,
-) => ResultAsync<void | null | undefined | number, unknown>;
+) => ResultAsync<{ result: T; cost?: number }, E>;
 
 export class ElevenLabsFreeLaneOrchestrator {
-    public static spend(roster: ElevenLabsFreeLaneRoster, amount: number, execute: ExecuteFunctionType) {
+    public static spend<T, E>(roster: ElevenLabsFreeLaneRoster, amount: number, execute: ExecuteFunctionType<T, E>) {
         const entries = roster.context.entries;
 
         if (entries.length === 0) {
             return errAsync(new Error(`At least one entry should be present in the roster`));
         }
 
-        ResultAsync.combine(entries.map((entry) => entry.balance.map((balance) => ({ entry, balance }))))
+        return ResultAsync.combine(entries.map((entry) => entry.balance.map((balance) => ({ entry, balance }))))
             .map((entriesWithBalance) => entriesWithBalance.sort((a, b) => a.balance - b.balance))
             .andThen((ascendingSortedEntries) => {
                 if (ascendingSortedEntries.at(-1)!.balance < amount) {
@@ -25,16 +25,18 @@ export class ElevenLabsFreeLaneOrchestrator {
             })
             .andThen((entry) =>
                 execute(entry)
-                    .andThen((cost) => entry.decrementBalance(cost == null ? amount : cost))
-                    .orElse(() => entry.invalidateBalance()),
+                    .andThen(({ result, cost }) =>
+                        entry.decrementBalance(cost == null ? amount : cost).map(() => result),
+                    )
+                    .mapErr((error) => (entry.invalidateBalance(), error)),
             );
     }
 
-    public static spendOn(
+    public static spendOn<T, E>(
         roster: ElevenLabsFreeLaneRoster,
         resourceID: string,
         amount: number,
-        execute: ExecuteFunctionType,
+        execute: ExecuteFunctionType<T, E>,
     ) {
         const entry = roster.entries.find((entry) => entry.resource.id === resourceID);
 
@@ -54,8 +56,6 @@ export class ElevenLabsFreeLaneOrchestrator {
 
                 return okAsync();
             })
-            .andThen(() => {
-                return execute(entry).mapErr(() => entry.invalidateBalance());
-            });
+            .andThen(() => execute(entry).mapErr((error) => (entry.invalidateBalance(), error)));
     }
 }
