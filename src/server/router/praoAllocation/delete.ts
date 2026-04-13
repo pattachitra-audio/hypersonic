@@ -27,8 +27,8 @@ const InputSchema = z.object({
         }),
 });
 
-export const destroyProcedure = tRPCProcedure.input(InputSchema).mutation(async ({ input }) => {
-    const result = await destroy(input.allocationID);
+export const deleteProcedure = tRPCProcedure.input(InputSchema).mutation(async ({ input }) => {
+    const result = await fn(input.allocationID);
 
     if (result.isErr()) {
         throw new TRPCError({
@@ -41,7 +41,7 @@ export const destroyProcedure = tRPCProcedure.input(InputSchema).mutation(async 
     return result.value;
 });
 
-function destroy(allocationID: ObjectId) {
+function fn(allocationID: ObjectId) {
     return ResultAsync.combine([
         PRAOAllocationRepositoryResultAsync,
         ElevenLabsPoolRepositoryResultAsync,

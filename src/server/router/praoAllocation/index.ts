@@ -1,8 +1,8 @@
 import { tRPCRouter } from "@/server/tRPC";
 import { createProcedure } from "./create";
-import { destroyProcedure } from "./destroy";
+import { deleteProcedure } from "./delete";
 
 export const praoAllocationRouter = tRPCRouter({
     create: createProcedure,
-    destroy: destroyProcedure,
+    delete: deleteProcedure,
 });
