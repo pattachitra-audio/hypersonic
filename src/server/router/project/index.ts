@@ -1,51 +1,14 @@
-import { AudioBookRepositoryResultAsync } from "@/repository/AudioBookRepository";
-import { tRPCRouter, tRPCProcedure } from "@/server/tRPC";
-import { TRPCError } from "@trpc/server";
-import { ObjectId } from "mongodb";
-import z from "zod";
+import { tRPCRouter } from "@/server/tRPC";
 import { createProcedure } from "./create";
 import { updateProcedure } from "./update";
 import { getProcedure } from "./get";
 import { archiveProcedure } from "./archive";
+import { deleteProcedure } from "./delete";
 
 export const projectRouter = tRPCRouter({
     create: createProcedure,
     get: getProcedure,
     update: updateProcedure,
     archive: archiveProcedure,
-    delete: tRPCProcedure.input(z.hex().length(24)).mutation(async ({ input }) => {
-        const AudioBookRepositoryResult = await AudioBookRepositoryResultAsync;
-
-        if (AudioBookRepositoryResult.isErr()) {
-            throw new TRPCError({
-                code: "INTERNAL_SERVER_ERROR",
-                message: "Failed to init 'AudioBookRepository'",
-                // cause: AudioBookRepositoryResult.error.cause,
-            });
-        }
-
-        const AudioBookRepository = AudioBookRepositoryResult.value;
-        const id = ObjectId.createFromHexString(input);
-
-        const updateOneResult = await AudioBookRepository.updateOne(
-            { _id: id, status: "ACTIVE" },
-            { $set: { status: "DELETED" } },
-        );
-
-        if (updateOneResult.isErr()) {
-            throw new TRPCError({
-                code: "INTERNAL_SERVER_ERROR",
-                message: `Failed to update 'active' project with ID: ${input}`,
-            });
-        }
-
-        if (updateOneResult.value.modifiedCount !== 1) {
-            throw new TRPCError({
-                code: "NOT_FOUND",
-                message: `Failed to update 'active' project with ID: ${input}`,
-            });
-        }
-
-        return;
-    }),
+    delete: deleteProcedure,
 });
