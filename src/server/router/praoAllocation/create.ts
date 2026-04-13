@@ -19,8 +19,8 @@ const InputSchema = z.object({
     accountIDs: z.array(z.string()),
 });
 
-export const initProcedure = tRPCProcedure.input(InputSchema).mutation(async ({ input }) => {
-    const result = await init(input.accountIDs);
+export const createProcedure = tRPCProcedure.input(InputSchema).mutation(async ({ input }) => {
+    const result = await fn(input.accountIDs);
 
     if (result.isErr()) {
         throw new TRPCError({
@@ -47,7 +47,7 @@ function filterUnlockedAccounts(accounts: WithId<ElevenLabsPoolDocumentType>[]) 
     return ok(accounts as Omit<WithId<ElevenLabsPoolDocumentType>, "allocationID">[]);
 }
 
-function init(accountIDs: string[]) {
+function fn(accountIDs: string[]) {
     return ResultAsync.combine([ElevenLabsPoolRepositoryResultAsync, PRAOAllocationRepositoryResultAsync]).andThen(
         ([ElevenLabsPoolRepository, PRAOAllocationRepository]) =>
             ElevenLabsPoolRepository.findManyByIDs(accountIDs)
@@ -58,14 +58,14 @@ function init(accountIDs: string[]) {
                     return PRAOAllocationRepository.insertOne({ userID: OWNER_ID, accountIDs }).andThen(
                         ({ insertedId: allocationID }) =>
                             ElevenLabsPoolRepository.lockMany(accountIDs, allocationID).andThen(
-                                initRedisAllocationCurry(allocationID, accounts),
+                                createRedisAllocationCurry(allocationID, accounts),
                             ),
                     );
                 }),
     );
 }
 
-function initRedisAllocationCurry(allocationID: ObjectId, accounts: ElevenLabsPoolDocumentType[]) {
+function createRedisAllocationCurry(allocationID: ObjectId, accounts: ElevenLabsPoolDocumentType[]) {
     return function () {
         return ResultAsync.combine([
             ElevenLabsCreditRosterRepositoryResultAsync,
