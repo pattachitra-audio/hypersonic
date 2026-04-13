@@ -1,4 +1,4 @@
-import { OWNER_ID } from "@/backendConstants";
+import { DEFAULT_USER_ID } from "@/backendConstants";
 import { ElevenLabsPoolRepositoryResultAsync } from "@/repository/ElevenLabsPool";
 import { tRPCProcedure } from "@/server/tRPC";
 import { TRPCError } from "@trpc/server";
@@ -16,7 +16,7 @@ export const getProcedure = tRPCProcedure.query(async () => {
 
     const ElevenLabsPoolRepository = ElevenLabsPoolRepositoryResult.value;
 
-    const ownerID = OWNER_ID;
+    const ownerID = DEFAULT_USER_ID;
 
     const findAllResult = await ElevenLabsPoolRepository.findAllSummariesByOwnerID(ownerID);
 

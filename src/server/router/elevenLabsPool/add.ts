@@ -7,7 +7,7 @@ import { createProxyURL } from "@/brands/proxyURL";
 import { tRPCProcedure } from "@/server/tRPC";
 import { ElevenLabsPoolRepositoryResultAsync } from "@/repository/ElevenLabsPool";
 import { TRPCError } from "@trpc/server";
-import { OWNER_ID } from "@/backendConstants";
+import { DEFAULT_USER_ID } from "@/backendConstants";
 
 export const ElevenLabsPoolSchema = z.object({
     email: z.email(),
@@ -66,7 +66,7 @@ export const addProcedure = tRPCProcedure.input(ElevenLabsPoolSchema).mutation(a
 
     const refreshToken = elevenLabsFirebaseSignInResult.value.refreshToken;
 
-    const ownerID = OWNER_ID;
+    const ownerID = DEFAULT_USER_ID;
     const elevenLabsUserID = elevenLabsFirebaseSignInResult.value.localID;
 
     const insertOneResult = await ElevenLabsPoolRepository.insertOne({
