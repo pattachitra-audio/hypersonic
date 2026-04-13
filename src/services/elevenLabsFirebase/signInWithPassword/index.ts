@@ -25,9 +25,5 @@ export function signInWithPassword(input: RequestType) {
     })
         .andThen(validateStatus)
         .andThen(parseResponseJSON)
-        .map((obj) => {
-            console.log("obj:", obj);
-            return obj;
-        })
         .andThen((obj) => zodParse(ResponseSchema, obj));
 }
