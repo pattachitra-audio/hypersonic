@@ -1,5 +1,5 @@
 import z from "zod";
-import { OWNER_ID } from "@/backendConstants";
+import { DEFAULT_USER_ID } from "@/backendConstants";
 import { tRPCProcedure } from "@/server/tRPC";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { TRPCError } from "@trpc/server";
@@ -52,14 +52,18 @@ function fn(accountIDs?: string[]) {
         ([ElevenLabsPoolRepository, PRAOAllocationRepository]) => {
             const accountsResult = accountIDs
                 ? ElevenLabsPoolRepository.findManyByIDs(accountIDs)
-                : ElevenLabsPoolRepository.findAllByOwnerID(OWNER_ID).map((accounts) =>
+                : ElevenLabsPoolRepository.findAllByOwnerID(DEFAULT_USER_ID).map((accounts) =>
                       accounts.filter((account) => account.allocationID === undefined),
                   );
 
             return accountsResult.andThen(filterUnlockedAccounts).andThen((accounts) => {
                 const accountIDs = accounts.map((account) => account._id);
 
-                return PRAOAllocationRepository.insertOne({ userID: OWNER_ID, accountIDs }).andThen(
+                if (accountIDs.length === 0) {
+                    return errAsync(new Error(`No unallocated accounts left`));
+                }
+
+                return PRAOAllocationRepository.insertOne({ userID: DEFAULT_USER_ID, accountIDs }).andThen(
                     ({ insertedId: allocationID }) =>
                         ElevenLabsPoolRepository.lockMany(accountIDs, allocationID).andThen(
                             createRedisAllocationCurry(allocationID, accounts),
