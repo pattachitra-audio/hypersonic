@@ -3,7 +3,7 @@ import { OWNER_ID } from "@/backendConstants";
 import { tRPCProcedure } from "@/server/tRPC";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { TRPCError } from "@trpc/server";
-import { err, ok, okAsync, ResultAsync } from "neverthrow";
+import { errAsync, okAsync, ResultAsync } from "neverthrow";
 import { ObjectId, WithId } from "mongodb";
 import { ElevenLabsPoolDocumentType, ElevenLabsPoolRepositoryResultAsync } from "@/repository/ElevenLabsPool";
 import { PRAOAllocationRepositoryResultAsync } from "@/repository/PRAOAllocation";
@@ -16,7 +16,7 @@ import { ElevenLabsCreditLaneRoster } from "@/utils/prao/ElevenLabs/lanes/credit
 import { ElevenLabsFreeLaneRoster } from "@/utils/prao/ElevenLabs/lanes/free/roster";
 
 const InputSchema = z.object({
-    accountIDs: z.array(z.string()),
+    accountIDs: z.array(z.string()).optional(),
 });
 
 export const createProcedure = tRPCProcedure.input(InputSchema).mutation(async ({ input }) => {
@@ -36,7 +36,7 @@ export const createProcedure = tRPCProcedure.input(InputSchema).mutation(async (
 function filterUnlockedAccounts(accounts: WithId<ElevenLabsPoolDocumentType>[]) {
     for (const account of accounts) {
         if (account.allocationID) {
-            return err(
+            return errAsync(
                 new Error(
                     `ElevenLabs account with id '${account._id}' is already tied to allocation id '${account.allocationID}`,
                 ),
@@ -44,24 +44,29 @@ function filterUnlockedAccounts(accounts: WithId<ElevenLabsPoolDocumentType>[]) 
         }
     }
 
-    return ok(accounts as Omit<WithId<ElevenLabsPoolDocumentType>, "allocationID">[]);
+    return okAsync(accounts as Omit<WithId<ElevenLabsPoolDocumentType>, "allocationID">[]);
 }
 
-function fn(accountIDs: string[]) {
+function fn(accountIDs?: string[]) {
     return ResultAsync.combine([ElevenLabsPoolRepositoryResultAsync, PRAOAllocationRepositoryResultAsync]).andThen(
-        ([ElevenLabsPoolRepository, PRAOAllocationRepository]) =>
-            ElevenLabsPoolRepository.findManyByIDs(accountIDs)
-                .andThen(filterUnlockedAccounts)
-                .andThen((accounts) => {
-                    const accountIDs = accounts.map((account) => account._id);
+        ([ElevenLabsPoolRepository, PRAOAllocationRepository]) => {
+            const accountsResult = accountIDs
+                ? ElevenLabsPoolRepository.findManyByIDs(accountIDs)
+                : ElevenLabsPoolRepository.findAll().map((accounts) =>
+                      accounts.filter((account) => account.allocationID === undefined),
+                  );
 
-                    return PRAOAllocationRepository.insertOne({ userID: OWNER_ID, accountIDs }).andThen(
-                        ({ insertedId: allocationID }) =>
-                            ElevenLabsPoolRepository.lockMany(accountIDs, allocationID).andThen(
-                                createRedisAllocationCurry(allocationID, accounts),
-                            ),
-                    );
-                }),
+            return accountsResult.andThen(filterUnlockedAccounts).andThen((accounts) => {
+                const accountIDs = accounts.map((account) => account._id);
+
+                return PRAOAllocationRepository.insertOne({ userID: OWNER_ID, accountIDs }).andThen(
+                    ({ insertedId: allocationID }) =>
+                        ElevenLabsPoolRepository.lockMany(accountIDs, allocationID).andThen(
+                            createRedisAllocationCurry(allocationID, accounts),
+                        ),
+                );
+            });
+        },
     );
 }
 
