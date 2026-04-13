@@ -1,46 +1,15 @@
 import { AudioBookRepositoryResultAsync } from "@/repository/AudioBookRepository";
-import { AudioBookSchema } from "@/schemas/AudioBook";
 import { tRPCRouter, tRPCProcedure } from "@/server/tRPC";
 import { TRPCError } from "@trpc/server";
 import { ObjectId } from "mongodb";
 import z from "zod";
-import { omit } from "lodash";
 import { createProcedure } from "./create";
 import { updateProcedure } from "./update";
+import { getProcedure } from "./get";
 
 export const projectRouter = tRPCRouter({
     create: createProcedure,
-    get: tRPCProcedure.input(z.hex().length(24)).query(async ({ input }) => {
-        const AudioBookRepositoryResult = await AudioBookRepositoryResultAsync;
-
-        if (AudioBookRepositoryResult.isErr()) {
-            throw new TRPCError({
-                code: "INTERNAL_SERVER_ERROR",
-                message: "Failed to init 'AudioBookRepository'",
-                // cause: AudioBookRepositoryResult.error.cause,
-            });
-        }
-
-        const AudioBookRepository = AudioBookRepositoryResult.value;
-        const findOneResult = await AudioBookRepository.findOneByID(ObjectId.createFromHexString(input));
-
-        if (findOneResult.isErr()) {
-            throw new TRPCError({
-                code: "INTERNAL_SERVER_ERROR",
-                message: `Error querying 'AudioBookRepository'`,
-                cause: findOneResult.error,
-            });
-        }
-
-        if (findOneResult.value === null) {
-            throw new TRPCError({
-                code: "NOT_FOUND",
-                message: `No 'active' project with ID: '${input}' found in database`,
-            });
-        }
-
-        return findOneResult.value;
-    }),
+    get: getProcedure,
     update: updateProcedure,
     archive: tRPCProcedure.input(z.hex().length(24)).mutation(async ({ input }) => {
         const AudioBookRepositoryResult = await AudioBookRepositoryResultAsync;
