@@ -52,7 +52,7 @@ function fn(accountIDs?: string[]) {
         ([ElevenLabsPoolRepository, PRAOAllocationRepository]) => {
             const accountsResult = accountIDs
                 ? ElevenLabsPoolRepository.findManyByIDs(accountIDs)
-                : ElevenLabsPoolRepository.findAll().map((accounts) =>
+                : ElevenLabsPoolRepository.findAllByOwnerID(OWNER_ID).map((accounts) =>
                       accounts.filter((account) => account.allocationID === undefined),
                   );
 
