@@ -43,7 +43,7 @@ export class ElevenLabsCreditLaneEntry {
                 ElevenLabsResource.deserializeFromJSON(resource).map((resource) => ({ resource, balance })),
             )
             .andThen(({ resource, ...context }) =>
-                this.createLogger(resource.id).map((logger) => ({ resource, logger, ...context })),
+                ElevenLabsCreditLaneEntry.createLogger(resource.id).map((logger) => ({ resource, logger, ...context })),
             )
             .map((context) => new ElevenLabsCreditLaneEntry({ ...context, balanceStale: false }));
     }
