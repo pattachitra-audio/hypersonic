@@ -8,6 +8,7 @@ import { ok, err, ResultAsync } from "neverthrow";
 export type PRAOAllocationDocumentType = {
     userID: ObjectId;
     accountIDs: string[];
+    audioBookID?: ObjectId;
 };
 
 function filterDataNotFoundFactory(filter: Filter<PRAOAllocationDocumentType>) {
