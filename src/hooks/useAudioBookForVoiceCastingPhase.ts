@@ -9,6 +9,8 @@ import { useEffect, useRef, useState } from "react";
 import { produce } from "immer";
 import debug from "debug";
 import { useDebounce } from "./useDebounce";
+// import { AudioBookDocumentType } from "@/repository/AudioBookRepository";
+import { OutputType as AudioBookOutputType } from "@/server/router/project/get";
 
 const logger = debug("UseAudioBookForVoiceCastingPhase");
 debug.enable("UseAudioBookForVoiceCastingPhase");
@@ -21,7 +23,7 @@ export type AudioBookErrorStateType = { state: "error" };
 
 export type AudioBookSuccessStateType = {
     state: "success";
-    audioBook: AudioBook;
+    audioBook: AudioBookOutputType;
     handleSelectVoice: (characterIndex: number, voice: CharacterVoice | null) => void;
     handleVoiceSettingsChange: <
         T extends keyof ElevenLabsTextToSpeechVoiceSettings,
