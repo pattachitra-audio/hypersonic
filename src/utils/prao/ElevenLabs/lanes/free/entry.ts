@@ -1,7 +1,7 @@
 import z from "zod";
 import { exchangeRefreshTokenForIDToken } from "@/services/elevenLabsFirebase/exchangeRefreshTokenForIDToken";
 import { decodeElevenLabsFirebaseJWTPayload } from "@/utils/decodeElevenLabsFirebaseJWTPayload";
-import { okAsync } from "neverthrow";
+import { okAsync, ResultAsync } from "neverthrow";
 import { Logger } from "pino";
 import { LoggerResultAsync } from "@/lib/Logger";
 import { Creator } from "@/interfaces/Creator";
@@ -27,9 +27,12 @@ export class ElevenLabsFreeLaneEntry {
     ) {}
 
     static serializeToJSON(obj: ElevenLabsFreeLaneEntry) {
-        return ElevenLabsResource.serializeToJSON(obj.context.resource).map((resource) => ({
-            resource,
-        }));
+        return ResultAsync.combine([ElevenLabsResource.serializeToJSON(obj.context.resource), obj.balance]).map(
+            ([resource, balance]) => ({
+                resource,
+                balance,
+            }),
+        );
     }
 
     static deserializeFromJSON(obj: unknown) {
@@ -38,7 +41,7 @@ export class ElevenLabsFreeLaneEntry {
                 ElevenLabsResource.deserializeFromJSON(resource).map((resource) => ({ resource, balance })),
             )
             .andThen(({ resource, ...context }) =>
-                this.createLogger(resource.id).map((logger) => ({ resource, logger, ...context })),
+                ElevenLabsFreeLaneEntry.createLogger(resource.id).map((logger) => ({ resource, logger, ...context })),
             )
             .map((context) => new ElevenLabsFreeLaneEntry({ ...context }));
     }
