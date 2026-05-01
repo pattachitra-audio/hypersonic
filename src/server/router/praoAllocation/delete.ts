@@ -8,6 +8,7 @@ import { ResultAsync } from "neverthrow";
 import { TRPCError } from "@trpc/server";
 import { ElevenLabsCreditRosterRepositoryResultAsync } from "@/repository/ElevenLabsCreditRosterRepository";
 import { ElevenLabsFreeRosterRepositoryResultAsync } from "@/repository/ElevenLabsFreeRosterRepository";
+import { ElevenLabsRateLimRosterRepositoryResultAsync } from "@/repository/ElevenLabsRateLimRosterRepository";
 
 const InputSchema = z.object({
     allocationID: z
@@ -46,6 +47,7 @@ function fn(allocationID: ObjectId) {
         PRAOAllocationRepositoryResultAsync,
         ElevenLabsPoolRepositoryResultAsync,
         ElevenLabsCreditRosterRepositoryResultAsync,
+        ElevenLabsRateLimRosterRepositoryResultAsync,
         ElevenLabsFreeRosterRepositoryResultAsync,
     ])
         .andThen(
@@ -53,12 +55,14 @@ function fn(allocationID: ObjectId) {
                 PRAOAllocationRepository,
                 ElevenLabsPoolRepository,
                 ElevenLabsCreditRosterRepository,
+                ElevenLabsRateLimRosterRepository,
                 ElevenLabsFreeRosterRepository,
             ]) =>
                 PRAOAllocationRepository.deleteOneByID(allocationID).andThen((allocation) =>
                     ResultAsync.combine([
                         ElevenLabsPoolRepository.unlockMany(allocation.accountIDs),
                         ElevenLabsCreditRosterRepository.del(allocationID),
+                        ElevenLabsRateLimRosterRepository.del(allocationID),
                         ElevenLabsFreeRosterRepository.del(allocationID),
                     ]),
                 ),

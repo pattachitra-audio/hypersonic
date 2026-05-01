@@ -1,7 +1,12 @@
 import { ElevenLabsCreditRosterRepositoryResultAsync } from "@/repository/ElevenLabsCreditRosterRepository";
+import { ElevenLabsFreeRosterRepositoryResultAsync } from "@/repository/ElevenLabsFreeRosterRepository";
+import { ElevenLabsRateLimRosterRepositoryResultAsync } from "@/repository/ElevenLabsRateLimRosterRepository";
 import { PRAOAllocationRepositoryResultAsync } from "@/repository/PRAOAllocation";
 import { tRPCProcedure } from "@/server/tRPC";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import { ElevenLabsCreditLaneRoster } from "@/utils/prao/ElevenLabs/lanes/credit/roster";
+import { ElevenLabsFreeLaneRoster } from "@/utils/prao/ElevenLabs/lanes/free/roster";
+import { ElevenLabsRateLimLaneRoster } from "@/utils/prao/ElevenLabs/lanes/rateLim/roster";
 import { TRPCError } from "@trpc/server";
 import { ObjectId } from "mongodb";
 import { ResultAsync } from "neverthrow";
@@ -39,23 +44,49 @@ export const getProcedure = tRPCProcedure.input(InputSchema).query(async ({ inpu
     return result.value;
 });
 
+function getSummary(roster: ElevenLabsCreditLaneRoster | ElevenLabsRateLimLaneRoster | ElevenLabsFreeLaneRoster) {
+    const totalBalanceResultAsync = roster.totalBalance;
+    const entries = ResultAsync.combine(
+        roster.entries.map((entry) => entry.balance.map((balance) => ({ id: entry.resource.id, balance }))),
+    );
+
+    return ResultAsync.combine([totalBalanceResultAsync, entries]).map(([totalBalance, entries]) => ({
+        totalBalance,
+        entries,
+    }));
+}
+
 function fn(input: z.output<typeof InputSchema>) {
     return ResultAsync.combine([
         PRAOAllocationRepositoryResultAsync,
         ElevenLabsCreditRosterRepositoryResultAsync,
-    ]).andThen(([PRAOAllocationRepository, ElevenLabsCreditRosterRepository]) =>
-        PRAOAllocationRepository.findOneByID(input.allocationID)
-            .andThen((allocation) => ElevenLabsCreditRosterRepository.get(allocation._id))
-            .andThen((roster) => {
-                const totalBalanceResultAsync = roster.totalBalance;
-                const entries = ResultAsync.combine(
-                    roster.entries.map((entry) => entry.balance.map((balance) => ({ id: entry.resource.id, balance }))),
-                );
-
-                return ResultAsync.combine([totalBalanceResultAsync, entries]).map(([totalBalance, entries]) => ({
-                    totalBalance,
-                    entries,
-                }));
-            }),
+        ElevenLabsRateLimRosterRepositoryResultAsync,
+        ElevenLabsFreeRosterRepositoryResultAsync,
+    ]).andThen(
+        ([
+            PRAOAllocationRepository,
+            ElevenLabsCreditRosterRepository,
+            ElevenLabsRateLimLaneRosterRepository,
+            ElevenLabsFreeLaneRosterRepository,
+        ]) =>
+            PRAOAllocationRepository.findOneByID(input.allocationID)
+                .andThen((allocation) =>
+                    ResultAsync.combine([
+                        ElevenLabsCreditRosterRepository.get(allocation._id),
+                        ElevenLabsRateLimLaneRosterRepository.get(allocation._id),
+                        ElevenLabsFreeLaneRosterRepository.get(allocation._id),
+                    ]),
+                )
+                .andThen(([creditLaneRoster, rateLimRoster, freeLaneRoster]) => {
+                    return ResultAsync.combine([
+                        getSummary(creditLaneRoster),
+                        getSummary(rateLimRoster),
+                        getSummary(freeLaneRoster),
+                    ]).map(([creditLane, rateLimLane, freeLane]) => ({
+                        creditLane,
+                        rateLimLane,
+                        freeLane,
+                    }));
+                }),
     );
 }

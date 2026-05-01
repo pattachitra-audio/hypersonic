@@ -14,6 +14,9 @@ import { ElevenLabsResource } from "@/utils/prao/ElevenLabs/resource";
 import { ElevenLabsFreeLaneEntry } from "@/utils/prao/ElevenLabs/lanes/free/entry";
 import { ElevenLabsCreditLaneRoster } from "@/utils/prao/ElevenLabs/lanes/credit/roster";
 import { ElevenLabsFreeLaneRoster } from "@/utils/prao/ElevenLabs/lanes/free/roster";
+import { ElevenLabsRateLimLaneRoster } from "@/utils/prao/ElevenLabs/lanes/rateLim/roster";
+import { ElevenLabsRateLimRosterRepositoryResultAsync } from "@/repository/ElevenLabsRateLimRosterRepository";
+import { ElevenLabsRateLimLaneEntry } from "@/utils/prao/ElevenLabs/lanes/rateLim/entry";
 
 const InputSchema = z.object({
     accountIDs: z.array(z.string()).optional(),
@@ -78,36 +81,45 @@ function createRedisAllocationCurry(allocationID: ObjectId, accounts: ElevenLabs
     return function () {
         return ResultAsync.combine([
             ElevenLabsCreditRosterRepositoryResultAsync,
+            ElevenLabsRateLimRosterRepositoryResultAsync,
             ElevenLabsFreeRosterRepositoryResultAsync,
-        ]).andThen(([ElevenLabsCreditRosterRepository, ElevenLabsFreeRosterRepository]) =>
-            ResultAsync.combine(
-                accounts.map((account: ElevenLabsPoolDocumentType) =>
-                    ElevenLabsResource.create(account._id, account.proxyURL, account.firebaseAuthCreds.refreshToken),
-                ),
-            )
-                .andThen((resources) =>
-                    ResultAsync.combine([
-                        ResultAsync.combine(resources.map(ElevenLabsCreditLaneEntry.create)),
-                        ResultAsync.combine(resources.map(ElevenLabsFreeLaneEntry.create)),
-                    ]),
+        ]).andThen(
+            ([ElevenLabsCreditRosterRepository, ElevenLabsRateLimRosterRepository, ElevenLabsFreeRosterRepository]) =>
+                ResultAsync.combine(
+                    accounts.map((account: ElevenLabsPoolDocumentType) =>
+                        ElevenLabsResource.create(
+                            account._id,
+                            account.proxyURL,
+                            account.firebaseAuthCreds.refreshToken,
+                        ),
+                    ),
                 )
-                .andThen(([creditLaneEntries, freeLaneEntries]) =>
-                    ResultAsync.combine([
-                        ElevenLabsCreditLaneRoster.create(creditLaneEntries),
-                        ElevenLabsFreeLaneRoster.create(freeLaneEntries),
-                    ]),
-                )
+                    .andThen((resources) =>
+                        ResultAsync.combine([
+                            ResultAsync.combine(resources.map(ElevenLabsCreditLaneEntry.create)),
+                            ResultAsync.combine(resources.map(ElevenLabsRateLimLaneEntry.create)),
+                            ResultAsync.combine(resources.map(ElevenLabsFreeLaneEntry.create)),
+                        ]),
+                    )
+                    .andThen(([creditLaneEntries, rateLimLaneEntries, freeLaneEntries]) =>
+                        ResultAsync.combine([
+                            ElevenLabsCreditLaneRoster.create(creditLaneEntries),
+                            ElevenLabsRateLimLaneRoster.create(rateLimLaneEntries),
+                            ElevenLabsFreeLaneRoster.create(freeLaneEntries),
+                        ]),
+                    )
 
-                .andThen(([creditLaneRoster, freeLaneRoster]) => {
-                    ResultAsync.combine([
-                        ElevenLabsCreditRosterRepository.set(allocationID, creditLaneRoster),
-                        ElevenLabsFreeRosterRepository.set(allocationID, freeLaneRoster),
-                    ]);
+                    .andThen(([creditLaneRoster, rateLimLaneRoster, freeLaneRoster]) => {
+                        ResultAsync.combine([
+                            ElevenLabsCreditRosterRepository.set(allocationID, creditLaneRoster),
+                            ElevenLabsRateLimRosterRepository.set(allocationID, rateLimLaneRoster),
+                            ElevenLabsFreeRosterRepository.set(allocationID, freeLaneRoster),
+                        ]);
 
-                    return okAsync({
-                        allocationID,
-                    });
-                }),
+                        return okAsync({
+                            allocationID,
+                        });
+                    }),
         );
     };
 }
