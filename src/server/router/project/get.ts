@@ -13,6 +13,8 @@ const OutputSchema = AudioBookSchema.extend({
     allocationID: z.transform((value: ObjectId) => value.toString("hex")),
 });
 
+export type OutputType = z.output<typeof OutputSchema>;
+
 export const getProcedure = tRPCProcedure.input(InputSchema).query(async ({ input }) => {
     /*
     if (AudioBookRepositoryResult.isErr()) {
