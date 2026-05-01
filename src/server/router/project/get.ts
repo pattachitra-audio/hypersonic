@@ -3,10 +3,18 @@ import { tRPCProcedure } from "@/server/tRPC";
 import { AudioBookRepositoryResultAsync } from "@/repository/AudioBookRepository";
 import { TRPCError } from "@trpc/server";
 import { ObjectId } from "mongodb";
+import { AudioBookSchema } from "@/schemas/AudioBook";
+import { zodParseAsync } from "@/utils/zodParse";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
-export const getProcedure = tRPCProcedure.input(z.hex().length(24)).query(async ({ input }) => {
-    const AudioBookRepositoryResult = await AudioBookRepositoryResultAsync;
+const InputSchema = z.hex().length(24);
 
+const OutputSchema = AudioBookSchema.extend({
+    allocationID: z.transform((value: ObjectId) => value.toString("hex")),
+});
+
+export const getProcedure = tRPCProcedure.input(InputSchema).query(async ({ input }) => {
+    /*
     if (AudioBookRepositoryResult.isErr()) {
         throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
@@ -14,9 +22,6 @@ export const getProcedure = tRPCProcedure.input(z.hex().length(24)).query(async 
             // cause: AudioBookRepositoryResult.error.cause,
         });
     }
-
-    const AudioBookRepository = AudioBookRepositoryResult.value;
-    const findOneResult = await AudioBookRepository.findOneByID(ObjectId.createFromHexString(input));
 
     if (findOneResult.isErr()) {
         throw new TRPCError({
@@ -33,5 +38,24 @@ export const getProcedure = tRPCProcedure.input(z.hex().length(24)).query(async 
         });
     }
 
-    return findOneResult.value;
+    findOneResult.value;
+    */
+
+    const result = await fn(input);
+
+    if (result.isErr()) {
+        throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            cause: result.error,
+            message: getErrorMessage(result.error),
+        });
+    }
+
+    return result.value;
 });
+
+function fn(projectID: string) {
+    return AudioBookRepositoryResultAsync.andThen((AudioBookRepository) =>
+        AudioBookRepository.findOneByID(ObjectId.createFromHexString(projectID)),
+    ).andThen((audioBookDocument) => zodParseAsync(OutputSchema, audioBookDocument));
+}
