@@ -44,7 +44,7 @@ export const getProcedure = tRPCProcedure.input(InputSchema).query(async ({ inpu
     return result.value;
 });
 
-function getSummary(roster: ElevenLabsCreditLaneRoster | ElevenLabsRateLimLaneRoster | ElevenLabsFreeLaneRoster) {
+function getRosterSummary(roster: ElevenLabsCreditLaneRoster | ElevenLabsRateLimLaneRoster | ElevenLabsFreeLaneRoster) {
     const totalBalanceResultAsync = roster.totalBalance;
     const entries = ResultAsync.combine(
         roster.entries.map((entry) => entry.balance.map((balance) => ({ id: entry.resource.id, balance }))),
@@ -79,9 +79,9 @@ function fn(input: z.output<typeof InputSchema>) {
                 )
                 .andThen(([creditLaneRoster, rateLimRoster, freeLaneRoster]) => {
                     return ResultAsync.combine([
-                        getSummary(creditLaneRoster),
-                        getSummary(rateLimRoster),
-                        getSummary(freeLaneRoster),
+                        getRosterSummary(creditLaneRoster),
+                        getRosterSummary(rateLimRoster),
+                        getRosterSummary(freeLaneRoster),
                     ]).map(([creditLane, rateLimLane, freeLane]) => ({
                         creditLane,
                         rateLimLane,
