@@ -28,7 +28,7 @@ export default function MiniAudioPlayer({
     }
 
     const [playing, setPlaying] = useState(() => {
-        if (audioPlayerResourceState.status === "SUCCESS") {
+        if (audioPlayerResourceState.status === "success") {
             return audioPlayerResourceState.data.isPlaying();
         }
 
@@ -37,7 +37,7 @@ export default function MiniAudioPlayer({
 
     const togglePlayPause = useCallback(() => {
         (async function () {
-            if (audioPlayerResourceState.status === "SUCCESS") {
+            if (audioPlayerResourceState.status === "success") {
                 await audioPlayerResourceState.data.togglePlayPause();
                 setPlaying(audioPlayerResourceState.data.isPlaying());
             }
@@ -45,7 +45,7 @@ export default function MiniAudioPlayer({
     }, [setPlaying, audioPlayerResourceState]);
 
     const download = useCallback(() => {
-        if (audioPlayerResourceState.status !== "SUCCESS") {
+        if (audioPlayerResourceState.status !== "success") {
             return;
         }
 
@@ -60,11 +60,11 @@ export default function MiniAudioPlayer({
         a.click();
     }, [audioPlayerResourceState, downloadFileNameWithoutExtension]);
 
-    if (audioPlayerResourceState.status === "PENDING") {
+    if (audioPlayerResourceState.status === "pending") {
         return "Loading...";
     }
 
-    if (audioPlayerResourceState.status === "ERROR") {
+    if (audioPlayerResourceState.status === "error") {
         return "Error...";
     }
 

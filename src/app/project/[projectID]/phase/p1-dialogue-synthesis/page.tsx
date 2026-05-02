@@ -21,11 +21,11 @@ export default function AudioBookStudio() {
     const { projectID }: { projectID: string } = useParams<{ projectID: string }>();
     const { audioBookWithCharacterVoicesState } = useAudioBookForDialogueSynthesisPhase(projectID);
 
-    if (audioBookWithCharacterVoicesState.status === "PENDING") {
+    if (audioBookState.status === "pending") {
         return "Loading...";
     }
 
-    if (audioBookWithCharacterVoicesState.status === "ERROR") {
+    if (audioBookState.status === "error") {
         return "ERROR: AudioBook not found!";
     }
 
