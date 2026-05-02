@@ -21,7 +21,7 @@ const ElevenLabsVoiceProviderSchema = z.object({
     provider: z.literal("ELEVENLABS").describe("Voice provider identifier for ElevenLabs"),
     voiceID: z.string().describe("Unique voice identifier from ElevenLabs voice library"),
     name: z.string(),
-    gender: z.enum(["MALE", "FEMALE", "NEUTRAL", "NOT_AVAILABLE"]),
+    gender: z.enum(["MALE", "FEMALE", "NEUTRAL", "NA"]),
     category: z.enum(["GENERATED", "CLONED", "PREMADE", "PROFESSIONAL", "FAMOUS", "HIGH_QUALITY"]),
     description: z.string().optional(),
     /* verifiedLanguages: z
