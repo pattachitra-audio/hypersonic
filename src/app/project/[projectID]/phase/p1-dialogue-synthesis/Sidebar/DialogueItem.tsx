@@ -1,20 +1,20 @@
 import { MessageSquare, Play } from "lucide-react";
 import StatusDot from "./StatusDot";
-import { AudioBookWithCharacterVoices } from "@/schemas/AudioBook";
 import { scrollToDialogue } from "../scrollUtils";
+import { AudioBookTypeForDialogueSynthesisPhase } from "@/hooks/useAudioBookForDialogueSynthesisPhase";
 
 export default function DialogueItem({
-    audioBookWithCharacterVoices,
+    audioBook,
     index,
 }: {
-    audioBookWithCharacterVoices: AudioBookWithCharacterVoices;
+    audioBook: AudioBookTypeForDialogueSynthesisPhase;
     index: number;
 }) {
-    const dialogue = audioBookWithCharacterVoices.dialogues[index];
-    const character = audioBookWithCharacterVoices.characters[dialogue.character];
+    const dialogue = audioBook.dialogues[index];
+    const character = audioBook.characters[dialogue.character];
     // const synthesized = false;
     // const status = "SYNTHESIZED";
-    const status = "";
+    // const status = "";
 
     return (
         <div className="group flex items-start gap-2.5 py-2 px-3 rounded-md hover:bg-sidebar-accent transition-colors cursor-default">

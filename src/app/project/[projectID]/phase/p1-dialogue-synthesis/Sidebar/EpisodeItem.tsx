@@ -1,20 +1,20 @@
-import { AudioBookWithCharacterVoices } from "@/schemas/AudioBook";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import StatusDot from "./StatusDot";
 import { SceneItem } from "./SceneItem";
 import { scrollToEpisode } from "../scrollUtils";
+import { AudioBookTypeForDialogueSynthesisPhase } from "@/hooks/useAudioBookForDialogueSynthesisPhase";
 
 export default function EpisodeItem({
-    audioBookWithCharacterVoices,
+    audioBook,
     index,
 }: {
-    audioBookWithCharacterVoices: AudioBookWithCharacterVoices;
+    audioBook: AudioBookTypeForDialogueSynthesisPhase;
     index: number;
 }) {
     const [open, setOpen] = useState<boolean>(index === 0);
 
-    const episode = audioBookWithCharacterVoices.episodes[index];
+    const episode = audioBook.episodes[index];
     const numScenes = episode.sceneEnd - episode.sceneBegin;
     // const scenesDone = episode.scenes.filter((s) => s.status === "complete").length;
 
@@ -59,11 +59,7 @@ export default function EpisodeItem({
             {open && (
                 <ul className="ml-3 mt-0.5 space-y-0.5">
                     {Array.from({ length: numScenes }).map((_, index) => (
-                        <SceneItem
-                            key={index}
-                            index={index + episode.sceneBegin}
-                            {...{ audioBookWithCharacterVoices }}
-                        />
+                        <SceneItem key={index} index={index + episode.sceneBegin} {...{ audioBook }} />
                     ))}
                     {/*episode.scenes.map((scene) => (
                         <SceneItem key={scene.id} scene={scene} />
