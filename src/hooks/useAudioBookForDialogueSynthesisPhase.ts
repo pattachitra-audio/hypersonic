@@ -1,24 +1,32 @@
-import { AudioBook, AudioBookWithCharacterVoices, AudioBookWithCharacterVoicesSchema } from "@/schemas/AudioBook";
+import { AudioBookWithCharacterVoicesSchema } from "@/schemas/AudioBook";
 import z from "zod";
 import { tRPC } from "@/utils/tRPC";
-import { useEffect, useRef, useState } from "react";
-import { produce } from "immer";
-import debug from "debug";
-import { useDebounce } from "./useDebounce";
+import { useEffect, useState } from "react";
+// import debug from "debug";
 import { AsyncStateType, SuccessAsyncStateType } from "@/app/types/AsyncState";
-import { TRPCError } from "@trpc/server";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
-const logger = debug("UseAudioBookForDialogueSynthesisPhase");
-debug.enable("UseAudioBookForDialogueSynthesisPhase");
+// const logger = debug("UseAudioBookForDialogueSynthesisPhase");
+// debug.enable("UseAudioBookForDialogueSynthesisPhase");
 
-export type AudioBookWithCharacterVoicesSuccessAsyncStateType = SuccessAsyncStateType<AudioBookWithCharacterVoices>;
-export type AudioBookWithCharacterVoicesAsyncStateType = AsyncStateType<AudioBookWithCharacterVoices>;
+// export type AudioBookForDialogueSynthesisPhase = AudioBookWithCharacterVoices & AudioBookOutputType;
+const AudioBookForDialogueSynthesisPhaseSchema = AudioBookWithCharacterVoicesSchema.extend({
+    allocationID: z.hex().length(24),
+});
+
+export type AudioBookTypeForDialogueSynthesisPhase = z.output<typeof AudioBookForDialogueSynthesisPhaseSchema>;
+
+export type AudioBookTypeForDialogueSynthesisPhaseSuccessAsyncStateType =
+    SuccessAsyncStateType<AudioBookTypeForDialogueSynthesisPhase>;
+export type AudioBookTypeForDialogueSynthesisPhaseAsyncStateType =
+    AsyncStateType<AudioBookTypeForDialogueSynthesisPhase>;
 
 export function useAudioBookForDialogueSynthesisPhase(projectID: string) {
     const query = tRPC.project.get.useQuery(projectID);
 
-    const [audioBookWithCharacterVoicesState, setAudioBookWithCharacterVoicesState] =
-        useState<AudioBookWithCharacterVoicesAsyncStateType>({ status: "PENDING" });
+    const [audioBookState, setAudioBookState] = useState<AudioBookTypeForDialogueSynthesisPhaseAsyncStateType>({
+        status: "pending",
+    });
 
     // const init = useRef(true);
     // const [syncStatus, setSyncStatus] = useState<"IDLE" | "PENDING" | "SUCCESS" | "ERROR">("SUCCESS");
@@ -32,19 +40,25 @@ export function useAudioBookForDialogueSynthesisPhase(projectID: string) {
 
         (async function () {
             if (query.status === "error") {
-                setAudioBookWithCharacterVoicesState({
-                    status: "ERROR",
+                setAudioBookState({
+                    status: "error",
                     error: new Error(query.error.message, { cause: query.error }),
                 });
                 return;
             }
 
-            const audioBook = query.data;
-            const audioBookWithCharacterVoices = await AudioBookWithCharacterVoicesSchema.parseAsync(audioBook);
-
-            setAudioBookWithCharacterVoicesState({ status: "SUCCESS", data: audioBookWithCharacterVoices });
+            try {
+                const audioBook = await AudioBookForDialogueSynthesisPhaseSchema.parseAsync(query.data);
+                setAudioBookState({ status: "success", data: audioBook });
+            } catch (error) {
+                setAudioBookState({
+                    status: "error",
+                    error: new Error(`Error parsing 'AudioBookForDialogueSynthesisPhase'`, { cause: error }),
+                });
+                console.log(getErrorMessage(error));
+            }
         })();
-    }, [query.status, query.data, query.error, setAudioBookWithCharacterVoicesState]);
+    }, [query.status, query.data, query.error, setAudioBookState]);
 
-    return { audioBookWithCharacterVoicesState };
+    return { audioBookState };
 }

@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import DialogueSynthesis from "./index";
 import { useEffect } from "react";
 import { useHeaderStore } from "@/hooks/useHeaderStore";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 export default function AudioBookStudio() {
     const setText = useHeaderStore((state) => state.setText);
@@ -19,15 +20,15 @@ export default function AudioBookStudio() {
     });
 
     const { projectID }: { projectID: string } = useParams<{ projectID: string }>();
-    const { audioBookWithCharacterVoicesState } = useAudioBookForDialogueSynthesisPhase(projectID);
+    const { audioBookState } = useAudioBookForDialogueSynthesisPhase(projectID);
 
     if (audioBookState.status === "pending") {
         return "Loading...";
     }
 
     if (audioBookState.status === "error") {
-        return "ERROR: AudioBook not found!";
+        return `${getErrorMessage(audioBookState.error)}`;
     }
 
-    return <DialogueSynthesis audioBookWithCharacterVoicesSuccessState={audioBookWithCharacterVoicesState} />;
+    return <DialogueSynthesis audioBook={audioBookState.data} />;
 }

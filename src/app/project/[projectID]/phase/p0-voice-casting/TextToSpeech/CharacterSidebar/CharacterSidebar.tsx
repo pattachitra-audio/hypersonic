@@ -7,8 +7,8 @@ import CharacterDetails from "../CharacterDetails";
 import { cn } from "@/lib/utils";
 import { CharacterVoice, ElevenLabsTextToSpeechVoiceSettings } from "@/schemas/Character";
 import VoiceSelector from "../VoiceSelector";
-import { AudioBook } from "@/schemas/AudioBook";
 import { INVALID_INDEX } from "@/constants";
+import { AudioBookSuccessStateType } from "@/hooks/useAudioBookForVoiceCastingPhase";
 
 export default function CharacterSidebar({
     audioBook,
@@ -17,7 +17,7 @@ export default function CharacterSidebar({
     onVoiceSettingsChange,
     onClose,
 }: {
-    audioBook: AudioBook;
+    audioBook: AudioBookSuccessStateType["audioBook"];
     selectedCharacterIndex: number;
     onVoiceChange: (voice: CharacterVoice | null) => void;
     onVoiceSettingsChange: <
@@ -114,6 +114,7 @@ export default function CharacterSidebar({
                                 )}
                             >
                                 <VoiceSelector
+                                    {...{ audioBook }}
                                     onSelectVoice={(voice) => {
                                         setShowVoiceSelector(false);
                                         onVoiceChange(voice);

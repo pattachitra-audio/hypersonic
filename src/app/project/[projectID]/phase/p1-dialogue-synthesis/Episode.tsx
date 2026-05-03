@@ -1,16 +1,16 @@
-import { AudioBookWithCharacterVoices } from "@/schemas/AudioBook";
 import Scene from "./Scene";
 import { Separator } from "@/components/ui/separator";
+import { AudioBookTypeForDialogueSynthesisPhase } from "@/hooks/useAudioBookForDialogueSynthesisPhase";
 
 export default function Episode({
-    audioBookWithCharacterVoices,
+    audioBook,
     index,
 }: {
-    audioBookWithCharacterVoices: AudioBookWithCharacterVoices;
+    audioBook: AudioBookTypeForDialogueSynthesisPhase;
     index: number;
 }) {
-    const episode = audioBookWithCharacterVoices.episodes[index];
-    const scenes = audioBookWithCharacterVoices.scenes.slice(episode.sceneBegin, episode.sceneEnd);
+    const episode = audioBook.episodes[index];
+    const scenes = audioBook.scenes.slice(episode.sceneBegin, episode.sceneEnd);
     const isFirst = index === 0;
 
     return (
@@ -31,11 +31,7 @@ export default function Episode({
             <Separator />
 
             {scenes.map((_, i) => (
-                <Scene
-                    key={i}
-                    audioBookWithCharacterVoices={audioBookWithCharacterVoices}
-                    index={episode.sceneBegin + i}
-                />
+                <Scene key={i} {...{ audioBook }} index={episode.sceneBegin + i} />
             ))}
         </article>
     );

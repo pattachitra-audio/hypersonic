@@ -1,23 +1,19 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { AudioBook, AudioBookWithCharacterVoices } from "@/schemas/AudioBook";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import Episode from "./Episode";
 import { RotateCcw } from "lucide-react";
+import { AudioBookTypeForDialogueSynthesisPhase } from "@/hooks/useAudioBookForDialogueSynthesisPhase";
 
 export type GlobalGenerationSettingsType = {
     numVariants: number;
     parallelism: number;
 };
 
-export default function Main({
-    audioBookWithCharacterVoices,
-}: {
-    audioBookWithCharacterVoices: AudioBookWithCharacterVoices;
-}) {
+export default function Main({ audioBook }: { audioBook: AudioBookTypeForDialogueSynthesisPhase }) {
     const [generating] = useState(false);
     const [globalGenerationSettings, setGlobalGenerationSettings] = useState<GlobalGenerationSettingsType>({
         numVariants: 2,
@@ -124,8 +120,8 @@ export default function Main({
         <main data-scroll-container className="flex-1 flex flex-col overflow-auto bg-background pretty-scrollbar">
             <GlobalConfigBar settings={globalGenerationSettings} {...{ generating, updateSetting, onApplyToAll }} />
 
-            {audioBookWithCharacterVoices.episodes.map((_, index) => (
-                <Episode key={index} {...{ audioBookWithCharacterVoices, index }} />
+            {audioBook.episodes.map((_, index) => (
+                <Episode key={index} {...{ audioBook, index }} />
             ))}
         </main>
     );
