@@ -1,19 +1,26 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
+import type z from "zod";
 import { MoreHorizontal, Play, Search } from "lucide-react";
 import { useState } from "react";
 import {} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { CharacterVoice } from "@/schemas/Character";
-import { useQuery } from "@tanstack/react-query";
-import { listVoicesQuery } from "@/services/elevenLabsAPI/voices/listVoices";
-import { VoiceResponse } from "@/services/elevenLabsAPI/voices/listVoices/response";
 import { VoiceSelectorSearchSettings, VoiceSelectorSearchSettingsDefaultValue } from "./VoiceSelectorSearchSettings";
 import { useDebounce } from "@/hooks/useDebounce";
 import { INVALID_INDEX } from "@/constants";
+import { VoiceSchema } from "@/services/elevenLabsInternalAPI/sharedVoices/output";
+import { tRPC } from "@/utils/tRPC";
+import { AudioBookSuccessStateType } from "@/hooks/useAudioBookForVoiceCastingPhase";
 
-export default function VoiceSelector({ onSelectVoice }: { onSelectVoice: (voice: CharacterVoice) => void }) {
+export default function VoiceSelector({
+    audioBook,
+    onSelectVoice,
+}: {
+    audioBook: AudioBookSuccessStateType["audioBook"];
+    onSelectVoice: (voice: CharacterVoice) => void;
+}) {
     const [searchSettings, setSearchSettings] = useState<VoiceSelectorSearchSettings>(
         VoiceSelectorSearchSettingsDefaultValue,
     );
@@ -38,9 +45,16 @@ export default function VoiceSelector({ onSelectVoice }: { onSelectVoice: (voice
 
     const searchQueryValue = searchQueryDebounced.trim().replaceAll(/\s+/g, "+");
 
-    const queryResult = useQuery({
+    /* const queryResult = useQuery({
         queryKey: ["elevenLabs/listVoicesQuery", searchQueryValue],
         queryFn: () => listVoicesQuery({ search: searchQueryValue, pageSize: 50 }),
+    }); */
+
+    const queryResult = tRPC.elevenLabsInternal.sharedVoices.useQuery({
+        pageNum: 0,
+        pageSize: 50,
+        searchQuery: searchQueryValue,
+        praoAllocationID: audioBook.allocationID,
     });
 
     /*
@@ -127,7 +141,7 @@ function VoiceSearchResults({
     voices,
     onSelectVoice,
 }: {
-    voices: VoiceResponse[];
+    voices: z.output<typeof VoiceSchema>[];
     onSelectVoice: (voice: CharacterVoice) => void;
 }) {
     const [playingIndex, setPlayingIndex] = useState(INVALID_INDEX);
@@ -179,7 +193,7 @@ function Voice({
     onClick,
 }: {
     isPlaying: boolean;
-    voice: VoiceResponse;
+    voice: z.output<typeof VoiceSchema>;
     onPlay: () => void;
     onPause: () => void;
     onClick: () => void;
