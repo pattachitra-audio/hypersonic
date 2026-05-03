@@ -290,27 +290,47 @@ type FileValidationStatusType =
 
 // type SetFileValidationStatusFnType = Dispatch<SetStateAction<FileValidationStatusType>>;
 
-function AllocationSelection({
-    allocation,
-    setAllocation,
+function SelectAllocation({
+    allocationID,
+    setAllocationID,
 }: {
-    allocation: string;
-    setAllocation: (val: string) => void;
+    allocationID: string;
+    setAllocationID: (id: string) => void;
 }) {
+    const allocations = tRPC.praoAllocations.get.useQuery();
+
+    const items = () => {
+        if (allocations.status === "pending") {
+            return (
+                <SelectItem value="__LOADING__" disabled>
+                    Loading...
+                </SelectItem>
+            );
+        }
+
+        if (allocations.status === "error") {
+            return (
+                <SelectItem value="__ERROR__" disabled>
+                    Failed to load allocations
+                </SelectItem>
+            );
+        }
+
+        return allocations.data.map((allocation) => (
+            <SelectItem key={allocation.id} value={allocation.id}>
+                {allocation.id} - {allocation.creditLane.entries.length} - {allocation.creditLane.totalBalance}
+            </SelectItem>
+        ));
+    };
+
     return (
         <div className="space-y-2">
-            <Label>Select an allocation</Label>
-            <Select value={allocation} onValueChange={setAllocation}>
+            <Label>Select an allocation:</Label>
+            <Select value={allocationID} onValueChange={setAllocationID}>
                 <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select an allocation" />
                 </SelectTrigger>
-                <SelectContent>
-                    {["a", "b", "c", "d"].map((opt) => (
-                        <SelectItem key={opt} value={opt}>
-                            {opt.toUpperCase()}
-                        </SelectItem>
-                    ))}
-                </SelectContent>
+                <SelectContent>{items()}</SelectContent>
             </Select>
         </div>
     );
@@ -321,7 +341,7 @@ export default function NewProjectModal({ open, updateOpen }: { open: boolean; u
     const [creating, setCreating] = useState(false);
     const [file, setFile] = useState<File | null>(null);
     const [validation, setValidation] = useState<FileValidationStatusType>({ status: "IDLE" });
-    const [allocation, setAllocation] = useState("");
+    const [allocationID, setAllocationID] = useState("");
 
     const router = useRouter();
     const { toast } = useToast();
@@ -329,7 +349,7 @@ export default function NewProjectModal({ open, updateOpen }: { open: boolean; u
     function resetState() {
         setFile(null);
         setName("");
-        setAllocation("");
+        // setAllocation("");
         setValidation({ status: "IDLE" });
         // setIsCreating(false);
         setCreating(false);
@@ -362,7 +382,7 @@ export default function NewProjectModal({ open, updateOpen }: { open: boolean; u
             return;
         }
 
-        await createAudioBook.mutateAsync(validation.audioBook);
+        await createAudioBook.mutateAsync({ ...validation.audioBook, allocationID });
     };
 
     // Button is only enabled when project name exists AND file is valid
@@ -378,7 +398,7 @@ export default function NewProjectModal({ open, updateOpen }: { open: boolean; u
                 </DialogHeader>
                 <div className="space-y-6 py-4">
                     <ProjectName {...{ name }} updateName={setName} />
-                    <AllocationSelection allocation={allocation} setAllocation={setAllocation} />
+                    <SelectAllocation {...{ allocationID, setAllocationID }} />
                     <FileUpload
                         {...{ validation, file, setFile }}
                         updateProjectName={setName}
