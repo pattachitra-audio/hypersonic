@@ -4,9 +4,9 @@ const VerifiedLanguageSchema = z
     .object({
         language: z.string(),
         model_id: z.string(),
-        accent: z.string(),
-        locale: z.string(),
-        preview_url: z.string().url(),
+        accent: z.string().nullable(),
+        locale: z.string().nullable(),
+        preview_url: z.url(),
     })
     .transform((data) => ({
         language: data.language,
@@ -23,16 +23,21 @@ export const VoiceSchema = z
         date_unix: z.number(),
         name: z.string(),
         accent: z.string(),
-        gender: z.enum(["male", "female"]).transform((value) => (({ male: "MALE", female: "FEMALE" }) as const)[value]),
+        gender: z
+            .enum(["male", "female", ""])
+            .transform((value) => (({ "": "NA", male: "MALE", female: "FEMALE" }) as const)[value]),
         age: z
-            .enum(["young", "middle_aged", "old"])
-            .transform((value) => (({ young: "YOUNG", middle_aged: "MIDDLE_AGED", old: "OLD" }) as const)[value]),
+            .enum(["young", "middle_aged", "old", ""])
+            .transform(
+                (value) => (({ "": "NA", young: "YOUNG", middle_aged: "MIDDLE_AGED", old: "OLD" }) as const)[value],
+            ),
         descriptive: z.string(),
         use_case: z.string(),
-        category: z.enum(["professional", "generated", "cloned", "premade"]).transform(
+        category: z.enum(["high_quality", "professional", "generated", "cloned", "premade"]).transform(
             (value) =>
                 (
                     ({
+                        high_quality: "HIGH_QUALITY",
                         professional: "PROFESSIONAL",
                         generated: "GENERATED",
                         cloned: "CLONED",
@@ -41,7 +46,7 @@ export const VoiceSchema = z
                 )[value],
         ),
         language: z.string(),
-        locale: z.string(),
+        locale: z.string().nullable(),
         description: z.string(),
         preview_url: z.url(),
         usage_character_count_1y: z.number(),
