@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useReducer, useCallback } from "react";
+import { useState, useReducer, useCallback, useEffect, SetStateAction, Dispatch } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -11,11 +11,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { RotateCcw, Edit2, Check, X, MoreVertical, ArrowUp, ArrowDown, Loader2 } from "lucide-react";
 import type { AudioPlayerAdapterResourceStateType } from "@/components/MiniAudioPlayer/MiniAudioPlayer";
-import { AudioBook, AudioBookWithCharacterVoices } from "@/schemas/AudioBook";
 import { INVALID_INDEX } from "@/constants";
 import { PeaksAudioPlayerAdapter } from "@/utils/audio/PeaksAudioPlayerAdapter";
 import { produce } from "immer";
 import dynamic from "next/dynamic";
+import { tRPC } from "@/utils/tRPC";
+import { AudioBookTypeForDialogueSynthesisPhase } from "@/hooks/useAudioBookForDialogueSynthesisPhase";
 
 const MiniAudioPlayer = dynamic(() => import("@/components/MiniAudioPlayer"), { ssr: false });
 
@@ -23,11 +24,145 @@ type GenerationSettingsType = {
     numVariants: number;
 };
 
-type DialogueStateType = "INIT" | "GENERATING" | "GENERATED" | "REGENERATING" | "REGENERATED" | "SELECTED";
+type SpeechGenerationStateTypes = keyof {
+    0: "initial";
+    1: "generating";
+    2: "generated";
+    3: "regenerating";
+    4: "regenerated";
+    5: "selected";
+
+    9: "error";
+};
+
+function GenerateSpeechButton({
+    state,
+    disabled = false,
+    onClick,
+}: {
+    state: SpeechGenerationStateTypes;
+    disabled?: boolean;
+    onClick: () => void;
+}) {
+    const child = () => {
+        switch (state) {
+            case 0:
+                return "Generate";
+
+            case 1:
+                return <RotateCcw className={`h-3.5 w-3.5 "animate-spin" }`} />;
+
+            case 2:
+                return "Regenerate";
+
+            case 3:
+                return <RotateCcw className={`h-3.5 w-3.5 "animate-spin" }`} />;
+
+            case 4:
+                return "Regenerate";
+
+            case 5:
+                return "";
+        }
+    };
+    return (
+        <Button
+            variant="outline"
+            size="sm"
+            {...{ onClick }}
+            disabled={disabled || state === 1 || state === 3}
+            className="h-7 w-40 gap-1 text-xs"
+        >
+            {child()}
+        </Button>
+    );
+}
+
+type EnhanceDialogueStateTypes = keyof {
+    0: "initial";
+    1: "enhancing";
+    2: "enhanced";
+
+    9: "error";
+};
+
+function EnhanceDialogueButton({
+    state,
+    setState,
+    audioBook,
+    dialogueText,
+    setDialogueText,
+    disabled = false,
+}: {
+    state: EnhanceDialogueStateTypes;
+    setState: Dispatch<SetStateAction<EnhanceDialogueStateTypes>>;
+    audioBook: AudioBookTypeForDialogueSynthesisPhase;
+    dialogueText: string;
+    setDialogueText: Dispatch<SetStateAction<string>>;
+    disabled?: boolean;
+}) {
+    const [enhance, setEnhance] = useState(false);
+    const enhanceDialogueResult = tRPC.elevenLabsInternal.enhanceDialogue.useQuery(
+        { praoAllocationID: audioBook.allocationID, dialogue: dialogueText },
+        {
+            enabled: enhance,
+        },
+    );
+
+    useEffect(() => {
+        if (!enhance) {
+            return;
+        }
+
+        (async function () {
+            if (enhanceDialogueResult.status === "pending") {
+                setState(1);
+            } else if (enhanceDialogueResult.status === "error") {
+                setState(9);
+                setEnhance(false);
+            } else {
+                setState(2);
+                setDialogueText(enhanceDialogueResult.data);
+                setEnhance(false);
+            }
+        })();
+    }, [enhance, enhanceDialogueResult, setDialogueText, setState]);
+
+    const child = () => {
+        switch (state) {
+            case 0:
+                return "Enhance";
+
+            case 1:
+                return <RotateCcw className="h-3.5 w-3.5 animate-spin" />;
+
+            case 2:
+                return "Enhance";
+
+            case 9:
+                return "Enhance";
+        }
+    };
+
+    return (
+        <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+                setEnhance(true);
+            }}
+            disabled={disabled || state === 1}
+            className="h-7 w-18 gap-1 text-xs"
+        >
+            {child()}
+        </Button>
+    );
+}
 
 const VARIANT_OPTIONS = [1, 2, 4, 6, 8];
-export default function Dialogue({
-    audioBookWithCharacterVoices,
+
+export default function DialogueComponent({
+    audioBook,
     index,
     // dialogue,
     // character,
@@ -41,7 +176,7 @@ export default function Dialogue({
     // onMoveUp,
     // onMoveDown,
 }: {
-    audioBookWithCharacterVoices: AudioBookWithCharacterVoices;
+    audioBook: AudioBookTypeForDialogueSynthesisPhase;
     index: number;
     // dialogue: DialogueGeneration;
     // character: Character;
@@ -55,8 +190,8 @@ export default function Dialogue({
     // onMoveUp: (id: string) => void;
     // onMoveDown: (id: string) => void;
 }) {
-    const dialogue = audioBookWithCharacterVoices.dialogues[index];
-    const character = audioBookWithCharacterVoices.characters[dialogue.character];
+    const dialogue = audioBook.dialogues[index];
+    const character = audioBook.characters[dialogue.character];
     const voice = character.voice;
     const [selectedGenerationIndex, setSelectedGenerationIndex] = useState(INVALID_INDEX);
     const [generations, setGenerations] = useState(new Array<AudioPlayerAdapterResourceStateType>(0));
@@ -64,7 +199,10 @@ export default function Dialogue({
         numVariants: 2,
     });
 
-    const [dialogueState, setDialogueState] = useState<DialogueStateType>("INIT");
+    const [enhanceDialogueState, setEnhanceDialogueState] = useState<EnhanceDialogueStateTypes>(0);
+    // const [dialogueState, setDialogueState] = useState<DialogueStateType>("INIT");
+    const [dialogueText, setDialogueText] = useState(dialogue.text);
+    const [speechGenerationState, setSpeechGenerationState] = useState<SpeechGenerationStateTypes>(0);
 
     const updateSetting = useCallback(
         <Key extends keyof GenerationSettingsType, Value extends GenerationSettingsType[Key]>(
@@ -86,13 +224,13 @@ export default function Dialogue({
     // const [generatingCount, ]
     const [genCount, dispatchActionForGenCount] = useReducer(function reducer(
         state: number,
-        action: "INCREMENT" | "DECREMENT",
+        action: keyof { 0: "increment"; 1: "decrement" },
     ) {
         switch (action) {
-            case "INCREMENT":
+            case 0:
                 return state + 1;
 
-            case "DECREMENT":
+            case 1:
                 return state - 1;
         }
     }, 0);
@@ -108,15 +246,16 @@ export default function Dialogue({
         setIsEditing(false);
     } */
 
-    const generating = genCount !== 0;
+    // const generating = genCount !== 0;
+
     function generate() {
         const text = dialogue.text;
 
         const generateOne = async (index: number) => {
-            dispatchActionForGenCount("INCREMENT");
+            dispatchActionForGenCount(0);
             setGenerations((value) =>
                 produce(value, (draft) => {
-                    draft[index] = { status: "PENDING" };
+                    draft[index] = { status: "pending" };
                 }),
             );
 
@@ -135,20 +274,20 @@ export default function Dialogue({
 
                 setGenerations((value) =>
                     produce(value, (draft) => {
-                        draft[index] = { status: "ERROR", error };
+                        draft[index] = { status: "error", error };
                     }),
                 );
-                dispatchActionForGenCount("DECREMENT");
+                dispatchActionForGenCount(1);
                 return;
             }
 
             if (response.status !== 200) {
                 setGenerations((value) =>
                     produce(value, (draft) => {
-                        draft[index] = { status: "ERROR", error: new Error(`Response status: ${response.status}`) };
+                        draft[index] = { status: "error", error: new Error(`Response status: ${response.status}`) };
                     }),
                 );
-                dispatchActionForGenCount("DECREMENT");
+                dispatchActionForGenCount(1);
                 return;
             }
 
@@ -157,20 +296,20 @@ export default function Dialogue({
             if (contentType === null) {
                 setGenerations((value) =>
                     produce(value, (draft) => {
-                        draft[index] = { status: "ERROR", error: new Error(`'Content-Type' header not present`) };
+                        draft[index] = { status: "error", error: new Error(`'Content-Type' header not present`) };
                     }),
                 );
-                dispatchActionForGenCount("DECREMENT");
+                dispatchActionForGenCount(1);
                 return;
             }
 
             if (contentType !== "audio/mpeg" && contentType !== "audio/wav" && contentType !== "application/ogg") {
                 setGenerations((value) =>
                     produce(value, (draft) => {
-                        draft[index] = { status: "ERROR", error: new Error(`'Content-Type': ${contentType}`) };
+                        draft[index] = { status: "error", error: new Error(`'Content-Type': ${contentType}`) };
                     }),
                 );
-                dispatchActionForGenCount("DECREMENT");
+                dispatchActionForGenCount(1);
                 return;
             }
 
@@ -180,10 +319,10 @@ export default function Dialogue({
 
             setGenerations((value) =>
                 produce(value, (draft) => {
-                    draft[index] = { status: "SUCCESS", data: audioPlayer };
+                    draft[index] = { status: "success", data: audioPlayer };
                 }),
             );
-            dispatchActionForGenCount("DECREMENT");
+            dispatchActionForGenCount(1);
         };
 
         setGenerations(Array.from({ length: settings.numVariants }));
@@ -199,6 +338,9 @@ export default function Dialogue({
     }
 
     function handleSave() {}
+
+    /* const enhanceDialogue = () => {
+    }; */
 
     return (
         <article id={`dialogue-${index}`} className="group py-4 border-b border-border/50 last:border-0">
@@ -239,6 +381,12 @@ export default function Dialogue({
                                 <Edit2 className="h-3.5 w-3.5" /> Edit
                             </Button>
 
+                            <EnhanceDialogueButton
+                                state={enhanceDialogueState}
+                                setState={setEnhanceDialogueState}
+                                {...{ dialogueText, setDialogueText, audioBook }}
+                            />
+
                             {/* Variant count */}
                             <div className="flex gap-0.5 border border-border rounded-md p-0.5">
                                 {VARIANT_OPTIONS.map((option, index) => (
@@ -254,16 +402,7 @@ export default function Dialogue({
                                 ))}
                             </div>
 
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={generate}
-                                disabled={generating}
-                                className="h-7 gap-1 text-xs"
-                            >
-                                <RotateCcw className={`h-3.5 w-3.5 ${generating ? "animate-spin" : ""}`} />
-                                {dialogueState === "INIT" ? "Generate" : "Re-generate"}
-                            </Button>
+                            <GenerateSpeechButton state={speechGenerationState} disabled={false} onClick={generate} />
 
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
@@ -279,7 +418,7 @@ export default function Dialogue({
                                         <ArrowUp className="mr-2 h-4 w-4" /> Move Up
                                     </DropdownMenuItem>
                                     <DropdownMenuItem
-                                        disabled={index === audioBookWithCharacterVoices.dialogues.length - 1}
+                                        disabled={index === audioBook.dialogues.length - 1}
                                         onClick={() => {} /* onMoveDown(dialogue.id) */}
                                     >
                                         <ArrowDown className="mr-2 h-4 w-4" /> Move Down
@@ -307,11 +446,7 @@ export default function Dialogue({
             {
                 <ul className="flex flex-wrap gap-2 mt-3">
                     {generations.map((generation, index) => (
-                        <Generation
-                            key={index}
-                            {...{ generation, index, audioBookWithCharacterVoices }}
-                            onSelect={() => {}}
-                        />
+                        <Generation key={index} {...{ generation, index, audioBook }} onSelect={() => {}} />
                     ))}
                 </ul>
             }
@@ -359,19 +494,19 @@ function formatCharacterName(name: string) {
 
 function Generation({
     index,
-    audioBookWithCharacterVoices,
+    audioBook,
     generation,
     onSelect,
 }: {
     index: number;
-    audioBookWithCharacterVoices: AudioBookWithCharacterVoices;
+    audioBook: AudioBookTypeForDialogueSynthesisPhase;
     onSelect: () => void;
     generation: AudioPlayerAdapterResourceStateType;
 }) {
-    const character = audioBookWithCharacterVoices.characters[audioBookWithCharacterVoices.dialogues[index].character];
+    const character = audioBook.characters[audioBook.dialogues[index].character];
     const voiceID = character.voice?.voiceID;
 
-    const downloadFileNameWithoutExtension = `${padIndex(index, audioBookWithCharacterVoices.dialogues.length - 1)}_${formatCharacterName(character.name)}_${voiceID ?? "undefined-voice-id"}`;
+    const downloadFileNameWithoutExtension = `${padIndex(index, audioBook.dialogues.length - 1)}_${formatCharacterName(character.name)}_${voiceID ?? "undefined-voice-id"}`;
 
     return (
         <MiniAudioPlayer key={index} audioPlayerResourceState={generation} {...{ downloadFileNameWithoutExtension }} />
