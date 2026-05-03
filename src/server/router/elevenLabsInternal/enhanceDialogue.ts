@@ -45,8 +45,16 @@ function fn({ praoAllocationID, dialogue }: { praoAllocationID: ObjectId; dialog
     }
 
     return ElevenLabsRateLimRosterRepositoryResultAsync.andThen((ElevenLabsRateLimRosterRepository) =>
-        ElevenLabsRateLimRosterRepository.get(praoAllocationID),
-    )
-        .andThen((roster) => ElevenLabsRateLimLaneOrchestrator.spend(roster, NEGATIVE_INFINITY, spendFn))
-        .andThen((result) => zodParseAsync(OutputSchema, result));
+        ElevenLabsRateLimRosterRepository.get(praoAllocationID)
+            .andThen((roster) =>
+                ElevenLabsRateLimLaneOrchestrator.spend(roster, NEGATIVE_INFINITY, spendFn).map((result) => ({
+                    result,
+                    roster,
+                })),
+            )
+            .andThen(({ result, roster }) =>
+                ElevenLabsRateLimRosterRepository.set(praoAllocationID, roster).map(() => result),
+            )
+            .andThen((result) => zodParseAsync(OutputSchema, result)),
+    );
 }
