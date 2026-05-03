@@ -101,8 +101,15 @@ function fn(input: z.output<typeof InputSchema>) {
     }
 
     return ElevenLabsFreeRosterRepositoryResultAsync.andThen((ElevenLabsFreeRosterRepository) =>
-        ElevenLabsFreeRosterRepository.get(input.praoAllocationID).andThen((roster) =>
-            ElevenLabsFreeLaneOrchestrator.spend(roster, NEGATIVE_INFINITY, spendFn),
-        ),
+        ElevenLabsFreeRosterRepository.get(input.praoAllocationID)
+            .andThen((roster) =>
+                ElevenLabsFreeLaneOrchestrator.spend(roster, NEGATIVE_INFINITY, spendFn).map((result) => ({
+                    roster,
+                    result,
+                })),
+            )
+            .andThen(({ roster, result }) =>
+                ElevenLabsFreeRosterRepository.set(input.praoAllocationID, roster).map(() => result),
+            ),
     );
 }
