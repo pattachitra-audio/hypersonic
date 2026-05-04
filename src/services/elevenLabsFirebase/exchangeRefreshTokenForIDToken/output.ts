@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const ResponseSchema = z
+export const OutputSchema = z
     .object({
         expires_in: z.string(),
         token_type: z.string(),
