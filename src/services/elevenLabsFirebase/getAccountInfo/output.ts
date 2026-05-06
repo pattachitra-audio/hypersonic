@@ -42,7 +42,8 @@ export const OutputSchema = z.object({
                     return z.NEVER;
                 }
             }),
-            lastRefreshAt: "2026-05-04T14:08:58.742Z",
+            // lastRefreshAt: "2026-05-04T14:08:58.742Z",
+            lastRefreshAt: z.coerce.date(),
         }),
     ),
 });
