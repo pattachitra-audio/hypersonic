@@ -6,6 +6,7 @@ import { OutputSchema } from "./output";
 import { undiciFetch } from "@/utils/undiciFetch";
 import { parseResponseJSON } from "@/utils/parseResponseJSON";
 import { zodParse, zodParseAsync } from "@/utils/zodParse";
+import { proxyAgentPool } from "@/lib/proxyAgentPool";
 
 export function exchangeRefreshTokenForIDToken(input: z.input<typeof InputSchema>) {
     return zodParseAsync(InputSchema, input).andThen(fn);
@@ -25,6 +26,7 @@ function fn(validatedInput: z.output<typeof InputSchema>) {
             "Content-Type": "application/x-www-form-urlencoded",
             ...requestHeaders,
         },
+        dispatcher: proxyAgentPool.get(validatedInput.proxyURL),
     })
         .andThen(parseResponseJSON)
         .andThen((obj) => zodParse(OutputSchema, obj));
