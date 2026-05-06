@@ -1,7 +1,7 @@
 import { describe, expect, it, inject } from "vitest";
 import { models } from "@/services/elevenLabsInternalAPI/models";
 
-describe("voices", async () => {
+describe("models", async () => {
     it("returns auth account data for a valid bearer token", async () => {
         const firebaseAuth = inject("firebaseAuth");
 
@@ -22,7 +22,7 @@ describe("voices", async () => {
         let s = "Models: [ ";
 
         elevenLabsModels.forEach((model) => {
-            s += `"${model.name}" `;
+            s += `"${model.name}", `;
         });
 
         s += "]";
