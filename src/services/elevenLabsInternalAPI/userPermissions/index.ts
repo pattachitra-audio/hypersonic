@@ -6,6 +6,7 @@ import { ELEVEN_LABS_INTERNAL_API_BASE_URL } from "../constants";
 import { requestHeaders } from "@/requestHeaders";
 import { parseResponseJSON } from "@/utils/parseResponseJSON";
 import { OutputSchema } from "./output";
+import { proxyAgentPool } from "@/lib/proxyAgentPool";
 
 export function userPermissions(input: z.input<typeof InputSchema>) {
     return zodParseAsync(InputSchema, input).andThen(fn);
@@ -19,6 +20,7 @@ function fn(validatedInput: z.output<typeof InputSchema>) {
             Authorization: `Bearer ${validatedInput.bearerToken}`,
             ...requestHeaders,
         },
+        dispatcher: proxyAgentPool.get(validatedInput.proxyURL),
     })
         .andThen(parseResponseJSON)
         .map((obj) => {

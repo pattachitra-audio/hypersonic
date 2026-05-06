@@ -6,6 +6,7 @@ describe("userPermissions", async () => {
         const firebaseAuth = inject("firebaseAuth");
 
         const result = await userPermissions({
+            proxyURL: firebaseAuth.proxyURL,
             bearerToken: firebaseAuth.idToken,
         });
 
