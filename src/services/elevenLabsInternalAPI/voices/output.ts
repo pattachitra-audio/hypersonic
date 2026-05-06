@@ -208,7 +208,4 @@ export const OutputSchema = z
     .object({
         voices: z.array(VoiceSchema),
     })
-    .transform((v) => ({
-        ...v,
-        voices: v.voices,
-    }));
+    .transform((v) => v.voices);
