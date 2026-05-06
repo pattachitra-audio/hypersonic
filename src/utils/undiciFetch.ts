@@ -30,7 +30,10 @@ type UndiciFetchErrorTypes =
     | DOMException
     | Error;
 
-export function undiciFetch(input: RequestInfo, init?: RequestInit): ResultAsync<Response, UndiciFetchErrorTypes> {
+export function undiciFetch(
+    input: RequestInfo,
+    init?: RequestInit & { dispatcher: RequestInit["dispatcher"] },
+): ResultAsync<Response, UndiciFetchErrorTypes> {
     return ResultAsync.fromPromise(fetch(input, init), (error: unknown) => {
         if (
             error instanceof errors.ConnectTimeoutError ||
