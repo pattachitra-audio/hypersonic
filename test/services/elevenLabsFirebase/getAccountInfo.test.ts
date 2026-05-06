@@ -8,6 +8,7 @@ describe("getAccountInfo", async () => {
 
         const accountInfoResult = await getAccountInfo({
             idToken: firebaseAuth.idToken,
+            proxyURL: firebaseAuth.proxyURL,
         });
 
         if (accountInfoResult.isErr()) {
