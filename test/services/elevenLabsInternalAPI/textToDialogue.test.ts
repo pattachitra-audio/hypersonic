@@ -6,7 +6,7 @@ import CodecParser, { CodecFrame } from "codec-parser";
 describe("textToDialogue", async () => {
     await delay(5000);
 
-    it("returns an audio buffer for valid inputs", async () => {
+    it("returns an audio buffer", async () => {
         const firebaseAuth = inject("firebaseAuth");
 
         const result = await textToDialogue({

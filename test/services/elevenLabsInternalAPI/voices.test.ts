@@ -2,7 +2,7 @@ import { describe, expect, it, inject } from "vitest";
 import { voices } from "@/services/elevenLabsInternalAPI/voices";
 
 describe("voices", async () => {
-    it("returns auth account data for a valid bearer token", async () => {
+    it("returns a list of voices", async () => {
         const firebaseAuth = inject("firebaseAuth");
 
         const result = await voices({

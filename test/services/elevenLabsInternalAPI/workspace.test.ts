@@ -5,7 +5,7 @@ import { delay } from "test/helpers/delay";
 describe("workspace", async () => {
     await delay(5000);
 
-    it("returns workspace data for a valid bearer token", async () => {
+    it("returns workspace data", async () => {
         const firebaseAuth = inject("firebaseAuth");
 
         const result = await workspace({

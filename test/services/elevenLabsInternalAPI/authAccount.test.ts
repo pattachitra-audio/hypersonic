@@ -5,7 +5,7 @@ import { delay } from "test/helpers/delay";
 describe("authAccount", async () => {
     await delay(5000);
 
-    it("returns auth account data for a valid bearer token", async () => {
+    it("returns account data", async () => {
         const firebaseAuth = inject("firebaseAuth");
 
         const result = await authAccount({

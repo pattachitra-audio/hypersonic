@@ -5,7 +5,7 @@ import { delay } from "test/helpers/delay";
 describe("history", async () => {
     await delay(5000);
 
-    it("returns history data for a valid bearer token", async () => {
+    it("returns history data", async () => {
         const firebaseAuth = inject("firebaseAuth");
 
         const historyResult = await history({
