@@ -15,5 +15,18 @@ describe("voices", async () => {
         }
 
         expect(result.isOk()).toBe(true);
+
+        const elevenLabsVoices = result.value;
+        expect(elevenLabsVoices.length).toBeGreaterThan(0);
+
+        let s = "Top voices: [\n";
+
+        for (let i = 0; i < Math.min(elevenLabsVoices.length, 5); i++) {
+            s += `    Name: ${elevenLabsVoices[i].name}; ID: ${elevenLabsVoices[i].voiceId}\n`;
+        }
+
+        s += "]\n";
+
+        console.log(s);
     });
 });
