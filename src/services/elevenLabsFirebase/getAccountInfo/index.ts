@@ -6,6 +6,7 @@ import { requestHeaders } from "@/requestHeaders";
 import { parseResponseJSON } from "@/utils/parseResponseJSON";
 import { OutputSchema } from "./output";
 import { zodParse, zodParseAsync } from "@/utils/zodParse";
+import { proxyAgentPool } from "@/lib/proxyAgentPool";
 
 export function getAccountInfo(input: z.input<typeof InputSchema>) {
     return zodParseAsync(InputSchema, input).andThen(fn);
@@ -21,6 +22,7 @@ function fn(validatedInput: z.output<typeof InputSchema>) {
             "Content-Type": "application/json",
             ...requestHeaders,
         },
+        dispatcher: proxyAgentPool.get(validatedInput.proxyURL),
     })
         .andThen(parseResponseJSON)
         .andThen((obj) => zodParse(OutputSchema, obj));
