@@ -1,7 +1,7 @@
 import z from "zod";
 import { InputSchema } from "./input";
 import { undiciFetch } from "@/utils/undiciFetch";
-import { ELEVEN_LABS_FIREBASE_API_KEY, FIREBASE_BASE_URL } from "../constants";
+import { ELEVEN_LABS_FIREBASE_API_KEY } from "../constants";
 import { requestHeaders } from "@/requestHeaders";
 import { parseResponseJSON } from "@/utils/parseResponseJSON";
 import { OutputSchema } from "./output";
@@ -12,7 +12,7 @@ export function getAccountInfo(input: z.input<typeof InputSchema>) {
 }
 
 function fn(validatedInput: z.output<typeof InputSchema>) {
-    const url = `${FIREBASE_BASE_URL}/v1/accounts:lookup?key=${ELEVEN_LABS_FIREBASE_API_KEY}`;
+    const url = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${ELEVEN_LABS_FIREBASE_API_KEY}`;
 
     return undiciFetch(url, {
         method: "POST",
