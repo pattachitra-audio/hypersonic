@@ -47,7 +47,7 @@ import Header from "@/components/Header";
 // import { AppSidebar } from "@/components/app-sidebar";
 import { TypeScriptRPCProvider } from "./tRPCProvider";
 import { Toaster } from "@/components/ui/toaster";
-import { SidebarProvider } from "@/components/ui/sidebar";
+// import { SidebarProvider } from "@/components/ui/sidebar";
 
 // const _geist = Geist({ subsets: ["latin"] });
 // const _geistMono = Geist_Mono({ subsets: ["latin"] });
