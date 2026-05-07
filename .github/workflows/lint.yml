@@ -1,10 +1,10 @@
-name: lint
+name: Lint
 
 on:
     workflow_call:
 
 jobs:
-    check_formatting:
+    lint:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository

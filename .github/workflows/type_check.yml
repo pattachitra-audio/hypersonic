@@ -1,10 +1,10 @@
-name: type_check
+name: Type check
 
 on:
     workflow_call:
 
 jobs:
-    check_formatting:
+    type_check:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository

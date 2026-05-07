@@ -1,10 +1,10 @@
-name: unit_test
+name: Unit test
 
 on:
     workflow_call:
 
 jobs:
-    test:
+    unit_test:
         runs-on: ubuntu-latest
         environment: unit_test
         permissions:
@@ -50,9 +50,9 @@ jobs:
               with:
                   path: x
 
-    deploy-coverage-report-to-github-pages:
+    deploy_coverage_report_to_github_pages:
         runs-on: ubuntu-latest
-        needs: [test]
+        needs: [unit_test]
         permissions:
             id-token: write
             pages: write

@@ -1,11 +1,11 @@
-name: build_and_push_docker_image_to_ghcr
+name: Build and push docker image to GHCR (Github Container Registry)
 
 on:
     workflow_call:
 
 jobs:
-    push_to_ghcr:
-        name: Push docker image to GHCR
+    build_and_push_docker_image_to_ghcr:
+        name: Build and push docker image to GHCR
         runs-on: ubuntu-latest
         permissions:
             packages: write
