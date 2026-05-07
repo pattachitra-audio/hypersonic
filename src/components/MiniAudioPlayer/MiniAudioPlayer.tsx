@@ -13,7 +13,7 @@ export type AudioPlayerAdapterResourceStateType = AsyncStateType<PeaksAudioPlaye
 
 export default function MiniAudioPlayer({
     audioPlayerResourceState,
-    downloadFileNameWithoutExtension,
+    downloadFileNameWithoutExtension = crypto.randomUUID(),
     // title,
     // audioPlayerAdapter,
     // subtitle = "Default voice preview",
@@ -23,10 +23,6 @@ export default function MiniAudioPlayer({
     downloadFileNameWithoutExtension?: string;
     audioPlayerResourceState: AudioPlayerAdapterResourceStateType;
 }) {
-    if (!downloadFileNameWithoutExtension) {
-        downloadFileNameWithoutExtension = crypto.randomUUID();
-    }
-
     const [playing, setPlaying] = useState(() => {
         if (audioPlayerResourceState.status === "success") {
             return audioPlayerResourceState.data.isPlaying();
